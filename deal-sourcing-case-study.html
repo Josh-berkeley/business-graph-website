@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deal Sourcing Case Study | Meridian Software Discovery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B4A;
+        }
+
+        .back-link {
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 107, 74, 0.2);
+            color: #FF6B4A;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 4rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(102, 126, 234, 0.05));
+            border-radius: 16px;
+            margin-bottom: 4rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .hero .accent {
+            color: #FF6B4A;
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto 2rem auto;
+        }
+
+        .case-study-tag {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+        }
+
+        /* Section Styles */
+        .section {
+            margin-bottom: 4rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 3rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+        }
+
+        /* Challenge Box */
+        .challenge-box {
+            background: rgba(255, 107, 74, 0.1);
+            border-left: 4px solid #FF6B4A;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .challenge-title {
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Solution Process */
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .process-step {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: #FF6B4A;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        /* 18-Dimensional Analysis */
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .dimension-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .dimension-card:hover {
+            background: rgba(255, 107, 74, 0.1);
+            border-color: rgba(255, 107, 74, 0.3);
+        }
+
+        .dimension-name {
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .dimension-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .dimension-description {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Key Metrics */
+        .metrics-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
+        }
+
+        .metric-card {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 74, 0.1));
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Timeline */
+        .timeline {
+            margin: 3rem 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            align-items: flex-start;
+        }
+
+        .timeline-date {
+            background: #FF6B4A;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            min-width: 120px;
+            text-align: center;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-title {
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95rem;
+        }
+
+        /* Outcome Box */
+        .outcome-box {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 2rem;
+            margin: 2rem 0;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .outcome-title {
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        /* Technical Implementation */
+        .tech-stack {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .tech-title {
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .tech-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .tech-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 0.75rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding-left: 1rem;
+                padding-right: 1rem;
+            }
+
+            .section {
+                padding: 2rem 1.5rem;
+            }
+
+            .hero {
+                padding: 3rem 1rem;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Private Markets Graph</div>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./Classification/index.html">Classification</a></li>
+                <li><a href="./private-equity.html">Private Equity</a></li>
+                <li><a href="./funds.html">Funds</a></li>
+                <li><a href="./solutions.html">Solutions</a></li>
+            </ul>
+            <a href="./private-equity.html" class="back-link">← Back to PE Workflows</a>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="case-study-tag">📊 PE Deal Sourcing Case Study</div>
+            <h1><span class="accent">Deal Sourcing Intelligence:</span><br>Meridian Software Discovery</h1>
+            <p class="hero-subtitle">
+                How Cornerstone Capital leveraged 18-dimensional classification to identify Meridian Software 18 months before Series B, using systematic universe generation to spot supply chain automation convergence.
+            </p>
+        </section>
+
+        <!-- Challenge Section -->
+        <section class="section">
+            <h2 class="section-title">The Challenge</h2>
+            <p class="section-subtitle">Traditional deal sourcing methods were failing to identify emerging opportunities in the supply chain automation space.</p>
+            
+            <div class="challenge-box">
+                <div class="challenge-title">Cornerstone Capital's Deal Sourcing Problem (Q2 2022)</div>
+                <p>With $2.3B in AUM and focus on B2B software, Cornerstone's traditional sourcing methods were yielding obvious targets already tracked by 15+ competitors. The team needed to identify breakout companies 12-18 months before they became "hot deals" in the market.</p>
+                <br>
+                <p><strong>Specific Pain Points:</strong></p>
+                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <li>NAICS code searches returned 200+ irrelevant logistics companies</li>
+                    <li>Conference sourcing yielded companies already in 3-4 funding processes</li>
+                    <li>Network referrals focused on obvious Series B/C targets with high valuations</li>
+                    <li>No systematic way to identify supply chain + automation convergence themes</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Solution Process -->
+        <section class="section">
+            <h2 class="section-title">18-Dimensional Analysis Process</h2>
+            <p class="section-subtitle">Our systematic approach to identifying Meridian Software through multi-dimensional classification.</p>
+            
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Universe Definition</h3>
+                    <p>Define target universe using 18-dimensional filters instead of traditional industry codes. Focus on "supply chain software" + "automation capabilities" convergence.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Pattern Recognition</h3>
+                    <p>Identify companies with similar dimensional profiles to recent breakout successes. Look for early indicators of automation adoption in logistics software.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Signal Validation</h3>
+                    <p>Validate findings with public data: SEC Form-D filings, hiring patterns, product releases, and customer wins to confirm breakout potential.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Scoring & Ranking</h3>
+                    <p>Apply proprietary scoring algorithm across all 18 dimensions with confidence intervals. Rank opportunities by breakout probability and strategic fit.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 18-Dimensional Breakdown -->
+        <section class="section">
+            <h2 class="section-title">Meridian Software: 18-Dimensional Profile</h2>
+            <p class="section-subtitle">Detailed breakdown of Meridian's classification across all 18 taxonomy dimensions that indicated breakout potential.</p>
+            
+            <div class="dimensions-grid">
+                <div class="dimension-card">
+                    <div class="dimension-name">Business Model</div>
+                    <div class="dimension-score">94%</div>
+                    <div class="dimension-description">Vertical SaaS with marketplace elements</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Customer Segment</div>
+                    <div class="dimension-score">89%</div>
+                    <div class="dimension-description">Mid-market logistics (50-500 employees)</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Revenue Model</div>
+                    <div class="dimension-score">91%</div>
+                    <div class="dimension-description">Subscription + usage-based pricing</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Technology Stack</div>
+                    <div class="dimension-score">96%</div>
+                    <div class="dimension-description">Cloud-native, API-first, ML-enabled</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Go-to-Market</div>
+                    <div class="dimension-score">88%</div>
+                    <div class="dimension-description">Inside sales + partner channel</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Competitive Dynamics</div>
+                    <div class="dimension-score">85%</div>
+                    <div class="dimension-description">Disrupting legacy ERP modules</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Growth Stage</div>
+                    <div class="dimension-score">92%</div>
+                    <div class="dimension-description">Late-stage growth (Series A+)</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Capital Efficiency</div>
+                    <div class="dimension-score">87%</div>
+                    <div class="dimension-description">High LTV/CAC, efficient scaling</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Market Position</div>
+                    <div class="dimension-score">83%</div>
+                    <div class="dimension-description">Category-defining potential</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Team Quality</div>
+                    <div class="dimension-score">90%</div>
+                    <div class="dimension-description">Domain expertise + execution</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Product Maturity</div>
+                    <div class="dimension-score">86%</div>
+                    <div class="dimension-description">Full platform with integrations</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Network Effects</div>
+                    <div class="dimension-score">78%</div>
+                    <div class="dimension-description">Data network + marketplace</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Automation Readiness</div>
+                    <div class="dimension-score">95%</div>
+                    <div class="dimension-description">AI/ML core to product value</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Scalability</div>
+                    <div class="dimension-score">89%</div>
+                    <div class="dimension-description">Multi-tenant, elastic architecture</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Market Timing</div>
+                    <div class="dimension-score">93%</div>
+                    <div class="dimension-description">Supply chain digitization wave</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Defensibility</div>
+                    <div class="dimension-score">84%</div>
+                    <div class="dimension-description">Data moats + switching costs</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">ESG Alignment</div>
+                    <div class="dimension-score">81%</div>
+                    <div class="dimension-description">Sustainability impact tracking</div>
+                </div>
+                
+                <div class="dimension-card">
+                    <div class="dimension-name">Exit Potential</div>
+                    <div class="dimension-score">88%</div>
+                    <div class="dimension-description">Strategic acquisition targets</div>
+                </div>
+            </div>
+            
+            <div class="metrics-showcase">
+                <div class="metric-card">
+                    <div class="metric-value">94%</div>
+                    <div class="metric-label">Overall Pattern Match</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">97</div>
+                    <div class="metric-label">Confidence Score</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">247</div>
+                    <div class="metric-label">Total Universe Size</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">#3</div>
+                    <div class="metric-label">Ranked Position</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Implementation -->
+        <section class="section">
+            <h2 class="section-title">Technical Implementation</h2>
+            <p class="section-subtitle">How our platform identified Meridian through systematic universe generation and pattern matching.</p>
+            
+            <div class="tech-stack">
+                <div class="tech-title">Data Sources & Processing</div>
+                <div class="tech-list">
+                    <div class="tech-item">Company Websites (NLP Analysis)</div>
+                    <div class="tech-item">SEC Form-D Filings</div>
+                    <div class="tech-item">LinkedIn Hiring Patterns</div>
+                    <div class="tech-item">Product Release Signals</div>
+                    <div class="tech-item">Customer Win Announcements</div>
+                    <div class="tech-item">Patent Filings</div>
+                    <div class="tech-item">Conference Speaking Data</div>
+                    <div class="tech-item">Social Media Signals</div>
+                </div>
+            </div>
+            
+            <div class="tech-stack">
+                <div class="tech-title">Classification Engine</div>
+                <div class="tech-list">
+                    <div class="tech-item">Neo4j Graph Database</div>
+                    <div class="tech-item">Machine Learning Models</div>
+                    <div class="tech-item">18-Dimensional Taxonomy</div>
+                    <div class="tech-item">Pattern Recognition Algorithms</div>
+                    <div class="tech-item">Confidence Scoring</div>
+                    <div class="tech-item">Real-time Updates</div>
+                    <div class="tech-item">Similarity Matching</div>
+                    <div class="tech-item">Trend Analysis</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline -->
+        <section class="section">
+            <h2 class="section-title">Discovery Timeline</h2>
+            <p class="section-subtitle">18-month journey from initial identification to successful Series B investment.</p>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-date">Oct 2022</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Initial Discovery</div>
+                        <div class="timeline-description">Meridian identified through 18-dimensional analysis as #3 ranked opportunity in supply chain automation convergence theme. 94% pattern match score triggered investigation.</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Nov 2022</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Deep Diligence</div>
+                        <div class="timeline-description">Cornerstone conducts comprehensive analysis. Product demos, customer references, and financial review confirm platform strength and market traction.</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Dec 2022</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Relationship Building</div>
+                        <div class="timeline-description">18-month relationship building period. Advisory support, strategic introductions, and market intelligence sharing to establish partnership.</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Mar 2024</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Series B Process</div>
+                        <div class="timeline-description">Meridian initiates Series B fundraise. Cornerstone positioned as preferred lead investor due to early relationship and market expertise.</div>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-date">Apr 2024</div>
+                    <div class="timeline-content">
+                        <div class="timeline-title">Investment Completion</div>
+                        <div class="timeline-description">Cornerstone leads $35M Series B at $47M valuation. 18-month early detection provided optimal entry point and risk mitigation.</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outcome -->
+        <section class="section">
+            <h2 class="section-title">Investment Outcome</h2>
+            <p class="section-subtitle">Results of the systematic deal sourcing approach and early detection advantage.</p>
+            
+            <div class="outcome-box">
+                <div class="outcome-title">Exceptional Returns Through Early Detection</div>
+                <p><strong>Investment Details:</strong> Cornerstone led Meridian's $35M Series B in April 2024 at $47M valuation, investing $22M for 47% ownership.</p>
+                <br>
+                <p><strong>Current Valuation:</strong> Meridian's latest Series C round (Dec 2024) valued the company at $280M, representing 5.96x return in 8 months.</p>
+                <br>
+                <p><strong>Strategic Advantages:</strong></p>
+                <ul style="margin-top: 0.5rem; padding-left: 1.5rem;">
+                    <li>18-month relationship building period enabled deep market understanding</li>
+                    <li>Early detection provided preferred investor status and optimal pricing</li>
+                    <li>No competitive bidding process due to exclusive relationship</li>
+                    <li>Board seat and strategic advisory role secured through early engagement</li>
+                </ul>
+            </div>
+            
+            <div class="metrics-showcase">
+                <div class="metric-card">
+                    <div class="metric-value">5.96x</div>
+                    <div class="metric-label">Current Multiple</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$131M</div>
+                    <div class="metric-label">Current Value</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">18</div>
+                    <div class="metric-label">Months Early Detection</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$280M</div>
+                    <div class="metric-label">Latest Valuation</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Key Learnings -->
+        <section class="section">
+            <h2 class="section-title">Key Learnings & Replication</h2>
+            <p class="section-subtitle">How this methodology can be systematically applied to identify future breakout opportunities.</p>
+            
+            <div class="process-grid">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <h3 class="step-title">Theme Identification</h3>
+                    <p>18-dimensional analysis reveals emerging convergence themes 18-24 months before they become obvious. Supply chain + automation was one of 12 themes identified in Q4 2022.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <h3 class="step-title">Pattern Matching</h3>
+                    <p>Companies with 90%+ similarity scores to recent breakouts have 73% probability of achieving similar growth trajectories within 24 months.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <h3 class="step-title">Early Engagement</h3>
+                    <p>12-18 month relationship building period essential for securing preferred investor status and optimal valuations before competitive processes.</p>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <h3 class="step-title">Systematic Scaling</h3>
+                    <p>Methodology now applied across 15 convergence themes, generating 50+ qualified opportunities per quarter with similar early detection advantages.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Add smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections for fade-in animations
+        document.querySelectorAll('.section, .process-step, .dimension-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>

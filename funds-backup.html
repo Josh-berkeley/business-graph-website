@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institutional Fund Intelligence | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0B1A2A 0%, #1a2537 50%, #2a3441 100%);
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 74, 0.3);
+        }
+
+        /* Solutions Section */
+        .solutions-section {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 74, 0.3);
+        }
+
+        .solution-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .benchmarking-card { --gradient: linear-gradient(90deg, #2d5aa0, #1e3c72); }
+        .predictions-card { --gradient: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .relationships-card { --gradient: linear-gradient(90deg, #6c5ce7, #a29bfe); }
+
+        .solution-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+        }
+
+        .solution-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #FF6B4A;
+        }
+
+        .solution-card .funds-title {
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .solution-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Use Cases Section */
+        .use-cases-section {
+            padding: 6rem 0;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            gap: 4rem;
+        }
+
+        .use-case {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .use-case:nth-child(even) .use-case-content {
+            order: 2;
+        }
+
+        .use-case:nth-child(even) .use-case-visual {
+            order: 1;
+        }
+
+        .use-case-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-content .scenario {
+            background: rgba(255, 107, 74, 0.1);
+            border-left: 3px solid #FF6B4A;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .scenario-title {
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .outcome {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .outcome-title {
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-visual {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        /* LP Network Section */
+        .lp-network-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 74, 0.05));
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .network-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .network-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem auto;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .network-card h4 {
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .network-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(102, 126, 234, 0.05));
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-case {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .use-case:nth-child(even) .use-case-content,
+            .use-case:nth-child(even) .use-case-visual {
+                order: initial;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Private Markets Graph</div>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./Classification/index.html">Classification</a></li>
+                <li><a href="./private-equity.html">Private Equity</a></li>
+                <li><a href="./funds.html">Funds</a></li>
+                <li><a href="./solutions.html">Solutions</a></li>
+                <li><a href="./contact.html">Book Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Private Market <span class="accent">Indices & Exposures</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Transform institutional allocation with custom private market indices, true exposure analysis, and systematic relationship mapping. Move beyond traditional benchmarks to 18-dimensional index construction and network-powered allocation intelligence.
+            </p>
+            
+
+            <a href="./contact.html" class="hero-cta">Get Institutional Intelligence Demo</a>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="solutions-section">
+        <div class="container">
+            <h2 class="section-title">Complete <span style="color: #FF6B4A;">Indices & Exposures</span> Platform</h2>
+            <p class="section-subtitle">
+                Three core capabilities that transform how institutional investors build custom indices, analyze true exposures, and optimize allocation through relationship intelligence.
+            </p>
+
+            <div class="solutions-grid">
+                <div class="solution-card benchmarking-card">
+                    <div class="solution-icon">📊</div>
+                    <h3>Private Market Indices</h3>
+                    <div class="funds-title">18-Dimensional Index Construction</div>
+                    <p>Build custom private market indices beyond traditional sector classifications. Systematic index construction using business model similarity, revenue patterns, and operational characteristics for true thematic exposure.</p>
+                    <div class="solution-stats">
+                        <span>Custom Index Creation</span>
+                        <span>18-Dimensional Weighting</span>
+                        <span>Dynamic Rebalancing</span>
+                    </div>
+                </div>
+
+                <div class="solution-card predictions-card">
+                    <div class="solution-icon">🎯</div>
+                    <h3>Exposures & Risk</h3>
+                    <div class="funds-title">True Portfolio Exposure Analysis</div>
+                    <p>Analyze actual portfolio exposures across all 18 dimensions to identify hidden correlations and concentration risks. Move beyond geographic and sector exposure to business model and operational risk analysis.</p>
+                    <div class="solution-stats">
+                        <span>Hidden Correlation Detection</span>
+                        <span>Multi-Dimensional Risk</span>
+                        <span>Concentration Analysis</span>
+                    </div>
+                </div>
+
+                <div class="solution-card relationships-card">
+                    <div class="solution-icon">🕸️</div>
+                    <h3>Relationships</h3>
+                    <div class="funds-title">Network-Powered Allocation Intelligence</div>
+                    <p>Leverage LP network analysis and fund manager relationships to optimize allocation decisions. Graph intelligence reveals co-investment patterns, manager networks, and strategic partnership opportunities.</p>
+                    <div class="solution-stats">
+                        <span>LP Network Analysis</span>
+                        <span>Manager Relationships</span>
+                        <span>Co-Investment Discovery</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases-section">
+        <div class="container">
+            <h2 class="section-title">Indices & Exposures <span style="color: #FF6B4A;">Use Cases</span></h2>
+            
+            <div class="use-cases-grid">
+                <!-- Use Case 1 -->
+                <div class="use-case">
+                    <div class="use-case-content">
+                        <h3>Custom Index Construction: AI-Readiness Index</h3>
+                        <p>Build thematic private market indices using 18-dimensional classification to capture true exposure beyond traditional sector-based approaches.</p>
+                        
+                        <div class="scenario">
+                            <div class="scenario-title">Potential Use Case: Meridian Endowment AI-Readiness Index</div>
+                            <p>A hypothetical $2.3B AI-Readiness Private Markets Index could track companies across multiple sectors based on AI adoption capability rather than traditional "tech" classification.</p>
+                        </div>
+
+                        <p><strong>Traditional Approach:</strong> Sector-based indices miss AI adoption in non-tech sectors, limited thematic exposure precision, static classification systems.</p>
+                        
+                        <p><strong>Our Proposed Intelligence:</strong> 18-dimensional analysis could identify AI-ready companies in healthcare (estimated 23%), financial services (18%), manufacturing (16%), creating true thematic exposure across 8 sectors.</p>
+
+                        <div class="outcome">
+                            <div class="outcome-title">Expected Outcome</div>
+                            <p>AI-Readiness Index could potentially outperform traditional tech indices, capturing AI theme with higher precision than sector approaches.</p>
+                        </div>
+                    </div>
+                    <div class="use-case-visual">
+                        <div class="visual-placeholder">
+                            📊 Custom Index Construction<br>
+                            18-Dimensional Weighting<br>
+                            Thematic Precision Tracking
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case 2 -->
+                <div class="use-case">
+                    <div class="use-case-content">
+                        <h3>True Exposure Analysis: Hidden Correlations</h3>
+                        <p>Identify actual portfolio exposures across 18 dimensions to reveal hidden correlations and concentration risks beyond traditional geographic and sector analysis.</p>
+                        
+                        <div class="scenario">
+                            <div class="scenario-title">Potential Use Case: Pinnacle Sovereign Fund Portfolio Risk Analysis</div>
+                            <p>A hypothetical $47B private markets portfolio might appear well-diversified across sectors and geographies, but could benefit from true business model exposure analysis for risk management.</p>
+                        </div>
+
+                        <p><strong>Traditional Analysis:</strong> Geographic (US 45%, Europe 25%, Asia 30%) and sector diversification would show apparent risk distribution, but might miss operational correlations.</p>
+                        
+                        <p><strong>Our Proposed Intelligence:</strong> 18-dimensional analysis could reveal potential exposures to "subscription revenue models" and "enterprise customer concentration" that might create hidden correlation risk during enterprise spending downturns.</p>
+
+                        <div class="outcome">
+                            <div class="outcome-title">Expected Outcome</div>
+                            <p>Could potentially reduce subscription model exposure, diversify customer segment exposure, and improve portfolio correlation during market stress conditions.</p>
+                        </div>
+                    </div>
+                    <div class="use-case-visual">
+                        <div class="visual-placeholder">
+                            🎯 Exposure Analysis<br>
+                            Hidden Correlation Detection<br>
+                            Multi-Dimensional Risk
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case 3 -->
+                <div class="use-case">
+                    <div class="use-case-content">
+                        <h3>Relationship Intelligence: Manager Network Analysis</h3>
+                        <p>Leverage graph-powered analysis to identify optimal fund manager relationships, co-investment opportunities, and strategic allocation patterns based on network effects.</p>
+                        
+                        <div class="scenario">
+                            <div class="scenario-title">Potential Use Case: Atlas Capital Manager Network Optimization</div>
+                            <p>A hypothetical $12B private markets allocation across 40 managers could benefit from systematic analysis of manager relationships and co-investment patterns to optimize network effects.</p>
+                        </div>
+
+                        <p><strong>Traditional Process:</strong> Manager selection based on individual track records, limited visibility into network relationships and co-investment synergies.</p>
+                        
+                        <p><strong>Our Proposed Intelligence:</strong> Graph analysis could potentially reveal clusters of high-performing manager networks, identify co-investment opportunities, and map optimal allocation patterns based on relationship strength.</p>
+
+                        <div class="outcome">
+                            <div class="outcome-title">Expected Outcome</div>
+                            <p>Could potentially increase co-investment participation, optimize manager allocation based on network effects, and achieve outperformance through strategic relationship leverage.</p>
+                        </div>
+                    </div>
+                    <div class="use-case-visual">
+                        <div class="visual-placeholder">
+                            🕸️ Manager Network Analysis<br>
+                            Relationship Intelligence<br>
+                            Co-Investment Optimization
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Transform <span style="color: #FF6B4A;">Private Market Allocation</span></h2>
+            <p class="cta-subtitle">
+                Join leading institutional investors using custom indices, exposure analysis, and relationship intelligence to optimize private market allocation decisions.
+            </p>
+            <a href="./contact.html" class="hero-cta">Get Indices & Exposures Demo</a>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and use cases for fade-in animations
+        document.querySelectorAll('.solution-card, .use-case, .network-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effects for solution cards
+        document.querySelectorAll('.solution-card, .network-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

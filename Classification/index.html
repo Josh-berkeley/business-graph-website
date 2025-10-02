@@ -1,0 +1,2178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classification Intelligence | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            color: white;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A !important;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0;
+        }
+
+        .tab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 24px;
+        }
+
+        .tab-link {
+            padding: 16px 24px;
+            text-decoration: none;
+            color: #6c757d;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-link.active {
+            color: #0B1A2A;
+            border-bottom-color: #FF6B4A;
+            background: white;
+        }
+
+        .tab-link:hover {
+            background: #e9ecef;
+        }
+
+        .tab-link.active:hover {
+            background: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0B1A2A 0%, #1e3a5f 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255,107,74,0.1) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(255,107,74,0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin-bottom: 30px;
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.7);
+            text-transform: uppercase;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Overview Section */
+        .overview-section {
+            background: white;
+            border-radius: 16px;
+            padding: 60px;
+            margin-bottom: 80px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .overview-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B4A, #667eea, #764ba2);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Taxonomy Grid */
+        .taxonomy-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 40px;
+            margin-bottom: 60px;
+        }
+
+        .taxonomy-card {
+            background: linear-gradient(145deg, #ffffff 0%, #f8f9fb 100%);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            min-height: 420px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .taxonomy-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-gradient);
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+
+        .taxonomy-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            border-color: rgba(255, 107, 74, 0.2);
+        }
+
+        .taxonomy-card:hover::before {
+            opacity: 1;
+        }
+
+        .taxonomy-icon {
+            font-size: 2.8rem;
+            margin-bottom: 20px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 24px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--card-gradient);
+            color: white;
+            box-shadow: 0 8px 24px var(--card-shadow);
+            position: relative;
+        }
+
+        .taxonomy-icon::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 50%;
+            background: var(--card-gradient);
+            z-index: -1;
+            opacity: 0.3;
+            filter: blur(8px);
+        }
+
+        .business-model-icon {
+            --card-gradient: linear-gradient(135deg, #667eea, #764ba2);
+            --card-shadow: rgba(102, 126, 234, 0.4);
+        }
+
+        .taxonomy-card:nth-child(1) {
+            --card-gradient: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(145deg, #ffffff 0%, #fafbff 100%);
+        }
+
+        .customer-icon {
+            --card-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+            --card-shadow: rgba(240, 147, 251, 0.4);
+        }
+
+        .taxonomy-card:nth-child(2) {
+            --card-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+            background: linear-gradient(145deg, #ffffff 0%, #fefaff 100%);
+        }
+
+        .revenue-icon {
+            --card-gradient: linear-gradient(135deg, #ffecd2, #fcb69f);
+            --card-shadow: rgba(252, 182, 159, 0.4);
+        }
+
+        .taxonomy-card:nth-child(3) {
+            --card-gradient: linear-gradient(135deg, #ffecd2, #fcb69f);
+            background: linear-gradient(145deg, #ffffff 0%, #fffefa 100%);
+        }
+
+        .competitive-icon {
+            --card-gradient: linear-gradient(135deg, #a8edea, #fed6e3);
+            --card-shadow: rgba(168, 237, 234, 0.4);
+        }
+
+        .taxonomy-card:nth-child(4) {
+            --card-gradient: linear-gradient(135deg, #a8edea, #fed6e3);
+            background: linear-gradient(145deg, #ffffff 0%, #fafffe 100%);
+        }
+
+        .technology-icon {
+            --card-gradient: linear-gradient(135deg, #ff9a9e, #fecfef);
+            --card-shadow: rgba(255, 154, 158, 0.4);
+        }
+
+        .taxonomy-card:nth-child(5) {
+            --card-gradient: linear-gradient(135deg, #ff9a9e, #fecfef);
+            background: linear-gradient(145deg, #ffffff 0%, #fffafc 100%);
+        }
+
+        .market-icon {
+            --card-gradient: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            --card-shadow: rgba(161, 196, 253, 0.4);
+        }
+
+        .taxonomy-card:nth-child(6) {
+            --card-gradient: linear-gradient(135deg, #a1c4fd, #c2e9fb);
+            background: linear-gradient(145deg, #ffffff 0%, #fafcff 100%);
+        }
+
+        .competitive-icon {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .technology-icon {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+        }
+
+        .market-icon {
+            background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+        }
+
+        .taxonomy-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .taxonomy-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .methodology-section {
+            text-align: left;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid rgba(255, 107, 74, 0.1);
+        }
+
+        .methodology-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .methodology-title::before {
+            content: "⚡";
+            font-size: 1.1rem;
+        }
+
+        .methodology-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+
+        .methodology-list li {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            color: #475569;
+            padding-left: 20px;
+            position: relative;
+            font-weight: 400;
+        }
+
+        .methodology-list li::before {
+            content: "→";
+            color: #FF6B4A;
+            font-weight: 600;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .methodology-list strong {
+            color: #1e293b;
+            font-weight: 600;
+        }
+
+        .example-box {
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.08), rgba(255, 107, 74, 0.04));
+            border: 1px solid rgba(255, 107, 74, 0.15);
+            border-left: 4px solid #FF6B4A;
+            padding: 16px 18px;
+            margin-top: 16px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            color: #475569;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .example-box::before {
+            content: "💡";
+            position: absolute;
+            top: 16px;
+            right: 18px;
+            font-size: 1rem;
+            opacity: 0.6;
+        }
+
+        .example-box strong {
+            color: #FF6B4A;
+            font-weight: 700;
+        }
+
+        /* Use Case Sections */
+        .use-case-section {
+            margin-bottom: 80px;
+        }
+
+        .use-case-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .use-case-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .use-case-subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Use Case Grid */
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .use-case-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-top: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .deal-sourcing-card {
+            border-top-color: #667eea;
+        }
+
+        .portfolio-card {
+            border-top-color: #FF6B4A;
+        }
+
+        .competitive-card {
+            border-top-color: #10b981;
+        }
+
+        .market-mapping-card {
+            border-top-color: #f59e0b;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .card-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+            margin-right: 15px;
+        }
+
+        .deal-sourcing-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .portfolio-icon {
+            background: linear-gradient(135deg, #FF6B4A, #ee5a24);
+        }
+
+        .competitive-icon-card {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .market-mapping-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .card-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0B1A2A;
+        }
+
+        .card-description {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-example {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .example-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .example-content {
+            font-size: 0.8rem;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        .card-metrics {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        /* API Section */
+        .api-section {
+            background: white;
+            border-radius: 16px;
+            padding: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .api-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .api-subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .api-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .api-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            border-left: 4px solid;
+        }
+
+        .classification-api {
+            border-left-color: #667eea;
+        }
+
+        .universe-api {
+            border-left-color: #FF6B4A;
+        }
+
+        .peer-api {
+            border-left-color: #10b981;
+        }
+
+        .theme-api {
+            border-left-color: #f59e0b;
+        }
+
+        .api-endpoint {
+            font-family: 'Monaco', 'Courier New', monospace;
+            background: #0B1A2A;
+            color: #FF6B4A;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .api-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        .api-example {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            border: 1px solid #dee2e6;
+        }
+
+        .example-code {
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 0.8rem;
+            color: #0B1A2A;
+            white-space: pre-wrap;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .taxonomy-grid {
+                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            }
+
+            .overview-section {
+                padding: 40px 30px;
+            }
+
+            .main-content {
+                padding: 40px 16px;
+            }
+
+            .hero-content {
+                padding: 0 16px;
+            }
+
+            .hero-stats {
+                justify-content: center;
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tab-container {
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .tab-link {
+                white-space: nowrap;
+                padding: 16px 20px;
+            }
+
+            .overview-section {
+                padding: 30px 20px;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        /* Documentation Section Styles */
+        .documentation-section {
+            background: linear-gradient(135deg, #0B1426 0%, #1E2B47 50%, #0F172A 100%);
+            color: #F1F5F9;
+            padding: 60px 0;
+            margin-top: 0;
+        }
+
+        .documentation-section h2 {
+            font-size: 3rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F59E0B 50%, #10B981 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-align: center;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .framework-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+            max-width: 1000px;
+            margin: 0 auto 60px auto;
+        }
+
+        .metric-item {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+
+        .metric-item .metric-number {
+            font-size: 32px;
+            font-weight: 800;
+            color: #F59E0B;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .metric-item .metric-label {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.7);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .signals-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: rgba(245, 158, 11, 0.1);
+            margin: 0;
+        }
+
+        .signal-card {
+            background: linear-gradient(135deg, rgba(11, 20, 38, 0.95) 0%, rgba(30, 43, 71, 0.9) 100%);
+            backdrop-filter: blur(15px);
+            padding: 40px;
+            min-height: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .signal-header {
+            margin-bottom: 32px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .signal-number {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #F59E0B;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+
+        .signal-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #FFFFFF;
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .signal-description {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        .data-structure {
+            margin-bottom: 32px;
+        }
+
+        .structure-node {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .structure-node.primary {
+            background: rgba(245, 158, 11, 0.1);
+            border-color: #F59E0B;
+            color: #F59E0B;
+            font-weight: 600;
+        }
+
+        .structure-node.secondary {
+            background: rgba(16, 185, 129, 0.08);
+            border-color: #10B981;
+            color: #10B981;
+        }
+
+        .structure-node.tertiary {
+            background: rgba(139, 92, 246, 0.08);
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
+
+        .raw-data-terminal {
+            background: #000000;
+            border: 1px solid #F59E0B;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+
+        .terminal-header {
+            color: #F59E0B;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        .raw-data-terminal pre {
+            color: #FFFFFF;
+            margin: 0;
+            white-space: pre-wrap;
+        }
+
+        .evidence-flow {
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .evidence-flow h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #F59E0B;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .flow-step {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.8);
+            font-family: 'Courier New', monospace;
+        }
+
+        @media (max-width: 1400px) {
+            .signals-grid {
+                grid-template-columns: 1fr;
+                gap: 1px;
+            }
+            
+            .signal-card {
+                min-height: auto;
+                padding: 30px;
+            }
+
+            .framework-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .documentation-section h2 {
+                font-size: 2rem;
+            }
+        }
+
+        /* Dimensions Section Styles */
+        .dimensions-section {
+            background: linear-gradient(135deg, #0B1426 0%, #1E2B47 50%, #0F172A 100%);
+            color: #F1F5F9;
+            padding: 60px 0;
+            margin-top: 0;
+        }
+
+        .dimensions-hero {
+            text-align: center;
+            margin-bottom: 60px;
+            padding: 40px 0;
+        }
+
+        .dimensions-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(245, 158, 11, 0.1);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 8px 24px;
+            border-radius: 50px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: 500;
+            color: #F59E0B;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 24px;
+        }
+
+        .dimensions-hero h2 {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFFFFF 0%, #F59E0B 30%, #10B981 70%, #8B5CF6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+        }
+
+        .dimensions-subtitle {
+            font-size: 20px;
+            font-weight: 400;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto 40px;
+        }
+
+        .dimensions-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        .dimensions-group {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dimensions-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.03) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .dimensions-group-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .dimensions-group.external-group {
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .dimensions-group.external-group::before {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+        }
+
+        .dimensions-group.external-group .group-badge {
+            background: rgba(16, 185, 129, 0.15);
+            border-color: #10B981;
+            color: #10B981;
+        }
+
+        .dimensions-group.internal-group {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .dimensions-group.internal-group::before {
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
+        }
+
+        .dimensions-group.internal-group .group-badge {
+            background: rgba(139, 92, 246, 0.15);
+            border-color: #8B5CF6;
+            color: #8B5CF6;
+        }
+
+        .dimensions-signals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .dimensions-signal-block {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .dimensions-signal-block:hover {
+            transform: translateY(-4px);
+            border-color: #F59E0B;
+            box-shadow: 0 12px 40px rgba(245, 158, 11, 0.2);
+        }
+
+        .dimensions-signal-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.02) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            z-index: 0;
+        }
+
+        .dimensions-signal-block:hover::before {
+            opacity: 1;
+        }
+
+        .dimensions-signal-block .signal-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, #F59E0B, #F97316);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+            flex-shrink: 0;
+        }
+
+        .external-group .dimensions-signal-block .signal-icon {
+            background: linear-gradient(135deg, #10B981, #059669);
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+        }
+
+        .internal-group .dimensions-signal-block .signal-icon {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            box-shadow: 0 4px 16px rgba(139, 92, 246, 0.3);
+        }
+
+        .dimensions-signal-block .signal-number {
+            color: #F59E0B;
+        }
+
+        .external-group .dimensions-signal-block .signal-number {
+            color: #10B981;
+        }
+
+        .internal-group .dimensions-signal-block .signal-number {
+            color: #8B5CF6;
+        }
+
+        @media (max-width: 1200px) {
+            .dimensions-signals-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 16px;
+            }
+
+            .dimensions-hero h2 {
+                font-size: 3rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dimensions-hero h2 {
+                font-size: 2rem;
+            }
+            
+            .dimensions-signals-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .dimensions-groups {
+                gap: 24px;
+            }
+            
+            .dimensions-group {
+                padding: 20px;
+            }
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Private Markets Graph</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../Classification/index.html">Classification</a></li>
+                    <li><a href="../private-equity.html">Private Equity</a></li>
+                    <li><a href="../funds.html">Funds</a></li>
+                    <li><a href="../solutions.html">Solutions</a></li>
+                </ul>
+            </nav>
+            <a href="../contact.html" class="contact-btn">Book Demo</a>
+        </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <div class="tab-container">
+            <a href="#overview" class="tab-link active">Overview</a>
+            <a href="#taxonomy" class="tab-link">Taxonomy</a>
+            <a href="#dimensions" class="tab-link">Dimensions</a>
+            <a href="#use-cases" class="tab-link">Use Cases</a>
+            <a href="#documentation" class="tab-link">Documentation</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero" id="overview">
+        <div class="hero-content">
+            <h1><span class="accent">Classification</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Private Markets Classification System (PMCS) shows the full picture of what private companies do, with precision beyond traditional industry codes.
+            </p>
+            
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <div class="stat-value">18</div>
+                    <div class="stat-label">Dimensions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">Real-time</div>
+                    <div class="stat-label">Updates</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">Multi-faceted</div>
+                    <div class="stat-label">Mapping</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Overview Section -->
+        <section class="overview-section" id="taxonomy">
+            <h2 class="section-title">18-Dimensional Taxonomy</h2>
+            <p class="section-subtitle">
+                Move beyond SIC codes to understand how companies actually make money. Our dynamic classification evolves with business model changes, providing mapping across multiple dimensions simultaneously.
+            </p>
+
+            <div class="taxonomy-grid">
+                <div class="taxonomy-card">
+                    <h3 class="taxonomy-title">Business Model</h3>
+                    <p class="taxonomy-description">Revenue generation patterns, customer acquisition, value delivery mechanisms</p>
+                    <div class="methodology-section">
+                        <h4 class="methodology-title">How We Analyze:</h4>
+                        <ul class="methodology-list">
+                            <li><strong>Revenue Flow Analysis:</strong> Map primary, secondary, and emerging revenue streams</li>
+                            <li><strong>Value Chain Mapping:</strong> Identify where value is created, captured, and delivered</li>
+                            <li><strong>Customer Journey Analysis:</strong> Track acquisition, conversion, and retention patterns</li>
+                            <li><strong>Unit Economics Modeling:</strong> Analyze CAC, LTV, and gross margin structures</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Meridian Software classified as "Vertical SaaS + Marketplace Elements" for logistics automation - not just "Supply Chain Software"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="taxonomy-card">
+                    <h3 class="taxonomy-title">Customer Segments</h3>
+                    <p class="taxonomy-description">Target markets, customer types, enterprise vs consumer focus</p>
+                    <div class="methodology-section">
+                        <h4 class="methodology-title">How We Analyze:</h4>
+                        <ul class="methodology-list">
+                            <li><strong>Customer Size Analysis:</strong> SMB, Mid-market, Enterprise segmentation with ACV ranges</li>
+                            <li><strong>Vertical Concentration:</strong> Industry focus patterns and diversification metrics</li>
+                            <li><strong>Buying Behavior Mapping:</strong> Decision-making processes, buying cycles, stakeholder analysis</li>
+                            <li><strong>Multi-sided Market Detection:</strong> Platform dynamics and network effects identification</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Atlas Insights serves "Mid-market PE firms + Growth-stage companies" with different analytics value propositions
+                        </div>
+                    </div>
+                </div>
+
+                <div class="taxonomy-card">
+                        <h3 class="taxonomy-title">Revenue Patterns</h3>
+                    <p class="taxonomy-description">Subscription, transaction, licensing, marketplace, hybrid models</p>
+                    <div class="methodology-section">
+                        <h4 class="methodology-title">How We Analyze:</h4>
+                        <ul class="methodology-list">
+                            <li><strong>Revenue Model Decomposition:</strong> Primary vs secondary revenue streams with % breakdown</li>
+                            <li><strong>Pricing Strategy Analysis:</strong> Usage-based, tiered, freemium, enterprise patterns</li>
+                            <li><strong>Revenue Recognition Patterns:</strong> Timing, duration, and predictability assessment</li>
+                            <li><strong>Monetization Evolution:</strong> How revenue models change with company maturity</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Nexus Analytics = "SaaS subscription (70%) + Usage-based (20%) + Professional services (10%)"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="taxonomy-card">
+                    <h3 class="taxonomy-title">Competitive Dynamics</h3>
+                    <p class="taxonomy-description">Market positioning, differentiation strategy, competitive moats</p>
+                    <div class="methodology-section">
+                        <h4 class="methodology-title">How We Analyze:</h4>
+                        <ul class="methodology-list">
+                            <li><strong>Competitive Set Mapping:</strong> Direct, indirect, and substitute competition identification</li>
+                            <li><strong>Differentiation Analysis:</strong> Product, pricing, distribution, and brand positioning</li>
+                            <li><strong>Moat Assessment:</strong> Network effects, switching costs, data advantages, regulatory barriers</li>
+                            <li><strong>Market Share Evolution:</strong> Historical and projected competitive positioning</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Meridian Software competes with "Legacy ERP modules + Point solutions + Horizontal platforms"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="taxonomy-card">
+                    <h3 class="taxonomy-title">Technology Stack</h3>
+                    <p class="taxonomy-description">Core technologies, infrastructure, innovation approach</p>
+                    <div class="methodology-section">
+                        <h4 class="methodology-title">How We Analyze:</h4>
+                        <ul class="methodology-list">
+                            <li><strong>Architecture Assessment:</strong> Cloud-native, hybrid, on-premise technology choices</li>
+                            <li><strong>Innovation Velocity:</strong> R&D investment, patent portfolio, technical team composition</li>
+                            <li><strong>Platform Strategy:</strong> API-first, developer tools, ecosystem enablement approach</li>
+                            <li><strong>Technical Debt Analysis:</strong> Legacy dependencies, modernization requirements</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Catalyst Analytics = "Cloud-native + API-first architecture + ML-powered insights"
+                        </div>
+                    </div>
+                </div>
+
+                <div class="taxonomy-card">
+                    <h3 class="taxonomy-title">Market Approach</h3>
+                    <p class="taxonomy-description">Geographic focus, market entry strategy, expansion patterns</p>
+                    <div class="methodology-section">
+                        <h4 class="methodology-title">How We Analyze:</h4>
+                        <ul class="methodology-list">
+                            <li><strong>Geographic Revenue Distribution:</strong> US, EMEA, APAC breakdown with growth rates</li>
+                            <li><strong>Market Entry Strategy:</strong> Direct sales, partnerships, acquisitions, organic expansion</li>
+                            <li><strong>Localization Requirements:</strong> Product, legal, regulatory adaptation needs</li>
+                            <li><strong>Expansion Sequence:</strong> Historical and planned geographic rollout patterns</li>
+                        </ul>
+                        <div class="example-box">
+                            <strong>Example:</strong> Foundation Partners = "Direct sales + Channel partnerships + Geographic expansion"
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Use Cases Section -->
+        <section class="use-case-section" id="use-cases">
+            <div class="use-case-header">
+                <h2 class="use-case-title">Classification Use Cases</h2>
+                <p class="use-case-subtitle">
+                    Leverage our 18-dimensional classification system to power investment intelligence, portfolio construction, and market analysis
+                </p>
+            </div>
+
+            <div class="use-case-grid">
+                <!-- Deal Sourcing -->
+                <div class="use-case-card deal-sourcing-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Deal Sourcing</h3>
+                    </div>
+                    <p class="card-description">
+                        Generate targeted investment universes based on specific business model criteria, customer segments, and revenue patterns.
+                    </p>
+                    <div class="card-example">
+                        <div class="example-title">Example PE Query:</div>
+                        <div class="example-content">
+                            "Find vertical SaaS companies with marketplace revenue models, serving mid-market customers, in supply chain automation, with subscription + usage-based hybrid patterns"
+                        </div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">2,847</div>
+                            <div class="metric-label">Companies</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">94%</div>
+                            <div class="metric-label">Precision</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portfolio Construction -->
+                <div class="use-case-card portfolio-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Portfolio Construction</h3>
+                    </div>
+                    <p class="card-description">
+                        Build thematic investment portfolios with exposure control across multiple classification dimensions.
+                    </p>
+                    <div class="card-example">
+                        <div class="example-title">Example Portfolio:</div>
+                        <div class="example-content">
+                            "Climate Tech Portfolio": 40% Energy transition, 30% Carbon management, 20% Sustainable materials, 10% Green finance - with B2B focus and enterprise customer segments
+                        </div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">156</div>
+                            <div class="metric-label">Holdings</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">89%</div>
+                            <div class="metric-label">Thematic Purity</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitive Intelligence -->
+                <div class="use-case-card competitive-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Competitive Intelligence</h3>
+                    </div>
+                    <p class="card-description">
+                        Discover business model peers for due diligence, valuation benchmarking, and competitive positioning analysis.
+                    </p>
+                    <div class="card-example">
+                        <div class="example-title">Peer Discovery:</div>
+                        <div class="example-content">
+                            For "Meridian Software": Found 23 peers based on business model similarity (94%), customer segments (89%), revenue patterns (91%) - beyond simple "supply chain" classification
+                        </div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">23</div>
+                            <div class="metric-label">Peer Companies</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">91%</div>
+                            <div class="metric-label">Similarity</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Market Mapping -->
+                <div class="use-case-card market-mapping-card">
+                    <div class="card-header">
+                        <h3 class="card-title">Market Mapping</h3>
+                    </div>
+                    <p class="card-description">
+                        Track evolution of business models, emergence of new themes, and shifting competitive dynamics over time.
+                    </p>
+                    <div class="card-example">
+                        <div class="example-title">Theme Evolution:</div>
+                        <div class="example-content">
+                            "Supply Chain Automation" theme: 340% growth in company count over 18 months, shift from workflow tools to platform plays, emergence of AI-native logistics models
+                        </div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-value">340%</div>
+                            <div class="metric-label">Theme Growth</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">18mo</div>
+                            <div class="metric-label">Tracking</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- API Section -->
+        <section class="api-section">
+            <h2 class="api-title">Classification APIs</h2>
+            <p class="api-subtitle">
+                Integrate our 18-dimensional classification system directly into your investment workflows with real-time updates and flexible querying capabilities.
+            </p>
+
+            <div class="api-grid">
+                <div class="api-card classification-api">
+                    <div class="api-endpoint">GET /classify/{company_id}</div>
+                    <p class="api-description">
+                        Classify any private company across all 18 dimensions with confidence scores and evidence sources.
+                    </p>
+                    <div class="api-example">
+                        <div class="example-code">{
+  "company_id": "meridian_software",
+  "classification": {
+    "business_model": "platform_saas",
+    "customer_segments": ["enterprise", "smb"],
+    "revenue_patterns": ["subscription", "usage"],
+    "confidence": 0.94
+  }
+}</div>
+                    </div>
+                </div>
+
+                <div class="api-card universe-api">
+                    <div class="api-endpoint">POST /universe/generate</div>
+                    <p class="api-description">
+                        Generate investment universes based on multi-dimensional criteria with precision filtering.
+                    </p>
+                    <div class="api-example">
+                        <div class="example-code">{
+  "criteria": {
+    "business_model": ["b2b_saas"],
+    "customer_segments": ["enterprise"],
+    "revenue_patterns": ["subscription"]
+  },
+  "universe_size": 2847
+}</div>
+                    </div>
+                </div>
+
+                <div class="api-card peer-api">
+                    <div class="api-endpoint">GET /peers/{company_id}</div>
+                    <p class="api-description">
+                        Discover business model peers with similarity scoring across multiple dimensions.
+                    </p>
+                    <div class="api-example">
+                        <div class="example-code">{
+  "company_id": "meridian_software",
+  "peers": [
+    {
+      "company": "analytics_pro",
+      "similarity_score": 0.91,
+      "dimensions_match": 16
+    }
+  ]
+}</div>
+                    </div>
+                </div>
+
+                <div class="api-card theme-api">
+                    <div class="api-endpoint">GET /themes/{theme_name}/evolution</div>
+                    <p class="api-description">
+                        Track theme evolution and business model shifts over time with trend analysis.
+                    </p>
+                    <div class="api-example">
+                        <div class="example-code">{
+  "theme": "supply_chain_automation",
+  "growth_rate": "340%",
+  "time_period": "18_months",
+  "model_evolution": [
+    "tools_to_platforms",
+    "b2b_to_b2b2c"
+  ]
+}</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dimensions Section -->
+        <section class="dimensions-section" id="dimensions">
+            <div class="container">
+                <div class="dimensions-hero">
+                    <div class="dimensions-badge">Intelligence Framework</div>
+                    <h2>18-Signal Dimensional Blocks</h2>
+                    <p class="dimensions-subtitle">Comprehensive intelligence architecture with external market signals and internal operational metrics</p>
+                </div>
+
+                <!-- Signal Groups -->
+                <div class="dimensions-groups">
+                    <!-- External Signals (1-7) -->
+                    <div class="dimensions-group external-group">
+                        <div class="dimensions-group-content">
+                            <div class="group-header">
+                                <h3 class="group-title">External Market Signals</h3>
+                                <div class="group-badge">Signals 1-7</div>
+                            </div>
+                            
+                            <div class="dimensions-signals-grid">
+                                <!-- Signal 1: Investors -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">💰</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 01</div>
+                                                <h4 class="signal-title">INVESTORS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Investor ecosystem analysis with tier classification, syndicate quality, and capital relationships</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Tier Analysis</div>
+                                            <div class="metric-chip">Syndicate Quality</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 2: Advisors -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🎯</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 02</div>
+                                                <h4 class="signal-title">ADVISORS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Strategic advisory network assessment with expertise mapping and board composition analysis</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Board Quality</div>
+                                            <div class="metric-chip">Network Value</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 3: Holdings -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">📊</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 03</div>
+                                                <h4 class="signal-title">HOLDINGS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Portfolio holdings analysis with ownership structure and investment performance metrics</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Portfolio Quality</div>
+                                            <div class="metric-chip">Performance Track</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 4: Leadership -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">👥</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 04</div>
+                                                <h4 class="signal-title">LEADERSHIP</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Executive team assessment with experience quantification and organizational effectiveness</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Team Quality</div>
+                                            <div class="metric-chip">Track Record</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 5: Board -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🏛️</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 05</div>
+                                                <h4 class="signal-title">BOARD</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Board composition analysis with director quality assessment and governance effectiveness</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Director Quality</div>
+                                            <div class="metric-chip">Governance</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 6: Customers -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🎪</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 06</div>
+                                                <h4 class="signal-title">CUSTOMERS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Customer base analysis with quality assessment, retention metrics, and market position</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Customer Quality</div>
+                                            <div class="metric-chip">Market Position</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 7: Partnerships -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🤝</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 07</div>
+                                                <h4 class="signal-title">PARTNERSHIPS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Strategic partnership network with quality assessment and revenue impact analysis</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Partner Quality</div>
+                                            <div class="metric-chip">Revenue Impact</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Internal Signals (8-18) -->
+                    <div class="dimensions-group internal-group">
+                        <div class="dimensions-group-content">
+                            <div class="group-header">
+                                <h3 class="group-title">Internal Operational Signals</h3>
+                                <div class="group-badge">Signals 8-18</div>
+                            </div>
+                            
+                            <div class="dimensions-signals-grid">
+                                <!-- Signal 8: Company Stage -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🚀</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 08</div>
+                                                <h4 class="signal-title">COMPANY STAGE</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Development stage assessment with business maturity and growth phase classification</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Maturity Level</div>
+                                            <div class="metric-chip">Growth Phase</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 9: Product Lines -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🛠️</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 09</div>
+                                                <h4 class="signal-title">PRODUCT LINES</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Product portfolio analysis with innovation pipeline and market coverage assessment</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Portfolio Breadth</div>
+                                            <div class="metric-chip">Innovation</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 10: Business Model -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">💼</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 10</div>
+                                                <h4 class="signal-title">BUSINESS MODEL</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Revenue model analysis with monetization efficiency and scalability assessment</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Revenue Model</div>
+                                            <div class="metric-chip">Scalability</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 11: Industry Served -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🏢</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 11</div>
+                                                <h4 class="signal-title">INDUSTRY SERVED</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Market focus analysis with vertical specialization and industry attractiveness metrics</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Market Focus</div>
+                                            <div class="metric-chip">TAM Analysis</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 12: Last Financing -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">💸</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 12</div>
+                                                <h4 class="signal-title">LAST FINANCING</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Financing history analysis with valuation trends and capital efficiency metrics</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Valuation Trend</div>
+                                            <div class="metric-chip">Lead Quality</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 13: Employee Metrics -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">👨‍💼</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 13</div>
+                                                <h4 class="signal-title">EMPLOYEE METRICS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Human capital analysis with headcount trends and talent quality assessment</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Growth Rate</div>
+                                            <div class="metric-chip">Talent Quality</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 14: Customer Reviews -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">⭐</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 14</div>
+                                                <h4 class="signal-title">CUSTOMER REVIEWS</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Market reception analysis with satisfaction metrics and competitive positioning</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Satisfaction</div>
+                                            <div class="metric-chip">Competitive Position</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 15: Technology Stack -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">⚡</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 15</div>
+                                                <h4 class="signal-title">TECHNOLOGY STACK</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Technology infrastructure assessment with modernity and innovation adoption metrics</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Tech Modernity</div>
+                                            <div class="metric-chip">AI/ML Adoption</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 16: Compliance -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🛡️</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 16</div>
+                                                <h4 class="signal-title">COMPLIANCE</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Regulatory compliance assessment with certification status and risk management</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Certifications</div>
+                                            <div class="metric-chip">Risk Management</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 17: Geography -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🌍</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 17</div>
+                                                <h4 class="signal-title">GEOGRAPHY</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Geographic footprint analysis with market expansion and regional compliance assessment</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Market Reach</div>
+                                            <div class="metric-chip">Expansion</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Signal 18: Industry Classification -->
+                                <div class="dimensions-signal-block">
+                                    <div class="signal-content">
+                                        <div class="signal-header">
+                                            <div class="signal-icon">🏷️</div>
+                                            <div class="signal-meta">
+                                                <div class="signal-number">Signal 18</div>
+                                                <h4 class="signal-title">INDUSTRY CLASSIFICATION</h4>
+                                            </div>
+                                        </div>
+                                        <p class="signal-description">Industry positioning analysis with sector classification and competitive landscape</p>
+                                        <div class="signal-metrics">
+                                            <div class="metric-chip">Sector Analysis</div>
+                                            <div class="metric-chip">Positioning</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Documentation Section -->
+        <section class="documentation-section" id="documentation">
+            <div class="container">
+                <h2>Taxonomy Intelligence Framework</h2>
+                <p class="section-subtitle">Multi-dimensional company classification system with 4-layer taxonomic depth, structured data hierarchies, and enterprise-grade evidence lineage.</p>
+                
+                <div class="framework-metrics">
+                    <div class="metric-item">
+                        <span class="metric-number">18</span>
+                        <span class="metric-label">Core Signals</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-number">4</span>
+                        <span class="metric-label">Taxonomic Layers</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-number">200+</span>
+                        <span class="metric-label">Data Attributes</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-number">91.2</span>
+                        <span class="metric-label">Composite Score</span>
+                    </div>
+                </div>
+
+                <!-- Signal Deep Dive Grid -->
+                <div class="signals-grid">
+                    <!-- Signal 1: INVESTORS -->
+                    <div class="signal-card">
+                        <div class="signal-header">
+                            <div class="signal-number">Signal 01</div>
+                            <h3 class="signal-title">INVESTORS</h3>
+                            <p class="signal-description">Multi-tier investor ecosystem analysis with syndicate quality assessment and capital relationships mapping.</p>
+                        </div>
+
+                        <div class="data-structure">
+                            <div class="structure-node primary">
+                                <strong>Investor_Ecosystem</strong> - Primary Classification Layer
+                            </div>
+                            <div class="structure-node secondary">
+                                <strong>Active_Investors:</strong> 9 institutional backers<br>
+                                <strong>Investment_Syndicate:</strong> Top_Tier quality assessment
+                            </div>
+                            <div class="structure-node tertiary">
+                                Goldman Sachs Alternatives - Tier1_Brand<br>
+                                F-Prime Capital - Growth Focus<br>
+                                Blackstone Innovations - Strategic Value
+                            </div>
+                        </div>
+
+                        <div class="raw-data-terminal">
+                            <div class="terminal-header">// Raw Data Structure</div>
+                            <pre>Active_Investors:
+  - name: Goldman Sachs Alternatives
+    Investor_Tier: Tier1_Brand
+    Investment_Stage_Focus: Growth
+    Check_Size_Profile: USD10_50M
+    Value_Add_Capability: Strategic</pre>
+                        </div>
+
+                        <div class="evidence-flow">
+                            <h4>Evidence Lineage</h4>
+                            <div class="flow-step">Raw Input → Series C press release, investor announcements</div>
+                            <div class="flow-step">Entity Resolution → Goldman Sachs → Goldman Sachs Alternatives</div>
+                            <div class="flow-step">Tier Classification → Tier1_Brand based on AUM, portfolio, reputation</div>
+                            <div class="flow-step">Syndicate Analysis → Co_Investor_Quality: Top_Tier aggregation</div>
+                        </div>
+                    </div>
+
+                    <!-- Signal 9: PRODUCT-LINES -->
+                    <div class="signal-card">
+                        <div class="signal-header">
+                            <div class="signal-number">Signal 09</div>
+                            <h3 class="signal-title">PRODUCT-LINES</h3>
+                            <p class="signal-description">Comprehensive product portfolio analysis with innovation pipeline assessment and market positioning classification.</p>
+                        </div>
+
+                        <div class="data-structure">
+                            <div class="structure-node primary">
+                                <strong>Product_Service_Portfolio</strong> - Core Product Architecture
+                            </div>
+                            <div class="structure-node secondary">
+                                <strong>Offering_Type:</strong> Platform_Heavy_AI_Enabled<br>
+                                <strong>Portfolio_Breadth:</strong> Comprehensive_Suite_6_Products<br>
+                                <strong>Innovation_Pipeline:</strong> Industry_Leader_AI
+                            </div>
+                            <div class="structure-node tertiary">
+                                Canoe Connect - Data Ingestion Platform<br>
+                                Canoe Intelligence - Analytics & Processing Engine<br>
+                                Canoe Labs - AI Innovation Pipeline
+                            </div>
+                        </div>
+
+                        <div class="raw-data-terminal">
+                            <div class="terminal-header">// Product Portfolio Classification</div>
+                            <pre>Portfolio_Breadth:
+  Lines: Comprehensive_Suite_6_Products
+  Coverage: Full_Solution_End_to_End
+  Segments: Multi_Segment_Alts_Focused
+  Geo_Reach: Multi_Regional_US_UK</pre>
+                        </div>
+
+                        <div class="evidence-flow">
+                            <h4>Product Intelligence Flow</h4>
+                            <div class="flow-step">Product Discovery → Website parsing, product pages, feature documentation</div>
+                            <div class="flow-step">Feature Classification → AI/ML capabilities → Platform_Heavy_AI_Enabled</div>
+                            <div class="flow-step">Portfolio Mapping → 6 products → Comprehensive_Suite classification</div>
+                            <div class="flow-step">Innovation Assessment → Canoe Labs → Industry_Leader_AI positioning</div>
+                        </div>
+                    </div>
+
+                    <!-- Signal 4: LEADERSHIP -->
+                    <div class="signal-card">
+                        <div class="signal-header">
+                            <div class="signal-number">Signal 04</div>
+                            <h3 class="signal-title">LEADERSHIP</h3>
+                            <p class="signal-description">Executive team assessment with experience quantification, industry background analysis, and organizational effectiveness metrics.</p>
+                        </div>
+
+                        <div class="data-structure">
+                            <div class="structure-node primary">
+                                <strong>Leadership_Quality</strong> - Executive Assessment Framework
+                            </div>
+                            <div class="structure-node secondary">
+                                <strong>CEO_Profile:</strong> Jason Eiswerth - Experienced_20Y<br>
+                                <strong>Management_Team:</strong> Full_CS - 6 C-Suite Leaders<br>
+                                <strong>Effectiveness:</strong> Consistent_High execution
+                            </div>
+                            <div class="structure-node tertiary">
+                                CEO: Jason Eiswerth - Deep_Financial_Markets background<br>
+                                CTO: Noel Calhoun - Technical leadership - Platform architecture<br>
+                                CSO: Mike Muniz - Sales leadership - Enterprise strategy
+                            </div>
+                        </div>
+
+                        <div class="raw-data-terminal">
+                            <div class="terminal-header">// Leadership Classification Matrix</div>
+                            <pre>CEO_Profile:
+  Experience_Level: Experienced_20Y
+  Industry_Background: Deep_Financial_Markets
+  Track_Record: Proven_Multiple_Exits
+  Style: Team_Builder_Entrepreneur</pre>
+                        </div>
+
+                        <div class="evidence-flow">
+                            <h4>Leadership Intelligence Pipeline</h4>
+                            <div class="flow-step">Profile Aggregation → LinkedIn, company bios, press coverage analysis</div>
+                            <div class="flow-step">Experience Quantification → Career timeline → Experienced_20Y classification</div>
+                            <div class="flow-step">Team Completeness Assessment → 6 C-Suite roles → Full_CS designation</div>
+                            <div class="flow-step">Effectiveness Scoring → Track record analysis → Consistent_High rating</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Tab Navigation Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.tab-link');
+            
+            // Handle tab clicks
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all tabs
+                    tabLinks.forEach(tab => tab.classList.remove('active'));
+                    
+                    // Add active class to clicked tab
+                    this.classList.add('active');
+                    
+                    // Get target section
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+                    
+                    if (targetSection) {
+                        // Smooth scroll to section
+                        const headerHeight = document.querySelector('.header').offsetHeight;
+                        const tabNavHeight = document.querySelector('.tab-nav').offsetHeight;
+                        const offsetTop = targetSection.offsetTop - headerHeight - tabNavHeight - 20;
+                        
+                        window.scrollTo({
+                            top: offsetTop,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+            
+            // Handle scroll to update active tab
+            window.addEventListener('scroll', function() {
+                const sections = ['overview', 'taxonomy', 'dimensions', 'use-cases', 'documentation'];
+                const headerHeight = document.querySelector('.header').offsetHeight;
+                const tabNavHeight = document.querySelector('.tab-nav').offsetHeight;
+                const scrollPosition = window.scrollY + headerHeight + tabNavHeight + 100;
+                
+                let currentSection = '';
+                
+                sections.forEach(sectionId => {
+                    const section = document.getElementById(sectionId);
+                    if (section && section.offsetTop <= scrollPosition) {
+                        currentSection = sectionId;
+                    }
+                });
+                
+                // Update active tab based on scroll position
+                tabLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + currentSection) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

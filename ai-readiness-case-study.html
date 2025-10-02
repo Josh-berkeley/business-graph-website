@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI-Readiness Index: DataFlow Systems Case Study | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FF6B4A;
+        }
+
+        .back-link {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #FF6B4A;
+            border-color: #FF6B4A;
+        }
+
+        /* Case Study Container */
+        .case-study {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 100px 2rem 3rem 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Header Section */
+        .case-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .company-name {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .case-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 1rem;
+        }
+
+        .case-subtitle {
+            font-size: 1.1rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        /* Company Overview */
+        .company-overview {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .overview-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .company-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.2rem;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .company-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* AI-Readiness Score */
+        .ai-score-container {
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(102, 126, 234, 0.1));
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            text-align: center;
+        }
+
+        .score-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .overall-score {
+            font-size: 4rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .score-context {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1.5rem;
+        }
+
+        .percentile {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* Dimensional Breakdown */
+        .dimensional-analysis {
+            grid-column: 1 / -1;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .breakdown-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .dimension-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .dimension-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--gradient, #FF6B4A);
+        }
+
+        .dimension-item.excellent::before { background: linear-gradient(90deg, #10b981, #059669); }
+        .dimension-item.good::before { background: linear-gradient(90deg, #667eea, #764ba2); }
+        .dimension-item.moderate::before { background: linear-gradient(90deg, #f59e0b, #d97706); }
+        .dimension-item.needs-improvement::before { background: linear-gradient(90deg, #ef4444, #dc2626); }
+
+        .dimension-score {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .dimension-name {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .dimension-status {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Competitive Analysis */
+        .competitive-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .peer-comparison {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 1.5rem;
+        }
+
+        .peer-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .peer-item:last-child {
+            border-bottom: none;
+        }
+
+        .peer-name {
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 500;
+        }
+
+        .peer-score {
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .peer-item.target {
+            background: rgba(255, 107, 74, 0.1);
+            border-radius: 6px;
+            padding: 1rem;
+            margin: 0.5rem 0;
+        }
+
+        /* Investment Implications */
+        .implications-section {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 74, 0.05));
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .implications-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .implication-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .implication-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .implication-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .implication-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            line-height: 1.5;
+        }
+
+        /* Action Items */
+        .action-items {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            margin-top: 2rem;
+        }
+
+        .action-list {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .action-list li {
+            padding: 1rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            border-left: 3px solid #FF6B4A;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .action-timeline {
+            color: #FF6B4A;
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Footer */
+        .case-footer {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .methodology-link {
+            color: #FF6B4A;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .methodology-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .case-study {
+                margin: 1rem;
+                padding: 80px 1rem 2rem 1rem;
+            }
+
+            .content-grid,
+            .competitive-section {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .company-stats,
+            .dimensions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .company-name {
+                font-size: 2rem;
+            }
+
+            .case-title {
+                font-size: 1.5rem;
+            }
+
+            .overall-score {
+                font-size: 3rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Private Markets Graph</div>
+            <a href="./Indices/index.html" class="back-link">← Back to Indices</a>
+        </nav>
+    </header>
+
+    <!-- Case Study -->
+    <div class="case-study">
+        <!-- Header Section -->
+        <div class="case-header">
+            <h1 class="company-name">DataFlow Systems</h1>
+            <h2 class="case-title">AI-Readiness Index Analysis</h2>
+            <p class="case-subtitle">
+                Comprehensive assessment of DataFlow's artificial intelligence transformation capability across 18 dimensions, 
+                revealing strategic opportunities for accelerated AI adoption and competitive positioning.
+            </p>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="content-grid">
+            <!-- Company Overview -->
+            <div class="company-overview">
+                <h3 class="overview-title">Company Profile</h3>
+                <div class="company-stats">
+                    <div class="stat-item">
+                        <div class="stat-value">$47M</div>
+                        <div class="stat-label">ARR</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">285</div>
+                        <div class="stat-label">Employees</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">Series C</div>
+                        <div class="stat-label">Stage</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-value">89%</div>
+                        <div class="stat-label">NRR</div>
+                    </div>
+                </div>
+                <p class="company-description">
+                    B2B data analytics platform serving enterprise customers with real-time business intelligence solutions. 
+                    Established market presence in financial services and healthcare verticals, with growing competitive 
+                    pressure from AI-native startups.
+                </p>
+            </div>
+
+            <!-- Overall AI-Readiness Score -->
+            <div class="ai-score-container">
+                <h3 class="score-title">Overall AI-Readiness Score</h3>
+                <div class="overall-score">73</div>
+                <p class="score-context">Strong foundation with strategic gaps</p>
+                <div class="percentile">68th Percentile vs. B2B SaaS Peers</div>
+            </div>
+        </div>
+
+        <!-- Dimensional Breakdown -->
+        <div class="dimensional-analysis">
+            <h3 class="breakdown-title">AI-Readiness Component Breakdown</h3>
+            <div class="dimensions-grid">
+                <div class="dimension-item good">
+                    <div class="dimension-score">22<span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">/30</span></div>
+                    <div class="dimension-name">AI Talent Signals</div>
+                    <div class="dimension-status">73% • 12 ML engineers, 8 hiring</div>
+                </div>
+                <div class="dimension-item excellent">
+                    <div class="dimension-score">21<span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">/25</span></div>
+                    <div class="dimension-name">Technology Stack</div>
+                    <div class="dimension-status">84% • MLOps, vector DB, APIs</div>
+                </div>
+                <div class="dimension-item moderate">
+                    <div class="dimension-score">12<span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">/20</span></div>
+                    <div class="dimension-name">Product AI Integration</div>
+                    <div class="dimension-status">60% • Beta features, limited automation</div>
+                </div>
+                <div class="dimension-item good">
+                    <div class="dimension-score">11<span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">/15</span></div>
+                    <div class="dimension-name">Partnership & Investment</div>
+                    <div class="dimension-status">73% • AWS, Snowflake partnerships</div>
+                </div>
+                <div class="dimension-item moderate">
+                    <div class="dimension-score">6<span style="font-size: 0.8rem; color: rgba(255,255,255,0.6);">/10</span></div>
+                    <div class="dimension-name">External Recognition</div>
+                    <div class="dimension-status">60% • Limited public AI presence</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Competitive Analysis -->
+        <div class="competitive-section">
+            <div class="peer-comparison">
+                <h3 class="section-title">Private Markets Software Ranking</h3>
+                <div class="peer-item">
+                    <span class="peer-name">1. Canoe Intelligence</span>
+                    <span class="peer-score">84</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">2. Allvue Systems</span>
+                    <span class="peer-score">77</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">3. Juniper Square</span>
+                    <span class="peer-score">75</span>
+                </div>
+                <div class="peer-item target">
+                    <span class="peer-name">4. DataFlow Systems</span>
+                    <span class="peer-score" style="color: #FF6B4A;">73</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">5. Accelex</span>
+                    <span class="peer-score">72</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">Sector Average</span>
+                    <span class="peer-score">65</span>
+                </div>
+            </div>
+
+            <div class="peer-comparison">
+                <h3 class="section-title">AI Trajectory Analysis</h3>
+                <div class="peer-item">
+                    <span class="peer-name">3-Month Outlook</span>
+                    <span class="peer-score" style="color: #10b981;">+6 pts</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">6-Month Outlook</span>
+                    <span class="peer-score" style="color: #10b981;">+12 pts</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">Key Inflection</span>
+                    <span class="peer-score" style="color: #FF6B4A;">Q2 2025</span>
+                </div>
+                <div class="peer-item">
+                    <span class="peer-name">Risk Factor</span>
+                    <span class="peer-score" style="color: #f59e0b;">Talent Gap</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Investment Implications -->
+        <div class="implications-section">
+            <h3 class="section-title">Investment Implications</h3>
+            <div class="implications-grid">
+                <div class="implication-item">
+                    <div class="implication-title">Valuation Impact</div>
+                    <div class="implication-value">+18%</div>
+                    <div class="implication-description">
+                        Reaching 85+ AI-readiness score correlates with 15-20% valuation premium in current market
+                    </div>
+                </div>
+                <div class="implication-item">
+                    <div class="implication-title">Customer Retention</div>
+                    <div class="implication-value">+2.4x NRR</div>
+                    <div class="implication-description">
+                        Companies with AI features see 140% improvement in net revenue retention rates
+                    </div>
+                </div>
+                <div class="implication-item">
+                    <div class="implication-title">Competitive Risk</div>
+                    <div class="implication-value">Medium</div>
+                    <div class="implication-description">
+                        12-18 month window before AI-native competitors gain significant market share
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Analysis -->
+        <div style="background: rgba(255, 107, 74, 0.05); padding: 2rem; border-radius: 12px; border: 1px solid rgba(255, 107, 74, 0.2); margin-bottom: 2rem;">
+            <h3 style="color: #FF6B4A; margin-bottom: 1.5rem;">📊 Key Drivers Analysis</h3>
+            <div style="display: grid; gap: 1rem;">
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #ffffff;">Technology Stack Strength (84/100):</strong>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-top: 0.5rem;">Production-grade MLOps with Databricks + Snowflake stack. Vector database implementation for semantic search. Live API endpoints serving 2.3M monthly requests.</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #ffffff;">Talent Gap Challenge (58/100):</strong>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-top: 0.5rem;">12 ML engineers vs. 18+ at Canoe Intelligence. 8 open roles unfilled for 4+ months. No PhD-level AI research team compared to leaders.</p>
+                </div>
+                <div style="background: rgba(255, 255, 255, 0.05); padding: 1rem; border-radius: 6px;">
+                    <strong style="color: #ffffff;">Product Integration Opportunity (60/100):</strong>
+                    <p style="color: rgba(255, 255, 255, 0.8); margin-top: 0.5rem;">AI features in beta with 34% customer adoption vs. 67% sector average. Manual review required for 78% of AI outputs vs. 23% at Allvue.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Items -->
+        <div class="action-items">
+            <h3 class="section-title">Quick Improvement Levers (+8-12 pts potential)</h3>
+            <ul class="action-list">
+                <li>
+                    <div class="action-timeline">30-60 Days</div>
+                    Publish model evaluation metrics publicly (+2 pts) • Add AI endpoints to API documentation (+1 pt)
+                </li>
+                <li>
+                    <div class="action-timeline">Q1 2025</div>
+                    Hire 6 senior ML engineers from Canoe/Allvue (+4 pts) • Launch AI Center of Excellence (+2 pts)
+                </li>
+                <li>
+                    <div class="action-timeline">Q2 2025</div>
+                    Ship production AI features reducing manual review to <40% (+3 pts) • AWS ISV Accelerate partnership (+1 pt)
+                </li>
+                <li>
+                    <div class="action-timeline">Q3 2025</div>
+                    Secure 3 major allocator AI case studies (+2 pts) • Industry conference keynote slots (+1 pt)
+                </li>
+            </ul>
+        </div>
+
+        <!-- Methodology Note -->
+        <div style="background: rgba(255, 255, 255, 0.03); padding: 1.5rem; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 2rem;">
+            <h4 style="color: #FF6B4A; margin-bottom: 1rem;">Methodology Overview</h4>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7);">
+                <div>
+                    <strong style="color: rgba(255, 255, 255, 0.9);">Components:</strong><br>
+                    • AI Talent (30%)<br>
+                    • Tech Stack (25%)<br>
+                    • Product AI (20%)<br>
+                    • Partnerships (15%)<br>
+                    • Recognition (10%)
+                </div>
+                <div>
+                    <strong style="color: rgba(255, 255, 255, 0.9);">Coverage:</strong><br>
+                    86% (verified signals)<br><br>
+                    <strong style="color: rgba(255, 255, 255, 0.9);">Confidence:</strong><br>
+                    0.82 (source quality)
+                </div>
+                <div>
+                    <strong style="color: rgba(255, 255, 255, 0.9);">Anti-Gaming:</strong><br>
+                    • AI-washing penalties<br>
+                    • T1 source requirements<br>
+                    • Multi-source validation
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="case-footer">
+            Analysis based on Private Markets Graph 18-dimensional taxonomy and real-time signal processing. 
+            <a href="#" class="methodology-link">View complete methodology</a> | 
+            Data as of October 2025 | 
+            Confidence Interval: 92%
+        </div>
+    </div>
+
+    <script>
+        // Add smooth animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for animation
+        document.querySelectorAll('.dimension-item, .implication-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add score animation
+        function animateScore() {
+            const scoreElement = document.querySelector('.overall-score');
+            const targetScore = 73;
+            let currentScore = 0;
+            const increment = targetScore / 50;
+            
+            const timer = setInterval(() => {
+                currentScore += increment;
+                if (currentScore >= targetScore) {
+                    currentScore = targetScore;
+                    clearInterval(timer);
+                }
+                scoreElement.textContent = Math.round(currentScore);
+            }, 30);
+        }
+
+        // Start animation when page loads
+        window.addEventListener('load', () => {
+            setTimeout(animateScore, 500);
+        });
+    </script>
+</body>
+</html>

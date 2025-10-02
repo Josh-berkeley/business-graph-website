@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer Benchmarking | Private Markets Intelligence</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            color: white;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A !important;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0;
+        }
+
+        .tab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 24px;
+        }
+
+        .tab-link {
+            padding: 16px 24px;
+            text-decoration: none;
+            color: #6c757d;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-link.active {
+            color: #0B1A2A;
+            border-bottom-color: #FF6B4A;
+            background: white;
+        }
+
+        .tab-link:hover {
+            background: #e9ecef;
+        }
+
+        .tab-link.active:hover {
+            background: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0B1A2A 0%, #1e3a5f 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255,107,74,0.1) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(255,107,74,0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Secret Sauce Section */
+        .secret-sauce {
+            background: white;
+            border-radius: 16px;
+            padding: 60px;
+            margin-bottom: 80px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secret-sauce::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B4A, #667eea, #764ba2);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .method-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+
+        .method-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .method-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .taxonomy-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .graph-icon {
+            background: linear-gradient(135deg, #FF6B4A 0%, #ee5a24 100%);
+        }
+
+        .signal-icon {
+            background: linear-gradient(135deg, #2d5aa0 0%, #4a6741 100%);
+        }
+
+        .method-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .method-description {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Benchmarking Sections */
+        .benchmarking-section {
+            margin-bottom: 80px;
+        }
+
+        .benchmark-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .benchmark-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .benchmark-subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Company Comparison Grid */
+        .comparison-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .company-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            border: 2px solid #dee2e6;
+            transition: all 0.3s ease;
+        }
+
+        .company-card:hover {
+            border-color: #FF6B4A;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(255,107,74,0.15);
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .company-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .nexus-logo {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .atlas-logo {
+            background: linear-gradient(135deg, #FF6B4A 0%, #ee5a24 100%);
+        }
+
+        .company-info h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .company-info p {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .metric {
+            text-align: center;
+            padding: 15px;
+            background: rgba(255,255,255,0.7);
+            border-radius: 8px;
+        }
+
+        .metric-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        .similarity-score {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(255,107,74,0.1));
+            border-radius: 12px;
+            border: 1px solid rgba(102,126,234,0.2);
+        }
+
+        .score-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .score-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .score-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Fund Comparison */
+        .fund-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .fund-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-top: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .fund-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .meridian-card {
+            border-top-color: #667eea;
+        }
+
+        .pinnacle-card {
+            border-top-color: #FF6B4A;
+        }
+
+        .catalyst-card {
+            border-top-color: #2d5aa0;
+        }
+
+        .fund-header {
+            margin-bottom: 25px;
+        }
+
+        .fund-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .fund-type {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .fund-aum {
+            background: #f8f9fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            display: inline-block;
+        }
+
+        .fund-metrics {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .fund-strategy {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .strategy-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .strategy-list {
+            list-style: none;
+        }
+
+        .strategy-list li {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .strategy-list li::before {
+            content: '▸';
+            color: #FF6B4A;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .methodology-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .secret-sauce {
+                padding: 40px 30px;
+            }
+
+            .main-content {
+                padding: 40px 16px;
+            }
+
+            .hero-content {
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tab-container {
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .tab-link {
+                white-space: nowrap;
+                padding: 16px 20px;
+            }
+
+            .secret-sauce {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Private Markets Graph</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../Classification/index.html">Classification</a></li>
+                    <li><a href="../private-equity.html">Private Equity</a></li>
+                    <li><a href="../funds.html">Funds</a></li>
+                    <li><a href="../solutions.html">Solutions</a></li>
+                </ul>
+            </nav>
+            <a href="../contact.html" class="contact-btn">Book Demo</a>
+        </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <div class="tab-container">
+            <a href="#overview" class="tab-link">Overview</a>
+            <a href="#use-cases" class="tab-link active">Use Cases</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="accent">Peer Benchmarking</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Scientific peer identification and multi-dimensional analysis for private markets
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Secret Sauce Section -->
+        <section class="secret-sauce">
+            <h2 class="section-title">Our Methodology</h2>
+            <p class="section-subtitle">
+                True peer identification requires multi-dimensional analysis beyond simple industry codes. Our proprietary approach combines taxonomy classification, graph relationships, and real-time signals to find authentic comparables.
+            </p>
+
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <div class="method-icon taxonomy-icon">18</div>
+                    <h3 class="method-title">18-Dimensional Taxonomy</h3>
+                    <p class="method-description">
+                        Beyond SIC codes. Business model, customer segments, revenue patterns, competitive dynamics, and 14 other classification dimensions create precise peer groups.
+                    </p>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-icon graph-icon">∞</div>
+                    <h3 class="method-title">Graph Relationships</h3>
+                    <p class="method-description">
+                        Companies connected through customers, suppliers, talent flow, and competitive interactions. Neo4j-powered relationship mapping reveals hidden similarities.
+                    </p>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-icon signal-icon">•••</div>
+                    <h3 class="method-title">Real-Time Signals</h3>
+                    <p class="method-description">
+                        Public sources: SEC filings, hiring patterns, product releases, customer wins. Evidence-based scoring with confidence intervals for each dimension.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Company Benchmarking Section -->
+        <section class="benchmarking-section">
+            <div class="benchmark-header">
+                <h2 class="benchmark-title">Company Peer Analysis</h2>
+                <p class="benchmark-subtitle">
+                    Identify true business model peers across 18 dimensions with similarity scoring and confidence intervals
+                </p>
+            </div>
+
+            <div class="comparison-container">
+                <div class="comparison-grid">
+                    <!-- Company 1 -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo nexus-logo">NX</div>
+                            <div class="company-info">
+                                <h3>Nexus Analytics</h3>
+                                <p>B2B Data Intelligence Platform</p>
+                            </div>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="metric">
+                                <div class="metric-value">$45M</div>
+                                <div class="metric-label">ARR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">245</div>
+                                <div class="metric-label">Employees</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">88%</div>
+                                <div class="metric-label">NRR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">Series C</div>
+                                <div class="metric-label">Stage</div>
+                            </div>
+                        </div>
+
+                        <div class="fund-strategy">
+                            <div class="strategy-title">Business Model</div>
+                            <ul class="strategy-list">
+                                <li>Enterprise SaaS Platform</li>
+                                <li>Multi-tenant Architecture</li>
+                                <li>Land & Expand Strategy</li>
+                                <li>API-First Integration</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Company 2 -->
+                    <div class="company-card">
+                        <div class="company-header">
+                            <div class="company-logo atlas-logo">AT</div>
+                            <div class="company-info">
+                                <h3>Atlas Insights</h3>
+                                <p>Business Intelligence Software</p>
+                            </div>
+                        </div>
+
+                        <div class="metrics-grid">
+                            <div class="metric">
+                                <div class="metric-value">$52M</div>
+                                <div class="metric-label">ARR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">289</div>
+                                <div class="metric-label">Employees</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">91%</div>
+                                <div class="metric-label">NRR</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-value">Series C</div>
+                                <div class="metric-label">Stage</div>
+                            </div>
+                        </div>
+
+                        <div class="fund-strategy">
+                            <div class="strategy-title">Business Model</div>
+                            <ul class="strategy-list">
+                                <li>Enterprise Analytics Platform</li>
+                                <li>Cloud-Native SaaS</li>
+                                <li>Land & Expand Strategy</li>
+                                <li>Self-Service Analytics</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="similarity-score">
+                    <div class="score-title">Multi-Dimensional Similarity Score</div>
+                    <div class="score-value">87.3%</div>
+                    <div class="score-description">
+                        Based on 18 taxonomy dimensions: Business model (94%), Customer segments (89%), Revenue patterns (85%), Technology stack (82%)
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Fund Benchmarking Section -->
+        <section class="benchmarking-section">
+            <div class="benchmark-header">
+                <h2 class="benchmark-title">Fund Peer Analysis</h2>
+                <p class="benchmark-subtitle">
+                    Compare investment strategies, portfolio construction, and performance patterns across growth-stage venture funds
+                </p>
+            </div>
+
+            <div class="fund-grid">
+                <!-- Fund 1 -->
+                <div class="fund-card meridian-card">
+                    <div class="fund-header">
+                        <h3 class="fund-name">Meridian Growth Partners</h3>
+                        <p class="fund-type">Growth Stage VC</p>
+                        <div class="fund-aum">$850M AUM</div>
+                    </div>
+
+                    <div class="fund-metrics">
+                        <div class="metric">
+                            <div class="metric-value">28</div>
+                            <div class="metric-label">Portfolio Co's</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$25M</div>
+                            <div class="metric-label">Avg Check</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">8-12</div>
+                            <div class="metric-label">Deals/Year</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">2.8x</div>
+                            <div class="metric-label">Portfolio MOIC</div>
+                        </div>
+                    </div>
+
+                    <div class="fund-strategy">
+                        <div class="strategy-title">Investment Focus</div>
+                        <ul class="strategy-list">
+                            <li>B2B SaaS (65%)</li>
+                            <li>Series B/C Leaders</li>
+                            <li>$20-100M ARR Range</li>
+                            <li>North America + Europe</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fund 2 -->
+                <div class="fund-card pinnacle-card">
+                    <div class="fund-header">
+                        <h3 class="fund-name">Pinnacle Ventures</h3>
+                        <p class="fund-type">Growth Stage VC</p>
+                        <div class="fund-aum">$1.2B AUM</div>
+                    </div>
+
+                    <div class="fund-metrics">
+                        <div class="metric">
+                            <div class="metric-value">35</div>
+                            <div class="metric-label">Portfolio Co's</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$28M</div>
+                            <div class="metric-label">Avg Check</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">10-14</div>
+                            <div class="metric-label">Deals/Year</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">3.1x</div>
+                            <div class="metric-label">Portfolio MOIC</div>
+                        </div>
+                    </div>
+
+                    <div class="fund-strategy">
+                        <div class="strategy-title">Investment Focus</div>
+                        <ul class="strategy-list">
+                            <li>Enterprise Software (70%)</li>
+                            <li>Series B/C Leaders</li>
+                            <li>$15-80M ARR Range</li>
+                            <li>Global, US-Centric</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Fund 3 -->
+                <div class="fund-card catalyst-card">
+                    <div class="fund-header">
+                        <h3 class="fund-name">Catalyst Capital</h3>
+                        <p class="fund-type">Growth Stage VC</p>
+                        <div class="fund-aum">$750M AUM</div>
+                    </div>
+
+                    <div class="fund-metrics">
+                        <div class="metric">
+                            <div class="metric-value">22</div>
+                            <div class="metric-label">Portfolio Co's</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">$30M</div>
+                            <div class="metric-label">Avg Check</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">6-10</div>
+                            <div class="metric-label">Deals/Year</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">2.5x</div>
+                            <div class="metric-label">Portfolio MOIC</div>
+                        </div>
+                    </div>
+
+                    <div class="fund-strategy">
+                        <div class="strategy-title">Investment Focus</div>
+                        <ul class="strategy-list">
+                            <li>SaaS & Infrastructure (60%)</li>
+                            <li>Series B/C Co-Lead</li>
+                            <li>$25-150M ARR Range</li>
+                            <li>US & Canada Focus</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relationship Intelligence | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            color: white;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A !important;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0;
+        }
+
+        .tab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 24px;
+        }
+
+        .tab-link {
+            padding: 16px 24px;
+            text-decoration: none;
+            color: #6c757d;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-link.active {
+            color: #0B1A2A;
+            border-bottom-color: #FF6B4A;
+            background: white;
+        }
+
+        .tab-link:hover {
+            background: #e9ecef;
+        }
+
+        .tab-link.active:hover {
+            background: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0B1A2A 0%, #1e3a5f 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255,107,74,0.1) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(255,107,74,0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Secret Sauce Section */
+        .secret-sauce {
+            background: white;
+            border-radius: 16px;
+            padding: 60px;
+            margin-bottom: 80px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secret-sauce::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B4A, #667eea, #764ba2);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .method-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+
+        .method-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .method-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .graph-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .multi-hop-icon {
+            background: linear-gradient(135deg, #FF6B4A 0%, #ee5a24 100%);
+        }
+
+        .reasoning-icon {
+            background: linear-gradient(135deg, #2d5aa0 0%, #4a6741 100%);
+        }
+
+        .method-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .method-description {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Use Case Sections */
+        .use-case-section {
+            margin-bottom: 80px;
+        }
+
+        .use-case-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .use-case-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .use-case-subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Network Visualization */
+        .network-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .network-visual {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 40px;
+            position: relative;
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .network-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* Network SVG Styles */
+        .network-svg {
+            width: 100%;
+            height: 350px;
+        }
+
+        .connection-line {
+            stroke: #667eea;
+            stroke-width: 3;
+            stroke-dasharray: 8,4;
+            animation: dash 2s linear infinite;
+        }
+
+        .connection-line.highlighted {
+            stroke: #FF6B4A;
+            stroke-width: 4;
+        }
+
+        .network-node {
+            transition: all 0.3s ease;
+        }
+
+        .network-node:hover {
+            transform: scale(1.1);
+        }
+
+        .node-label {
+            font-size: 12px;
+            font-weight: 600;
+            fill: #0B1A2A;
+        }
+
+        .node-type {
+            font-size: 10px;
+            fill: #6c757d;
+        }
+
+        .relationship-label {
+            font-size: 9px;
+            fill: #667eea;
+            font-weight: 500;
+        }
+
+        @keyframes dash {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: 20; }
+        }
+
+        /* Insight Cards */
+        .insight-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .insight-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-left: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .investor-card {
+            border-left-color: #667eea;
+        }
+
+        .connection-card {
+            border-left-color: #FF6B4A;
+        }
+
+        .risk-card {
+            border-left-color: #ef4444;
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .insight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            margin-right: 15px;
+            color: white;
+        }
+
+        .investor-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .connection-icon {
+            background: linear-gradient(135deg, #FF6B4A, #ee5a24);
+        }
+
+        .risk-icon {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+        }
+
+        .insight-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #0B1A2A;
+        }
+
+        .insight-description {
+            color: #6c757d;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .insight-metrics {
+            display: flex;
+            gap: 20px;
+        }
+
+        .metric {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+            text-transform: uppercase;
+        }
+
+        /* Connection Path Visualization */
+        .connection-path {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .path-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .path-nodes {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .path-node {
+            text-align: center;
+            flex: 1;
+            position: relative;
+        }
+
+        .path-node:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: -50%;
+            top: 50%;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #FF6B4A);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .node-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            position: relative;
+            z-index: 2;
+        }
+
+        .source-avatar {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .intermediate-avatar {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .target-avatar {
+            background: linear-gradient(135deg, #FF6B4A, #ee5a24);
+        }
+
+        .node-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .node-title {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .connection-strength {
+            background: linear-gradient(135deg, rgba(102,126,234,0.1), rgba(255,107,74,0.1));
+            border: 1px solid rgba(102,126,234,0.2);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .strength-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .strength-score {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .strength-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        /* Risk Prediction Section */
+        .risk-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+        }
+
+        .risk-scenario {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border-top: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .risk-scenario:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .contagion-risk {
+            border-top-color: #ef4444;
+        }
+
+        .conflict-risk {
+            border-top-color: #f59e0b;
+        }
+
+        .concentration-risk {
+            border-top-color: #8b5cf6;
+        }
+
+        .risk-header {
+            margin-bottom: 25px;
+        }
+
+        .risk-type {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .risk-source {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .risk-score {
+            background: #f8f9fa;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            display: inline-block;
+        }
+
+        .risk-details {
+            margin-bottom: 20px;
+        }
+
+        .risk-factor {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid #dee2e6;
+        }
+
+        .factor-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .factor-description {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .methodology-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .secret-sauce {
+                padding: 40px 30px;
+            }
+
+            .main-content {
+                padding: 40px 16px;
+            }
+
+            .hero-content {
+                padding: 0 16px;
+            }
+
+            .path-nodes {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .path-node:not(:last-child)::after {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tab-container {
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .tab-link {
+                white-space: nowrap;
+                padding: 16px 20px;
+            }
+
+            .secret-sauce {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Private Markets Graph</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../Classification/index.html">Classification</a></li>
+                    <li><a href="../private-equity.html">Private Equity</a></li>
+                    <li><a href="../funds.html">Funds</a></li>
+                    <li><a href="../solutions.html">Solutions</a></li>
+                </ul>
+            </nav>
+            <a href="../contact.html" class="contact-btn">Book Demo</a>
+        </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <div class="tab-container">
+            <a href="#overview" class="tab-link">Overview</a>
+            <a href="#use-cases" class="tab-link active">Use Cases</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="accent">Relationship</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Graph-powered relationship discovery, network mapping, and predictive risk analysis at scale
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Secret Sauce Section -->
+        <section class="secret-sauce">
+            <h2 class="section-title">Graph Methodology</h2>
+            <p class="section-subtitle">
+                Traditional relationship analysis stops at direct connections. Our graph methodology reasons across multi-hop paths, discovers nuanced patterns, and predicts relationship-based risks that linear approaches miss.
+            </p>
+
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <div class="method-icon graph-icon">∞</div>
+                    <h3 class="method-title">Neo4j Graph Engine</h3>
+                    <p class="method-description">
+                        Entity relationships modeled as nodes and edges. Companies, people, funds, investments, board seats - all interconnected in a queryable knowledge graph.
+                    </p>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-icon multi-hop-icon">↔</div>
+                    <h3 class="method-title">Multi-Hop Reasoning</h3>
+                    <p class="method-description">
+                        Discover 2nd, 3rd, 4th degree relationships with weighted paths. Find warm intro routes, co-investment patterns, and indirect influence networks.
+                    </p>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-icon reasoning-icon">🧠</div>
+                    <h3 class="method-title">Predictive Pattern Recognition</h3>
+                    <p class="method-description">
+                        Identify relationship-based risk patterns: contagion effects, conflict networks, concentration dependencies before they manifest.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Investor Network Mapping Section -->
+        <section class="use-case-section">
+            <div class="use-case-header">
+                <h2 class="use-case-title">Map Investor Networks</h2>
+                <p class="use-case-subtitle">
+                    Discover hidden co-investment patterns, syndicate relationships, and fund interconnections across the private markets ecosystem
+                </p>
+            </div>
+
+            <div class="network-container">
+                <div class="network-visual">
+                    <h3 class="network-title">Co-Investment Network: Growth-Stage SaaS</h3>
+                    
+                    <svg class="network-svg" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Connection lines -->
+                        <g class="connections">
+                            <!-- Central hub connections -->
+                            <line x1="400" y1="175" x2="200" y2="100" class="connection-line highlighted"/>
+                            <line x1="400" y1="175" x2="600" y2="100" class="connection-line highlighted"/>
+                            <line x1="400" y1="175" x2="150" y2="250" class="connection-line highlighted"/>
+                            <line x1="400" y1="175" x2="650" y2="250" class="connection-line highlighted"/>
+                            
+                            <!-- Secondary connections -->
+                            <line x1="200" y1="100" x2="150" y2="250" class="connection-line"/>
+                            <line x1="600" y1="100" x2="650" y2="250" class="connection-line"/>
+                            <line x1="200" y1="100" x2="600" y2="100" class="connection-line"/>
+                        </g>
+                        
+                        <!-- Nodes -->
+                        <g class="nodes">
+                            <!-- Central fund -->
+                            <circle cx="400" cy="175" r="32" fill="#667eea" stroke="#fff" stroke-width="4" class="network-node"/>
+                            <text x="400" y="220" text-anchor="middle" class="node-label">Meridian Growth</text>
+                            <text x="400" y="235" text-anchor="middle" class="node-type">Lead Investor</text>
+                            
+                            <!-- Co-investors -->
+                            <circle cx="200" cy="100" r="24" fill="#FF6B4A" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="200" y="80" text-anchor="middle" class="node-label">Summit Ventures</text>
+                            <text x="200" y="130" text-anchor="middle" class="node-type">Co-investor</text>
+                            
+                            <circle cx="600" cy="100" r="24" fill="#FF6B4A" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="600" y="80" text-anchor="middle" class="node-label">Peak Capital</text>
+                            <text x="600" y="130" text-anchor="middle" class="node-type">Co-investor</text>
+                            
+                            <circle cx="150" cy="250" r="20" fill="#10b981" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="150" y="230" text-anchor="middle" class="node-label">Atlas Partners</text>
+                            <text x="150" y="280" text-anchor="middle" class="node-type">Follow-on</text>
+                            
+                            <circle cx="650" cy="250" r="20" fill="#10b981" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="650" y="230" text-anchor="middle" class="node-label">North Point</text>
+                            <text x="650" y="280" text-anchor="middle" class="node-type">Follow-on</text>
+                        </g>
+                        
+                        <!-- Relationship labels -->
+                        <g class="relationship-labels">
+                            <text x="300" y="130" text-anchor="middle" class="relationship-label">3 co-investments</text>
+                            <text x="500" y="130" text-anchor="middle" class="relationship-label">5 co-investments</text>
+                            <text x="270" y="220" text-anchor="middle" class="relationship-label">2 follow-ons</text>
+                            <text x="530" y="220" text-anchor="middle" class="relationship-label">4 follow-ons</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <div class="insight-grid">
+                <div class="insight-card investor-card">
+                    <div class="insight-header">
+                        <div class="insight-icon investor-icon">🌐</div>
+                        <h3 class="insight-title">Network Density</h3>
+                    </div>
+                    <p class="insight-description">
+                        Meridian Growth has the highest network connectivity in growth-stage SaaS investments with 12 co-investment relationships.
+                    </p>
+                    <div class="insight-metrics">
+                        <div class="metric">
+                            <div class="metric-value">12</div>
+                            <div class="metric-label">Co-investors</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">89%</div>
+                            <div class="metric-label">Follow-on Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-card connection-card">
+                    <div class="insight-header">
+                        <div class="insight-icon connection-icon">🔗</div>
+                        <h3 class="insight-title">Syndicate Pattern</h3>
+                    </div>
+                    <p class="insight-description">
+                        Summit Ventures and Peak Capital frequently co-invest together (8 deals) suggesting strong relationship and deal-sharing.
+                    </p>
+                    <div class="insight-metrics">
+                        <div class="metric">
+                            <div class="metric-value">8</div>
+                            <div class="metric-label">Joint Deals</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">94%</div>
+                            <div class="metric-label">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="insight-card risk-card">
+                    <div class="insight-header">
+                        <div class="insight-icon risk-icon">⚠️</div>
+                        <h3 class="insight-title">Concentration Risk</h3>
+                    </div>
+                    <p class="insight-description">
+                        High interconnectedness creates contagion risk - performance issues at one fund could impact the entire network.
+                    </p>
+                    <div class="insight-metrics">
+                        <div class="metric">
+                            <div class="metric-value">68%</div>
+                            <div class="metric-label">Risk Score</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-value">15</div>
+                            <div class="metric-label">Shared Assets</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Connection Discovery Section -->
+        <section class="use-case-section">
+            <div class="use-case-header">
+                <h2 class="use-case-title">Find Connections Between Nodes</h2>
+                <p class="use-case-subtitle">
+                    Discover multi-hop relationship paths between any two entities with confidence scoring and relationship strength analysis
+                </p>
+            </div>
+
+            <div class="connection-path">
+                <h3 class="path-title">Warm Introduction Path Discovery</h3>
+                
+                <div class="path-nodes">
+                    <div class="path-node">
+                        <div class="node-avatar source-avatar">AS</div>
+                        <div class="node-name">Alex Smith</div>
+                        <div class="node-title">GP, Meridian Growth</div>
+                    </div>
+                    
+                    <div class="path-node">
+                        <div class="node-avatar intermediate-avatar">MJ</div>
+                        <div class="node-name">Mike Johnson</div>
+                        <div class="node-title">Former CTO, DataFlow</div>
+                    </div>
+                    
+                    <div class="path-node">
+                        <div class="node-avatar target-avatar">SR</div>
+                        <div class="node-name">Sarah Rodriguez</div>
+                        <div class="node-title">CEO, TechStream Inc</div>
+                    </div>
+                </div>
+                
+                <div class="connection-strength">
+                    <div class="strength-title">Connection Strength</div>
+                    <div class="strength-score">91.2%</div>
+                    <div class="strength-description">
+                        Based on: Board relationship (Alex → Mike: 95%), Professional history (Mike → Sarah: 87%)
+                    </div>
+                </div>
+            </div>
+
+            <div class="network-container">
+                <div class="network-visual">
+                    <h3 class="network-title">Multi-Hop Relationship Discovery</h3>
+                    
+                    <svg class="network-svg" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Connection paths -->
+                        <g class="connections">
+                            <!-- Primary path (highlighted) -->
+                            <line x1="100" y1="175" x2="250" y2="120" class="connection-line highlighted"/>
+                            <line x1="250" y1="120" x2="400" y2="100" class="connection-line highlighted"/>
+                            <line x1="400" y1="100" x2="550" y2="120" class="connection-line highlighted"/>
+                            <line x1="550" y1="120" x2="700" y2="175" class="connection-line highlighted"/>
+                            
+                            <!-- Alternative paths -->
+                            <line x1="100" y1="175" x2="300" y2="250" class="connection-line"/>
+                            <line x1="300" y1="250" x2="500" y2="270" class="connection-line"/>
+                            <line x1="500" y1="270" x2="700" y2="175" class="connection-line"/>
+                            
+                            <!-- Cross connections -->
+                            <line x1="250" y1="120" x2="300" y2="250" class="connection-line"/>
+                            <line x1="400" y1="100" x2="500" y2="270" class="connection-line"/>
+                        </g>
+                        
+                        <!-- Nodes -->
+                        <g class="nodes">
+                            <!-- Source -->
+                            <circle cx="100" cy="175" r="28" fill="#10b981" stroke="#fff" stroke-width="4" class="network-node"/>
+                            <text x="100" y="210" text-anchor="middle" class="node-label">Alex Smith</text>
+                            <text x="100" y="225" text-anchor="middle" class="node-type">Source</text>
+                            
+                            <!-- Path nodes -->
+                            <circle cx="250" cy="120" r="20" fill="#667eea" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="250" y="95" text-anchor="middle" class="node-label">Mike Johnson</text>
+                            <text x="250" y="150" text-anchor="middle" class="node-type">Board Member</text>
+                            
+                            <circle cx="400" cy="100" r="18" fill="#667eea" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="400" y="75" text-anchor="middle" class="node-label">DataFlow Inc</text>
+                            <text x="400" y="130" text-anchor="middle" class="node-type">Company</text>
+                            
+                            <circle cx="550" cy="120" r="20" fill="#667eea" stroke="#fff" stroke-width="3" class="network-node"/>
+                            <text x="550" y="95" text-anchor="middle" class="node-label">Tech Advisory</text>
+                            <text x="550" y="150" text-anchor="middle" class="node-type">Board</text>
+                            
+                            <!-- Target -->
+                            <circle cx="700" cy="175" r="28" fill="#FF6B4A" stroke="#fff" stroke-width="4" class="network-node"/>
+                            <text x="700" y="210" text-anchor="middle" class="node-label">Sarah Rodriguez</text>
+                            <text x="700" y="225" text-anchor="middle" class="node-type">Target</text>
+                            
+                            <!-- Alternative path nodes -->
+                            <circle cx="300" cy="250" r="16" fill="#f59e0b" stroke="#fff" stroke-width="2" class="network-node"/>
+                            <text x="300" y="275" text-anchor="middle" class="node-label">Stanford Alumni</text>
+                            <text x="300" y="290" text-anchor="middle" class="node-type">Network</text>
+                            
+                            <circle cx="500" cy="270" r="16" fill="#f59e0b" stroke="#fff" stroke-width="2" class="network-node"/>
+                            <text x="500" y="295" text-anchor="middle" class="node-label">TechStream</text>
+                            <text x="500" y="310" text-anchor="middle" class="node-type">Advisor</text>
+                        </g>
+                        
+                        <!-- Relationship labels -->
+                        <g class="relationship-labels">
+                            <text x="175" y="140" text-anchor="middle" class="relationship-label">Board seat</text>
+                            <text x="325" y="105" text-anchor="middle" class="relationship-label">Former CTO</text>
+                            <text x="475" y="105" text-anchor="middle" class="relationship-label">Advisory role</text>
+                            <text x="625" y="140" text-anchor="middle" class="relationship-label">CEO</text>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+        </section>
+
+        <!-- Risk Prediction Section -->
+        <section class="use-case-section">
+            <div class="use-case-header">
+                <h2 class="use-case-title">Predict Risk Through Relationships</h2>
+                <p class="use-case-subtitle">
+                    Identify potential risks before they materialize by analyzing relationship patterns, network concentrations, and structural dependencies
+                </p>
+            </div>
+
+            <div class="risk-grid">
+                <div class="risk-scenario contagion-risk">
+                    <div class="risk-header">
+                        <h3 class="risk-type">Contagion Risk</h3>
+                        <p class="risk-source">Via co-investment network analysis</p>
+                        <div class="risk-score">High Risk: 78%</div>
+                    </div>
+                    
+                    <div class="risk-details">
+                        <div class="risk-factor">
+                            <div class="factor-title">Major co-investor under investigation</div>
+                            <div class="factor-description">Summit Ventures facing SEC inquiry could impact 6 shared portfolio companies</div>
+                        </div>
+                        
+                        <div class="risk-factor">
+                            <div class="factor-title">Funding dependency</div>
+                            <div class="factor-description">4 companies rely on Summit for follow-on rounds in next 12 months</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="risk-scenario conflict-risk">
+                    <div class="risk-header">
+                        <h3 class="risk-type">Conflict Risk</h3>
+                        <p class="risk-source">Via board relationship mapping</p>
+                        <div class="risk-score">Medium Risk: 54%</div>
+                    </div>
+                    
+                    <div class="risk-details">
+                        <div class="risk-factor">
+                            <div class="factor-title">Competing board interests</div>
+                            <div class="factor-description">Mike Johnson sits on boards of 2 direct competitors in enterprise software</div>
+                        </div>
+                        
+                        <div class="risk-factor">
+                            <div class="factor-title">Information asymmetry</div>
+                            <div class="factor-description">Potential for confidential information leakage affecting competitive positioning</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="risk-scenario concentration-risk">
+                    <div class="risk-header">
+                        <h3 class="risk-type">Concentration Risk</h3>
+                        <p class="risk-source">Via network dependency analysis</p>
+                        <div class="risk-score">Low Risk: 31%</div>
+                    </div>
+                    
+                    <div class="risk-details">
+                        <div class="risk-factor">
+                            <div class="factor-title">Single point of failure</div>
+                            <div class="factor-description">Meridian Growth connected to 67% of growth-stage SaaS deals in network</div>
+                        </div>
+                        
+                        <div class="risk-factor">
+                            <div class="factor-title">Market concentration</div>
+                            <div class="factor-description">Geographic concentration in SF Bay Area creates correlated risk exposure</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

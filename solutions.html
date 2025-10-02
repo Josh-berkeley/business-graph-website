@@ -1,0 +1,1497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solutions | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B4A;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0B1A2A 0%, #1a2537 50%, #2a3441 100%);
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 74, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section Styles */
+        .solutions-section {
+            padding: 6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .solutions-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Private Market Map Section */
+        .market-map-section {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            padding: 4rem;
+            margin: 4rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .map-visualization {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 3rem;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .map-visualization::before {
+            content: '';
+            position: absolute;
+            top: 20%;
+            left: 15%;
+            right: 15%;
+            bottom: 20%;
+            background: 
+                radial-gradient(circle at 25% 30%, rgba(255, 107, 74, 0.3) 2px, transparent 2px),
+                radial-gradient(circle at 75% 45%, rgba(102, 126, 234, 0.3) 3px, transparent 3px),
+                radial-gradient(circle at 40% 70%, rgba(255, 107, 74, 0.2) 2px, transparent 2px),
+                radial-gradient(circle at 60% 25%, rgba(102, 126, 234, 0.2) 2px, transparent 2px),
+                radial-gradient(circle at 80% 80%, rgba(255, 107, 74, 0.3) 3px, transparent 3px);
+            background-size: 50px 50px, 70px 70px, 40px 40px, 60px 60px, 80px 80px;
+            opacity: 0.6;
+        }
+
+        .theme-clusters {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .theme-cluster {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .theme-cluster:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 107, 74, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .cluster-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .cluster-count {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .discovery-tools {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+        }
+
+        .tool-card p {
+            color: #b8b9c5;
+            line-height: 1.6;
+        }
+
+        .thematic-bubbles {
+            margin-bottom: 3rem;
+        }
+
+        .bubble-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem;
+            min-height: 400px;
+            padding: 2rem;
+        }
+
+        .theme-bubble {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .theme-bubble:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .bubble-large {
+            width: 180px;
+            height: 180px;
+            font-size: 1rem;
+        }
+
+        .bubble-medium {
+            width: 140px;
+            height: 140px;
+            font-size: 0.9rem;
+        }
+
+        .bubble-small {
+            width: 110px;
+            height: 110px;
+            font-size: 0.8rem;
+        }
+
+        .theme-bubble span {
+            padding: 1rem;
+            line-height: 1.2;
+        }
+
+        /* Network Intelligence Styles */
+        .network-intelligence-demo {
+            margin: 3rem 0;
+            padding: 2.5rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 107, 74, 0.1);
+        }
+
+        .network-container {
+            display: grid;
+            grid-template-columns: 3fr 2fr;
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .network-graph {
+            position: relative;
+            height: 350px;
+            background: radial-gradient(circle at center, rgba(255, 107, 74, 0.03), transparent);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .network-node {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .network-node:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 20;
+        }
+
+        .hub-node {
+            width: 75px;
+            height: 75px;
+            background: linear-gradient(135deg, #FF6B4A, #e91e63);
+            box-shadow: 0 6px 18px rgba(255, 107, 74, 0.4);
+        }
+
+        .target-company {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #4caf50, #1b5e20);
+            box-shadow: 0 6px 18px rgba(76, 175, 80, 0.4);
+            border: 2px solid #ffffff;
+        }
+
+        .portfolio-company {
+            background: linear-gradient(135deg, #00bcd4, #006064);
+            box-shadow: 0 4px 12px rgba(0, 188, 212, 0.3);
+        }
+
+        .executive-node {
+            background: linear-gradient(135deg, #9c27b0, #6a1b9a);
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+        }
+
+        .lp-node {
+            background: linear-gradient(135deg, #ff9800, #e65100);
+            box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        }
+
+        .node-label {
+            color: white;
+            font-weight: 600;
+            font-size: 0.65rem;
+            text-align: center;
+            line-height: 1;
+            padding: 0.2rem;
+        }
+
+        .connection-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .connection {
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 1;
+        }
+
+        .strong-connection {
+            stroke: rgba(255, 107, 74, 0.6);
+            stroke-width: 3;
+        }
+
+        .medium-connection {
+            stroke: rgba(255, 255, 255, 0.4);
+            stroke-width: 2;
+        }
+
+        .weak-connection {
+            stroke: rgba(255, 255, 255, 0.15);
+            stroke-width: 1;
+        }
+
+        .warm-intro-path {
+            stroke: #4caf50;
+            stroke-width: 4;
+            stroke-dasharray: 8, 4;
+            animation: dash 2s linear infinite;
+        }
+
+        @keyframes dash {
+            to {
+                stroke-dashoffset: -24;
+            }
+        }
+
+        .network-insights {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .insight-panel, .co-investment-panel {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+        }
+
+        .insight-header {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid rgba(255, 107, 74, 0.3);
+            padding-bottom: 0.5rem;
+        }
+
+        .introduction-path {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .path-step {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .step-entity {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        .step-entity.target {
+            color: #4caf50;
+            font-weight: 700;
+        }
+
+        .step-connection {
+            color: #b8b9c5;
+            font-size: 0.9rem;
+        }
+
+        .step-arrow {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .path-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+        }
+
+        .metric-label {
+            color: #b8b9c5;
+            font-size: 0.9rem;
+        }
+
+        .metric-value {
+            font-weight: 600;
+        }
+
+        .metric-value.high {
+            color: #4caf50;
+        }
+
+        .metric-value.strong {
+            color: #FF6B4A;
+        }
+
+        .co-investment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .co-investment-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 3px solid #00bcd4;
+        }
+
+        .investment-entities {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .entity-name {
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .shared-indicator {
+            color: #4caf50;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .investment-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .investment-target {
+            color: #FF6B4A;
+            font-weight: 600;
+        }
+
+        .investment-stage {
+            color: #b8b9c5;
+            font-size: 0.85rem;
+        }
+
+        .network-stats {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #b8b9c5;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .cluster-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        /* Solutions Grid */
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(255, 107, 74, 0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+
+        .solution-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .solution-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-features {
+            list-style: none;
+        }
+
+        .solution-features li {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .solution-features li::before {
+            content: '▸';
+            color: #FF6B4A;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .metric-card {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 74, 0.1));
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(102, 126, 234, 0.05));
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Carousel */
+        .hero-carousel-container {
+            margin: 3rem 0 2rem 0;
+            position: relative;
+        }
+
+        .hero-solutions-carousel {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .hero-carousel-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-carousel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.05), rgba(102, 126, 234, 0.03));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 16px;
+        }
+
+        .hero-carousel-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 107, 74, 0.6) 20%, 
+                rgba(102, 126, 234, 0.6) 50%, 
+                rgba(0, 206, 201, 0.6) 80%, 
+                transparent
+            );
+            border-radius: 16px 16px 0 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hero-carousel-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 107, 74, 0.4);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 107, 74, 0.2);
+        }
+
+        .hero-carousel-card:hover::before {
+            opacity: 1;
+        }
+
+        .hero-carousel-card:hover::after {
+            opacity: 1;
+        }
+
+        .hero-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card-description {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.3;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 0 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .market-map-section {
+                padding: 2rem 1rem;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-solutions-carousel {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding: 0 1rem;
+            }
+
+            .hero-carousel-card {
+                scroll-snap-align: start;
+                min-width: 140px;
+                padding: 1rem 0.8rem;
+                min-height: 100px;
+            }
+
+            .hero-card-title {
+                font-size: 0.9rem;
+            }
+
+            .hero-card-description {
+                font-size: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-solutions-carousel {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+                padding: 0 1rem;
+            }
+
+            .hero-carousel-card {
+                min-width: 150px;
+                padding: 1.2rem 0.8rem;
+                min-height: 95px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Private Markets Graph</div>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./Classification/index.html">Classification</a></li>
+                <li><a href="./private-equity.html">Private Equity</a></li>
+                <li><a href="./funds.html">Funds</a></li>
+                <li><a href="./solutions.html">Solutions</a></li>
+                <li><a href="./contact.html">Book Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="accent">Solutions</span> for Private Markets</h1>
+            <p class="hero-subtitle">
+                Comprehensive intelligence solutions powered by 18-dimensional classification, from private market mapping to competitive analysis and relationship intelligence.
+            </p>
+            
+            <!-- Solutions Carousel in Hero -->
+            <div class="hero-carousel-container">
+                <div class="hero-solutions-carousel">
+                    <div class="hero-carousel-card" onclick="scrollToSection('private-market-map')">
+                        <h3 class="hero-card-title">Private Market Map</h3>
+                        <p class="hero-card-description">Theme tracking & visualization</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('peer-comparison')">
+                        <h3 class="hero-card-title">Peer Comparison</h3>
+                        <p class="hero-card-description">18D similarity analysis</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('competitive-intelligence')">
+                        <h3 class="hero-card-title">Competitive Intelligence</h3>
+                        <p class="hero-card-description">Real-time monitoring</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('benchmarking-indices')">
+                        <h3 class="hero-card-title">Benchmarking & Indices</h3>
+                        <p class="hero-card-description">Custom performance tracking</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('relationships')">
+                        <h3 class="hero-card-title">Relationships</h3>
+                        <p class="hero-card-description">Network & intro paths</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('predictions')">
+                        <h3 class="hero-card-title">Predictions</h3>
+                        <p class="hero-card-description">Market evolution forecasting</p>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="./contact.html" class="hero-cta">Explore Solutions</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Private Market Map Section -->
+        <section class="solutions-section" id="private-market-map">
+            <div class="section-header">
+                <h2 class="section-title">Private Market Map</h2>
+                <p class="section-subtitle">
+                    Comprehensive visualization and tracking of private companies across themes, sectors, and business models using 18-dimensional classification for systematic market intelligence.
+                </p>
+            </div>
+
+            <div class="market-map-section">
+                <h3 style="font-size: 2rem; color: #FF6B4A; margin-bottom: 1rem; text-align: center;">1. Identify Investment-Grade Themes</h3>
+                <p style="text-align: center; margin-bottom: 3rem; color: #b8b9c5; font-size: 1.1rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+                    Systematically identify and analyze private market investment themes through comprehensive company-level analysis. Our platform reveals underinvested themes, emerging business model patterns, and cross-sector convergence opportunities before they become consensus plays.
+                </p>
+                
+                <div class="discovery-tools">
+                    <div class="tool-card">
+                        <h4 style="color: #FF6B4A; margin-bottom: 1rem;">• Private Market Theme Intelligence:</h4>
+                        <p>Track theme performance, company density, and investment momentum across 100+ distinct private market themes.</p>
+                    </div>
+                    <div class="tool-card">
+                        <h4 style="color: #FF6B4A; margin-bottom: 1rem;">• Rapid Universe Construction:</h4>
+                        <p>Build investable company universes around specific themes using 18-dimensional business model analysis.</p>
+                    </div>
+                </div>
+
+                <div class="thematic-bubbles">
+                    <h4 style="color: #ffffff; margin-bottom: 2rem; text-align: center;">Private Market Thematic Bubbles:</h4>
+                    <div class="bubble-container">
+                        <div class="theme-bubble bubble-large" style="background: linear-gradient(135deg, #e91e63, #ad1457);">
+                            <span>AI Infrastructure</span>
+                        </div>
+                        <div class="theme-bubble bubble-medium" style="background: linear-gradient(135deg, #9c27b0, #6a1b9a);">
+                            <span>Vertical SaaS</span>
+                        </div>
+                        <div class="theme-bubble bubble-small" style="background: linear-gradient(135deg, #3f51b5, #1a237e);">
+                            <span>Supply Chain Automation</span>
+                        </div>
+                        <div class="theme-bubble bubble-medium" style="background: linear-gradient(135deg, #00bcd4, #006064);">
+                            <span>Digital Health Platforms</span>
+                        </div>
+                        <div class="theme-bubble bubble-large" style="background: linear-gradient(135deg, #4caf50, #1b5e20);">
+                            <span>Climate Tech Infrastructure</span>
+                        </div>
+                        <div class="theme-bubble bubble-small" style="background: linear-gradient(135deg, #ff9800, #e65100);">
+                            <span>Embedded Finance</span>
+                        </div>
+                        <div class="theme-bubble bubble-medium" style="background: linear-gradient(135deg, #607d8b, #263238);">
+                            <span>Future of Work Tools</span>
+                        </div>
+                        <div class="theme-bubble bubble-small" style="background: linear-gradient(135deg, #795548, #3e2723);">
+                            <span>Cybersecurity Mesh</span>
+                        </div>
+                        <div class="theme-bubble bubble-medium" style="background: linear-gradient(135deg, #f44336, #b71c1c);">
+                            <span>Edge Computing</span>
+                        </div>
+                        <div class="theme-bubble bubble-small" style="background: linear-gradient(135deg, #ff5722, #bf360c);">
+                            <span>Developer Tooling</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value">800k+</div>
+                        <div class="metric-label">Total Companies Tracked</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">18</div>
+                        <div class="metric-label">Classification Dimensions</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">100+</div>
+                        <div class="metric-label">Distinct Themes Identified</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value">Real-time</div>
+                        <div class="metric-label">Updates & Intelligence</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relationships Section -->
+        <section class="solutions-section" id="relationships">
+            <div class="section-header">
+                <h2 class="section-title">Relationships</h2>
+                <p class="section-subtitle">
+                    Graph-powered relationship intelligence for warm introductions, co-investment discovery, and strategic network mapping across private markets.
+                </p>
+            </div>
+
+            <div class="solutions-grid">
+                <div class="solution-card" onclick="location.href='./Relationships/index.html'">
+                    <h3 class="solution-title">Network Intelligence</h3>
+                    <p class="solution-description">
+                        Comprehensive relationship mapping across private markets for strategic networking and partnership identification.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Board connection mapping</li>
+                        <li>Investor relationship networks</li>
+                        <li>Management team connections</li>
+                        <li>Strategic partnership analysis</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Warm Introduction Paths</h3>
+                    <p class="solution-description">
+                        Identify optimal warm introduction paths to target companies, LPs, and strategic partners through relationship graph analysis.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Introduction path optimization</li>
+                        <li>Relationship strength scoring</li>
+                        <li>Success probability analysis</li>
+                        <li>Multi-hop connection mapping</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Co-Investment Discovery</h3>
+                    <p class="solution-description">
+                        Systematic discovery of co-investment opportunities through portfolio overlap analysis and shared relationship mapping.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Portfolio overlap analysis</li>
+                        <li>Shared investor identification</li>
+                        <li>Co-investment opportunity scoring</li>
+                        <li>Partnership potential assessment</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="network-intelligence-demo">
+                <h3 style="font-size: 2rem; color: #FF6B4A; margin-bottom: 1rem; text-align: center;">Private Markets Relationship Network</h3>
+                <p style="text-align: center; margin-bottom: 3rem; color: #b8b9c5; font-size: 1.1rem; max-width: 900px; margin-left: auto; margin-right: auto;">
+                    Discover warm introduction paths and co-investment opportunities through comprehensive relationship mapping across 2.5M+ executives, board members, and institutional investors.
+                </p>
+
+                <div class="network-container">
+                    <div class="network-graph">
+                        <!-- Central Hub Nodes -->
+                        <div class="network-node hub-node foundation-partners" style="left: 15%; top: 45%;" data-entity="Foundation Partners" data-type="PE Firm">
+                            <span class="node-label">Foundation Partners</span>
+                        </div>
+                        
+                        <div class="network-node hub-node catalyst-ventures" style="left: 85%; top: 45%;" data-entity="Catalyst Ventures" data-type="VC Firm">
+                            <span class="node-label">Catalyst Ventures</span>
+                        </div>
+
+                        <!-- Target Company -->
+                        <div class="network-node target-company meridian-software" style="left: 50%; top: 25%;" data-entity="Meridian Software" data-type="Target Company">
+                            <span class="node-label">Meridian Software</span>
+                        </div>
+
+                        <!-- Portfolio Companies -->
+                        <div class="network-node portfolio-company" style="left: 25%; top: 20%;" data-entity="VectorCore Technologies" data-type="Portfolio Company">
+                            <span class="node-label">VectorCore Tech</span>
+                        </div>
+                        
+                        <div class="network-node portfolio-company" style="left: 75%; top: 30%;" data-entity="Synthetic Intelligence" data-type="Portfolio Company">
+                            <span class="node-label">Synthetic AI</span>
+                        </div>
+
+                        <div class="network-node portfolio-company" style="left: 35%; top: 70%;" data-entity="DocumentAI Corp" data-type="Portfolio Company">
+                            <span class="node-label">DocumentAI</span>
+                        </div>
+
+                        <!-- Board Members / Executives -->
+                        <div class="network-node executive-node" style="left: 45%; top: 50%;" data-entity="Sarah Chen" data-type="Board Member">
+                            <span class="node-label">Sarah Chen</span>
+                        </div>
+
+                        <div class="network-node executive-node" style="left: 60%; top: 15%;" data-entity="Michael Torres" data-type="Former CEO">
+                            <span class="node-label">Michael Torres</span>
+                        </div>
+
+                        <div class="network-node executive-node" style="left: 30%; top: 40%;" data-entity="David Kim" data-type="Partner">
+                            <span class="node-label">David Kim</span>
+                        </div>
+
+                        <!-- Institutional LPs -->
+                        <div class="network-node lp-node" style="left: 10%; top: 65%;" data-entity="Pinnacle Sovereign" data-type="Sovereign Fund">
+                            <span class="node-label">Pinnacle Sovereign</span>
+                        </div>
+
+                        <div class="network-node lp-node" style="left: 65%; top: 70%;" data-entity="Atlas Pension Fund" data-type="Pension Fund">
+                            <span class="node-label">Atlas Pension</span>
+                        </div>
+
+                        <div class="network-node lp-node" style="left: 90%; top: 25%;" data-entity="Meridian Family Office" data-type="Family Office">
+                            <span class="node-label">Meridian FO</span>
+                        </div>
+
+                        <!-- Connection Lines -->
+                        <svg class="connection-lines" width="100%" height="100%">
+                            <!-- Strong Connections (thick lines) -->
+                            <line class="connection strong-connection" x1="15%" y1="45%" x2="30%" y2="40%" />
+                            <line class="connection strong-connection" x1="45%" y1="50%" x2="50%" y2="25%" />
+                            <line class="connection strong-connection" x1="60%" y1="15%" x2="50%" y2="25%" />
+                            <line class="connection strong-connection" x1="85%" y1="45%" x2="75%" y2="30%" />
+                            
+                            <!-- Medium Connections -->
+                            <line class="connection medium-connection" x1="15%" y1="45%" x2="25%" y2="20%" />
+                            <line class="connection medium-connection" x1="45%" y1="50%" x2="35%" y2="70%" />
+                            <line class="connection medium-connection" x1="85%" y1="45%" x2="90%" y2="25%" />
+                            <line class="connection medium-connection" x1="15%" y1="45%" x2="10%" y2="65%" />
+                            <line class="connection medium-connection" x1="85%" y1="45%" x2="65%" y2="70%" />
+                            
+                            <!-- Weak Connections (thin lines) -->
+                            <line class="connection weak-connection" x1="25%" y1="20%" x2="50%" y2="25%" />
+                            <line class="connection weak-connection" x1="75%" y1="30%" x2="50%" y2="25%" />
+                            <line class="connection weak-connection" x1="30%" y1="40%" x2="45%" y2="50%" />
+                            <line class="connection weak-connection" x1="60%" y1="15%" x2="85%" y2="45%" />
+                            <line class="connection weak-connection" x1="10%" y1="65%" x2="35%" y2="70%" />
+                            
+                            <!-- Warm Introduction Path (highlighted) -->
+                            <line class="connection warm-intro-path" x1="15%" y1="45%" x2="30%" y2="40%" />
+                            <line class="connection warm-intro-path" x1="30%" y1="40%" x2="45%" y2="50%" />
+                            <line class="connection warm-intro-path" x1="45%" y1="50%" x2="50%" y2="25%" />
+                        </svg>
+                    </div>
+
+                    <div class="network-insights">
+                        <div class="co-investment-panel">
+                            <div class="insight-header">Co-Investment Opportunities</div>
+                            <div class="co-investment-list">
+                                <div class="co-investment-item">
+                                    <div class="investment-entities">
+                                        <span class="entity-name">Foundation Partners</span>
+                                        <span class="shared-indicator">+</span>
+                                        <span class="entity-name">Catalyst Ventures</span>
+                                    </div>
+                                    <div class="investment-details">
+                                        <span class="investment-target">VectorCore Technologies</span>
+                                        <span class="investment-stage">Series C • $140M</span>
+                                    </div>
+                                </div>
+                                <div class="co-investment-item">
+                                    <div class="investment-entities">
+                                        <span class="entity-name">Atlas Pension</span>
+                                        <span class="shared-indicator">+</span>
+                                        <span class="entity-name">Pinnacle Sovereign</span>
+                                    </div>
+                                    <div class="investment-details">
+                                        <span class="investment-target">DocumentAI Corp</span>
+                                        <span class="investment-stage">Series B • $85M</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Peer Comparison Section -->
+        <section class="solutions-section" id="peer-comparison">
+            <div class="section-header">
+                <h2 class="section-title">Peer Comparison</h2>
+                <p class="section-subtitle">
+                    Peer identification and multi-dimensional analysis for private markets using business model similarity beyond traditional industry classifications.
+                </p>
+            </div>
+
+            <div class="solutions-grid">
+                <div class="solution-card" onclick="location.href='./Benchmarking/index.html'">
+                    <h3 class="solution-title">Peer Benchmarking</h3>
+                    <p class="solution-description">
+                        Peer identification and multi-dimensional analysis for private markets using business model similarity.
+                    </p>
+                    <ul class="solution-features">
+                        <li>18-dimensional similarity scoring</li>
+                        <li>Business model peers</li>
+                        <li>Confidence intervals</li>
+                        <li>Dynamic peer sets</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Performance Analysis</h3>
+                    <p class="solution-description">
+                        Multi-dimensional performance comparison across operational metrics, financial patterns, and strategic positioning.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Operational metric comparison</li>
+                        <li>Financial pattern analysis</li>
+                        <li>Strategic position mapping</li>
+                        <li>Growth trajectory benchmarking</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Valuation Benchmarking</h3>
+                    <p class="solution-description">
+                        Valuation benchmarking using comparable companies identified through multi-dimensional business model analysis.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Comparable identification</li>
+                        <li>Multi-metric valuation analysis</li>
+                        <li>Market positioning assessment</li>
+                        <li>Premium/discount analysis</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Competitive Intelligence Section -->
+        <section class="solutions-section" id="competitive-intelligence">
+            <div class="section-header">
+                <h2 class="section-title">Competitive Intelligence</h2>
+                <p class="section-subtitle">
+                    Real-time competitive analysis and strategic positioning intelligence through continuous monitoring and multi-dimensional company tracking.
+                </p>
+            </div>
+
+            <div class="solutions-grid">
+                <div class="solution-card">
+                    <h3 class="solution-title">Real-time Monitoring</h3>
+                    <p class="solution-description">
+                        Continuous tracking of competitive moves, funding rounds, product launches, and strategic announcements with intelligent alert systems.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Competitive move tracking</li>
+                        <li>Funding round monitoring</li>
+                        <li>Product launch detection</li>
+                        <li>Strategic announcement alerts</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Strategic Analysis</h3>
+                    <p class="solution-description">
+                        Deep analysis of competitive strategies, positioning changes, and market approach evolution with predictive trend identification.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Strategy pattern analysis</li>
+                        <li>Positioning change detection</li>
+                        <li>Market approach evolution</li>
+                        <li>Trend forecasting</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Early Warning System</h3>
+                    <p class="solution-description">
+                        Predictive analysis of competitive threats and market opportunities with proactive strategic recommendations and timing intelligence.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Threat prediction analysis</li>
+                        <li>Opportunity identification</li>
+                        <li>Strategic recommendations</li>
+                        <li>Timing optimization</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Benchmarking & Indices Section -->
+        <section class="solutions-section" id="benchmarking-indices">
+            <div class="section-header">
+                <h2 class="section-title">Benchmarking & Indices</h2>
+                <p class="section-subtitle">
+                    Custom index construction and performance benchmarking using 18-dimensional classification for true thematic exposure and accurate comparative analysis.
+                </p>
+            </div>
+
+            <div class="solutions-grid">
+                <div class="solution-card" onclick="location.href='./Indices/index.html'">
+                    <h3 class="solution-title">Private Market Indices</h3>
+                    <p class="solution-description">
+                        Custom private market indices beyond traditional sector classifications using business model similarity and operational characteristics.
+                    </p>
+                    <ul class="solution-features">
+                        <li>AI-Readiness Index</li>
+                        <li>Management Quality Index</li>
+                        <li>Momentum Index</li>
+                        <li>Thematic exposure tracking</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Performance Tracking</h3>
+                    <p class="solution-description">
+                        Systematic performance tracking across multiple dimensions with benchmark construction and relative performance analysis.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Multi-dimensional tracking</li>
+                        <li>Custom benchmark construction</li>
+                        <li>Relative performance analysis</li>
+                        <li>Attribution analysis</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Index Construction</h3>
+                    <p class="solution-description">
+                        Systematic index construction using 18-dimensional weighting and dynamic rebalancing for true thematic and factor exposure.
+                    </p>
+                    <ul class="solution-features">
+                        <li>18-dimensional weighting</li>
+                        <li>Dynamic rebalancing</li>
+                        <li>Factor exposure analysis</li>
+                        <li>Risk-adjusted returns</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Predictions Section -->
+        <section class="solutions-section" id="predictions">
+            <div class="section-header">
+                <h2 class="section-title">Predictions</h2>
+                <p class="section-subtitle">
+                    Predictive intelligence for private markets using pattern recognition and trend analysis to forecast market evolution and company trajectories.
+                </p>
+            </div>
+
+            <div class="solutions-grid">
+                <div class="solution-card" onclick="location.href='./Predictions/index.html'">
+                    <h3 class="solution-title">Market Evolution Forecasting</h3>
+                    <p class="solution-description">
+                        Predictive analysis of market evolution and business model shifts using pattern recognition across private market ecosystems.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Theme evolution tracking</li>
+                        <li>Business model shift prediction</li>
+                        <li>Market timing intelligence</li>
+                        <li>Disruption pattern analysis</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Company Trajectory Analysis</h3>
+                    <p class="solution-description">
+                        Predictive modeling of company growth trajectories and strategic evolution using multi-dimensional pattern analysis.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Growth trajectory modeling</li>
+                        <li>Strategic evolution prediction</li>
+                        <li>Breakout probability scoring</li>
+                        <li>Success pattern recognition</li>
+                    </ul>
+                </div>
+
+                <div class="solution-card">
+                    <h3 class="solution-title">Investment Timing Intelligence</h3>
+                    <p class="solution-description">
+                        Optimal investment timing intelligence using predictive analysis of market cycles and company development stages.
+                    </p>
+                    <ul class="solution-features">
+                        <li>Market cycle prediction</li>
+                        <li>Investment timing optimization</li>
+                        <li>Stage transition forecasting</li>
+                        <li>Valuation inflection prediction</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="main-content">
+            <h2 class="cta-title">Transform Your <span style="color: #FF6B4A;">Private Market Intelligence</span></h2>
+            <p class="cta-subtitle">
+                Join leading private equity firms and institutional investors using comprehensive intelligence solutions to accelerate decisions and optimize performance.
+            </p>
+            <a href="./contact.html" class="hero-cta">Get Complete Solutions Demo</a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for fade-in animations
+        document.querySelectorAll('.solution-card, .theme-cluster, .metric-card, .hero-carousel-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Smooth scroll to section function
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

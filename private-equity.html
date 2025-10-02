@@ -1,0 +1,2622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Equity Intelligence | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B4A;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0B1A2A 0%, #1a2537 50%, #2a3441 100%);
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 74, 0.3);
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Section Styles */
+        .pe-section {
+            padding: 6rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pe-section:last-child {
+            border-bottom: none;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.8);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Grid Layouts */
+        .capabilities-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+            margin: 3rem 0;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .capability-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem 1.2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        .capability-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: var(--card-gradient, linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 107, 74, 0.6) 20%, 
+                rgba(102, 126, 234, 0.6) 50%, 
+                rgba(0, 206, 201, 0.6) 80%, 
+                transparent
+            ));
+            border-radius: 12px 12px 0 0;
+            opacity: 0.15;
+            transition: opacity 0.4s ease;
+        }
+
+        .capability-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 107, 74, 0.4);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 107, 74, 0.2);
+        }
+
+        .capability-card:hover::before {
+            opacity: 1;
+        }
+
+
+        .capability-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.8rem;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Subtle color variations for capability cards */
+        .capability-card:nth-child(1) {
+            --card-gradient: linear-gradient(135deg, #667eea, #764ba2);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(250, 251, 255, 0.03));
+        }
+
+        .capability-card:nth-child(2) {
+            --card-gradient: linear-gradient(135deg, #f093fb, #f5576c);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(254, 250, 255, 0.03));
+        }
+
+        .capability-card:nth-child(3) {
+            --card-gradient: linear-gradient(135deg, #ffecd2, #fcb69f);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 254, 250, 0.03));
+        }
+
+        .capability-card:nth-child(4) {
+            --card-gradient: linear-gradient(135deg, #a8edea, #fed6e3);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(250, 255, 254, 0.03));
+        }
+
+        /* PE AI Market Mapping Styles */
+        .pe-ai-market-mapping {
+            margin: 4rem 0;
+            padding: 3rem 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 107, 74, 0.1);
+        }
+
+        .bubble-container-pe {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2.5rem;
+            min-height: 550px;
+            padding: 3rem;
+            position: relative;
+        }
+
+        .pe-bubble {
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            text-align: center;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .pe-bubble:hover {
+            transform: scale(1.1);
+            box-shadow: 0 20px 48px rgba(255, 107, 74, 0.4);
+        }
+
+        .bubble-mega {
+            width: 220px;
+            height: 220px;
+            font-size: 1.1rem;
+        }
+
+        .bubble-large-pe {
+            width: 180px;
+            height: 180px;
+            font-size: 1rem;
+        }
+
+        .bubble-medium-pe {
+            width: 140px;
+            height: 140px;
+            font-size: 0.9rem;
+        }
+
+        .bubble-small-pe {
+            width: 110px;
+            height: 110px;
+            font-size: 0.8rem;
+        }
+
+        .pe-bubble-stats {
+            font-size: 0.75rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .pe-market-matrix {
+            margin: 5rem 0;
+        }
+
+        .matrix-container {
+            position: relative;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 16px;
+            padding: 3rem;
+        }
+
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 2rem;
+            min-height: 400px;
+        }
+
+        .matrix-quadrant {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            position: relative;
+        }
+
+        .high-maturity.low-competition {
+            background: linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(27, 94, 32, 0.1));
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .high-maturity.high-competition {
+            background: linear-gradient(135deg, rgba(255, 152, 0, 0.2), rgba(230, 81, 0, 0.1));
+            border-color: rgba(255, 152, 0, 0.3);
+        }
+
+        .low-maturity.low-competition {
+            background: linear-gradient(135deg, rgba(156, 39, 176, 0.2), rgba(106, 27, 154, 0.1));
+            border-color: rgba(156, 39, 176, 0.3);
+        }
+
+        .low-maturity.high-competition {
+            background: linear-gradient(135deg, rgba(244, 67, 54, 0.2), rgba(183, 28, 28, 0.1));
+            border-color: rgba(244, 67, 54, 0.3);
+        }
+
+        .quadrant-label {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .quadrant-companies {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .matrix-company {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 0.9rem;
+            border-left: 3px solid #FF6B4A;
+        }
+
+        .matrix-axes {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .y-axis-label {
+            position: absolute;
+            left: -2rem;
+            top: 50%;
+            transform: rotate(-90deg) translateY(-50%);
+            color: #b8b9c5;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .x-axis-label {
+            position: absolute;
+            bottom: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #b8b9c5;
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .acquisition-targets {
+            margin: 4rem 0;
+        }
+
+        .targets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .target-cluster {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+        }
+
+        .target-header {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid rgba(255, 107, 74, 0.3);
+            padding-bottom: 0.75rem;
+        }
+
+        .target-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .target-company {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .priority-high {
+            border-left-color: #4caf50;
+            background: linear-gradient(90deg, rgba(76, 175, 80, 0.1), transparent);
+        }
+
+        .priority-medium {
+            border-left-color: #ff9800;
+            background: linear-gradient(90deg, rgba(255, 152, 0, 0.1), transparent);
+        }
+
+        .priority-low {
+            border-left-color: #9c27b0;
+            background: linear-gradient(90deg, rgba(156, 39, 176, 0.1), transparent);
+        }
+
+        .company-name {
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .company-metrics {
+            color: #FF6B4A;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .acquisition-rationale {
+            color: #b8b9c5;
+            font-size: 0.85rem;
+            line-height: 1.4;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .capability-description {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .capability-features {
+            list-style: none;
+            margin-top: 1rem;
+        }
+
+        .capability-features li {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .capability-features li::before {
+            content: '▸';
+            color: #FF6B4A;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Use Case Styles */
+        .use-case {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            margin: 4rem 0;
+        }
+
+        .use-case:nth-child(even) .use-case-content {
+            order: 2;
+        }
+
+        .use-case:nth-child(even) .use-case-visual {
+            order: 1;
+        }
+
+        .use-case-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .scenario {
+            background: rgba(255, 107, 74, 0.1);
+            border-left: 3px solid #FF6B4A;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .scenario-title {
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .outcome {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .outcome-title {
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-visual {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        /* Process Flow */
+        .process-flow {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 1rem auto;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+        }
+
+        .step-description {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+        /* Metrics */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .metric-card {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 74, 0.1));
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .metric-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(102, 126, 234, 0.05));
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Hero Carousel */
+        .hero-carousel-container {
+            margin: 3rem 0 2rem 0;
+            position: relative;
+        }
+
+        .hero-solutions-carousel {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex-wrap: nowrap;
+        }
+
+        .hero-carousel-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            min-height: 110px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-carousel-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.05), rgba(102, 126, 234, 0.03));
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            border-radius: 16px;
+        }
+
+        .hero-carousel-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 107, 74, 0.6) 20%, 
+                rgba(102, 126, 234, 0.6) 50%, 
+                rgba(0, 206, 201, 0.6) 80%, 
+                transparent
+            );
+            border-radius: 16px 16px 0 0;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .hero-carousel-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: rgba(255, 107, 74, 0.4);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 107, 74, 0.2);
+        }
+
+        .hero-carousel-card:hover::before {
+            opacity: 1;
+        }
+
+        .hero-carousel-card:hover::after {
+            opacity: 1;
+        }
+
+        .hero-card-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-card-description {
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.3;
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                padding: 0 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .use-case {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .use-case:nth-child(even) .use-case-content,
+            .use-case:nth-child(even) .use-case-visual {
+                order: initial;
+            }
+
+            .section-title {
+                font-size: 2.5rem;
+            }
+
+            .hero-solutions-carousel {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                -webkit-overflow-scrolling: touch;
+                padding: 0 1rem;
+            }
+
+            .hero-carousel-card {
+                scroll-snap-align: start;
+                min-width: 140px;
+                padding: 1rem 0.8rem;
+                min-height: 100px;
+            }
+
+            .hero-card-title {
+                font-size: 0.9rem;
+            }
+
+            .hero-card-description {
+                font-size: 0.75rem;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-solutions-carousel {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+                padding: 0 1rem;
+            }
+
+            .hero-carousel-card {
+                min-width: 150px;
+                padding: 1.2rem 0.8rem;
+                min-height: 95px;
+            }
+
+            .capabilities-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Search Demo Visual Styles */
+        .search-demo-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            margin: 4rem 0;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .demo-header h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .search-interface-visual {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .search-input-section {
+            margin-bottom: 2rem;
+        }
+
+        .search-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+            font-weight: 600;
+        }
+
+        .search-input-mockup {
+            position: relative;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            border-radius: 12px;
+            padding: 1rem 3.5rem 1rem 1.2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-text {
+            color: #1e293b;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .search-icon-mockup {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: #FF6B4A;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(255, 107, 74, 0.3);
+        }
+
+        .search-results-section {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 107, 74, 0.2);
+        }
+
+        .results-count {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .processing-time {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        .top-result {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1.5rem;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .result-rank {
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            font-weight: 700;
+            font-size: 1.2rem;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .result-content {
+            flex: 1;
+        }
+
+        .company-name {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 0.3rem;
+        }
+
+        .match-score {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .classification-summary {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+
+        .confidence-badge {
+            background: rgba(16, 185, 129, 0.2);
+            color: #10b981;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            white-space: nowrap;
+        }
+
+        .dimensional-breakdown {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+
+        .breakdown-header {
+            color: #FF6B4A;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1.2rem;
+            text-align: center;
+        }
+
+        .dimension-grid {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .dimension-item {
+            display: grid;
+            grid-template-columns: 1fr 120px 50px;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .dimension-name {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .dimension-bar {
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .dimension-fill {
+            background: linear-gradient(90deg, #FF6B4A, #10b981);
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.8s ease;
+        }
+
+        .dimension-score {
+            color: #10b981;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-align: right;
+        }
+
+        @media (max-width: 768px) {
+            .search-demo-container {
+                padding: 2rem 1.5rem;
+                margin: 3rem 0;
+            }
+
+            .top-result {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .dimension-item {
+                grid-template-columns: 1fr;
+                gap: 0.5rem;
+                text-align: center;
+            }
+
+            .dimension-bar {
+                width: 100%;
+            }
+        }
+
+        /* Relationship Graph Visualization Styles */
+        .relationship-graph-container {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 100%);
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            border-radius: 20px;
+            padding: 3rem;
+            margin: 4rem 0;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .relationship-graph-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(255, 107, 74, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 50%, rgba(16, 185, 129, 0.05) 0%, transparent 50%);
+            z-index: 0;
+        }
+
+        .graph-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .graph-header h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .graph-header p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+        }
+
+        .network-graph {
+            position: relative;
+            height: 500px;
+            margin: 2rem 0;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+        }
+
+        .graph-node {
+            position: absolute;
+            z-index: 10;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .graph-node:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 15;
+        }
+
+        .node-content {
+            background: rgba(255, 255, 255, 0.95);
+            border: 2px solid;
+            border-radius: 12px;
+            padding: 0.8rem;
+            text-align: center;
+            min-width: 120px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .node-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .node-label {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #1e293b;
+            margin-bottom: 0.2rem;
+        }
+
+        .node-type {
+            font-size: 0.7rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Node Type Specific Styling */
+        .pe-fund-node .node-content {
+            border-color: #FF6B4A;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .target-node .node-content {
+            border-color: #10b981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .board-node .node-content {
+            border-color: #f59e0b;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .alumni-node .node-content {
+            border-color: #8b5cf6;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .coinvestor-node .node-content {
+            border-color: #06b6d4;
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .lp-node .node-content {
+            border-color: #ef4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .executive-node .node-content {
+            border-color: #84cc16;
+            background: linear-gradient(135deg, rgba(132, 204, 22, 0.1), rgba(255, 255, 255, 0.95));
+        }
+
+        .connection-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .connection-line {
+            filter: drop-shadow(0 0 3px currentColor);
+            opacity: 0.8;
+        }
+
+        @keyframes pulse-line {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .connection-line:nth-child(odd) {
+            animation: pulse-line 3s ease-in-out infinite;
+        }
+
+        .pathway-indicator {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 107, 74, 0.3);
+            border-radius: 8px;
+            padding: 0.5rem 0.8rem;
+            z-index: 12;
+            backdrop-filter: blur(10px);
+            transform: translate(-50%, -50%);
+        }
+
+        .pathway-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.2rem;
+        }
+
+        .pathway-strength {
+            font-size: 0.6rem;
+            color: #10b981;
+            font-weight: 700;
+        }
+
+        .network-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-top: 3rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .metric-column {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .network-metrics .metric-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            text-align: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .network-metrics .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .network-metrics .metric-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 768px) {
+            .relationship-graph-container {
+                padding: 2rem 1.5rem;
+                margin: 3rem 0;
+            }
+
+            .network-graph {
+                height: 400px;
+            }
+
+            .graph-node {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            .graph-node:hover {
+                transform: translate(-50%, -50%) scale(0.9);
+            }
+
+            .node-content {
+                min-width: 100px;
+                padding: 0.6rem;
+            }
+
+            .node-label {
+                font-size: 0.8rem;
+            }
+
+            .node-type {
+                font-size: 0.6rem;
+            }
+
+            .pathway-indicator {
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+
+            .network-metrics {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+
+        /* Clean Network Graph Styles */
+        .clean-network-container {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+
+        .clean-network-graph {
+            position: relative;
+            height: 500px;
+            margin: 2rem 0;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+        }
+
+        .network-node-clean {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .network-node-clean:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            z-index: 15;
+        }
+
+        .node-circle-clean {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .network-node-clean:hover .node-circle-clean {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+
+        /* Node Colors */
+        .blue-circle { background: #4A90E2; }
+        .red-circle { background: #E74C3C; }
+        .yellow-circle { background: #F1C40F; }
+        .green-circle { background: #27AE60; }
+        .cyan-circle { background: #1ABC9C; }
+        .orange-circle { background: #E67E22; }
+        .purple-circle { background: #9B59B6; }
+
+        /* Special node labels */
+        .node-label-clean {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #ffffff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 0.2rem 0.6rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            margin-top: 8px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .pe-fund-node .node-label-clean,
+        .target-node .node-label-clean {
+            opacity: 1;
+            font-size: 0.85rem;
+            font-weight: 700;
+        }
+
+        /* Make all intermediate labels visible by default */
+        .network-node-clean .node-label-clean {
+            opacity: 1;
+            font-size: 0.7rem;
+            font-weight: 600;
+            max-width: 120px;
+            line-height: 1.1;
+        }
+
+        .network-node-clean:hover .node-label-clean {
+            opacity: 1;
+            transform: translateX(-50%) scale(1.05);
+            background: rgba(0, 0, 0, 0.85);
+        }
+
+        /* Connection lines */
+        .network-connections {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Network Legend */
+        .network-legend {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .network-legend h4 {
+            color: #FF6B4A;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .legend-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .legend-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .legend-circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            flex-shrink: 0;
+        }
+
+        .legend-item span {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        /* PE Use Case Metrics */
+        .pe-use-case-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric-item-clean {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.03);
+            padding: 1.5rem 1rem;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .metric-item-clean:hover {
+            transform: translateY(-3px);
+            border-color: rgba(255, 107, 74, 0.4);
+        }
+
+        .metric-value-clean {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .metric-label-clean {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        @media (max-width: 768px) {
+            .clean-network-container {
+                padding: 2rem 1rem;
+            }
+
+            .clean-network-graph {
+                height: 350px;
+            }
+
+            .legend-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.75rem;
+            }
+
+            .legend-item {
+                padding: 0.4rem;
+            }
+
+            .legend-item span {
+                font-size: 0.8rem;
+            }
+
+            .pe-use-case-metrics {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+
+            .metric-item-clean {
+                padding: 1rem 0.8rem;
+            }
+
+            .metric-value-clean {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Simple Clean Benchmarking Styles */
+        .simple-benchmarking {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 3rem 0;
+        }
+
+        .benchmark-case {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .benchmark-case h3 {
+            font-size: 1.8rem;
+            color: #FF6B4A;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .benchmark-case p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.1rem;
+        }
+
+        .benchmark-comparison {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            gap: 2rem;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .target-metrics, .peer-metrics {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .target-metrics h4, .peer-metrics h4 {
+            color: #ffffff;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+
+        .metric-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+        }
+
+        .target-val { color: #FF6B4A; font-weight: 700; }
+        .peer-val { color: #10b981; font-weight: 700; }
+
+        .upside { color: #10b981; font-size: 0.8rem; font-weight: 600; }
+        .equal { color: #9ca3af; font-size: 0.8rem; font-weight: 600; }
+        .gap { color: #ef4444; font-size: 0.8rem; font-weight: 600; }
+
+        .vs-indicator {
+            background: linear-gradient(135deg, #FF6B4A, #10b981);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+        }
+
+        .benchmark-insight {
+            margin-top: 2rem;
+        }
+
+        .insight-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            border-radius: 12px;
+            padding: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            text-align: center;
+        }
+
+        .insight-box strong {
+            color: #10b981;
+        }
+
+        @media (max-width: 768px) {
+            .benchmark-comparison {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .vs-indicator {
+                width: 50px;
+                height: 50px;
+                font-size: 1rem;
+                margin: 0 auto;
+            }
+        }
+
+        /* Clean AI Market Landscape Bubble Map */
+        .ai-market-landscape {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 107, 74, 0.2);
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+            text-align: center;
+        }
+
+        .ai-market-landscape h3 {
+            font-size: 2rem;
+            color: #FF6B4A;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .ai-market-landscape p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+        }
+
+        .clean-bubble-map {
+            position: relative;
+            height: 500px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            padding: 2rem;
+        }
+
+        .market-bubble {
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .market-bubble:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .market-bubble span {
+            padding: 0.5rem;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+            line-height: 1.2;
+        }
+
+        /* Bubble Sizes Based on Market Size */
+        .mega-market {
+            width: 160px;
+            height: 160px;
+            font-size: 1.1rem;
+        }
+
+        .large-market {
+            width: 130px;
+            height: 130px;
+            font-size: 1rem;
+        }
+
+        .medium-market {
+            width: 100px;
+            height: 100px;
+            font-size: 0.9rem;
+        }
+
+        .small-market {
+            width: 80px;
+            height: 80px;
+            font-size: 0.8rem;
+        }
+
+        @media (max-width: 768px) {
+            .ai-market-landscape {
+                padding: 2rem 1rem;
+            }
+
+            .clean-bubble-map {
+                height: 400px;
+                gap: 0.5rem;
+                padding: 1rem;
+            }
+
+            .mega-market {
+                width: 120px;
+                height: 120px;
+                font-size: 0.9rem;
+            }
+
+            .large-market {
+                width: 100px;
+                height: 100px;
+                font-size: 0.8rem;
+            }
+
+            .medium-market {
+                width: 80px;
+                height: 80px;
+                font-size: 0.7rem;
+            }
+
+            .small-market {
+                width: 65px;
+                height: 65px;
+                font-size: 0.65rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Private Markets Graph</div>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./Classification/index.html">Classification</a></li>
+                <li><a href="./private-equity.html">Private Equity</a></li>
+                <li><a href="./funds.html">Funds</a></li>
+                <li><a href="./solutions.html">Solutions</a></li>
+                <li><a href="./contact.html">Book Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="accent">Private Equity</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Transform PE operations through systematic deal identification, peer analysis, benchmarking, relationship intelligence, market mapping, and competitive analysis powered by 18-dimensional classification.
+            </p>
+            
+            <!-- PE Carousel in Hero -->
+            <div class="hero-carousel-container">
+                <div class="hero-solutions-carousel">
+                    <div class="hero-carousel-card" onclick="scrollToSection('company-identification')">
+                        <h3 class="hero-card-title">Company ID</h3>
+                        <p class="hero-card-description">Target discovery & analysis</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('market-mapping')">
+                        <h3 class="hero-card-title">Market Mapping</h3>
+                        <p class="hero-card-description">Thematic landscape view</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('relationships')">
+                        <h3 class="hero-card-title">Relationships</h3>
+                        <p class="hero-card-description">Find co-investor paths</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('peer-set')">
+                        <h3 class="hero-card-title">Peer Sets</h3>
+                        <p class="hero-card-description">True business model peers</p>
+                    </div>
+                    
+                    <div class="hero-carousel-card" onclick="scrollToSection('benchmarking')">
+                        <h3 class="hero-card-title">Benchmarking</h3>
+                        <p class="hero-card-description">Multi-dimensional comparison</p>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <a href="./contact.html" class="hero-cta">Get PE Intelligence Demo</a>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- 1. Overview Section -->
+        <section class="pe-section" id="overview">
+            <div class="section-header">
+                <h2 class="section-title">Overview</h2>
+                <p class="section-subtitle">
+                    Complete private equity intelligence platform spanning the entire investment lifecycle from deal origination through portfolio management and exit optimization.
+                </p>
+            </div>
+
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <h3 class="capability-title">Systematic Deal Flow</h3>
+                    <p class="capability-description">
+                        Generate qualified investment opportunities 18 months before they become obvious to competitors through 18-dimensional universe analysis.
+                    </p>
+                    <ul class="capability-features">
+                        <li>Early opportunity detection</li>
+                        <li>Theme-based universe generation</li>
+                        <li>Competitive advantage timing</li>
+                    </ul>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Scientific Due Diligence</h3>
+                    <p class="capability-description">
+                        True peer identification and multi-dimensional benchmarking for accurate valuation and risk assessment across all business model dimensions.
+                    </p>
+                    <ul class="capability-features">
+                        <li>True peer identification</li>
+                        <li>Multi-dimensional benchmarking</li>
+                        <li>Risk correlation analysis</li>
+                    </ul>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Relationship Intelligence</h3>
+                    <p class="capability-description">
+                        Graph-powered relationship mapping for warm introductions, co-investment opportunities, and strategic partnership identification.
+                    </p>
+                    <ul class="capability-features">
+                        <li>Warm introduction paths</li>
+                        <li>Co-investment discovery</li>
+                        <li>LP network mapping</li>
+                    </ul>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Market Intelligence</h3>
+                    <p class="capability-description">
+                        Comprehensive market mapping and competitive landscape analysis for strategic positioning and market timing decisions.
+                    </p>
+                    <ul class="capability-features">
+                        <li>Market landscape mapping</li>
+                        <li>Competitive positioning</li>
+                        <li>Timing optimization</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-value">18</div>
+                    <div class="metric-label">Classification Dimensions</div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-value">$1B+</div>
+                    <div class="metric-label">AUM Using Platform</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Company Identification Section -->
+        <section class="pe-section" id="company-identification">
+            <div class="section-header">
+                <h2 class="section-title">Company Identification</h2>
+                <p class="section-subtitle">
+                    Systematic universe generation and early-stage opportunity detection using 18-dimensional classification to identify breakout companies before they become obvious.
+                </p>
+            </div>
+
+            <!-- Live Search Demo Visual -->
+            <div class="search-demo-container">
+                <div class="demo-header">
+                    <h3>Live Company Discovery Demo</h3>
+                    <p>See how thematic search identifies target companies through 18-dimensional analysis</p>
+                </div>
+                
+                <div class="search-interface-visual">
+                    <!-- Search Input -->
+                    <div class="search-input-section">
+                        <div class="search-label">Thematic Search Query</div>
+                        <div class="search-input-mockup">
+                            <span class="search-text">Document Automation for Alternative Funds</span>
+                            <div class="search-icon-mockup">🔍</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div class="search-results-section">
+                        <div class="results-header">
+                            <span class="results-count">1 Company Identified</span>
+                            <span class="processing-time">Processed in 2.3s</span>
+                        </div>
+                        
+                        <div class="top-result">
+                            <div class="result-rank">#1</div>
+                            <div class="result-content">
+                                <div class="company-name">Canoe Intelligence</div>
+                                <div class="match-score">98% Match Score</div>
+                                <div class="classification-summary">
+                                    Alternative Funds • Document Automation • AI/ML Processing • Series C
+                                </div>
+                            </div>
+                            <div class="confidence-badge">High Confidence</div>
+                        </div>
+                        
+                        <!-- Dimensional Analysis -->
+                        <div class="dimensional-breakdown">
+                            <div class="breakdown-header">18-Dimensional Analysis</div>
+                            <div class="dimension-grid">
+                                <div class="dimension-item">
+                                    <span class="dimension-name">Industry Served</span>
+                                    <div class="dimension-bar"><div class="dimension-fill" style="width: 96%"></div></div>
+                                    <span class="dimension-score">96%</span>
+                                </div>
+                                <div class="dimension-item">
+                                    <span class="dimension-name">Product Lines</span>
+                                    <div class="dimension-bar"><div class="dimension-fill" style="width: 94%"></div></div>
+                                    <span class="dimension-score">94%</span>
+                                </div>
+                                <div class="dimension-item">
+                                    <span class="dimension-name">Technology Stack</span>
+                                    <div class="dimension-bar"><div class="dimension-fill" style="width: 92%"></div></div>
+                                    <span class="dimension-score">92%</span>
+                                </div>
+                                <div class="dimension-item">
+                                    <span class="dimension-name">Customer Base</span>
+                                    <div class="dimension-bar"><div class="dimension-fill" style="width: 98%"></div></div>
+                                    <span class="dimension-score">98%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="process-flow">
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Theme Definition</div>
+                    <div class="step-description">Identify emerging convergence themes through 18-dimensional analysis patterns</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Universe Generation</div>
+                    <div class="step-description">Create target universe using multi-dimensional filters and similarity scoring</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Signal Validation</div>
+                    <div class="step-description">Validate opportunities using public data signals and growth indicators</div>
+                </div>
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Prioritization</div>
+                    <div class="step-description">Rank opportunities by breakout probability and strategic fit scoring</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Relationship Intelligence Section -->
+        <section class="pe-section" id="relationships">
+            <div class="section-header">
+                <h2 class="section-title">Relationship Intelligence</h2>
+                <p class="section-subtitle">
+                    Graph-powered relationship intelligence to identify warm introduction paths, co-investment opportunities, and strategic network connections.
+                </p>
+            </div>
+
+            <!-- Clean Network Graph Visualization -->
+            <div class="clean-network-container">
+                <div class="graph-header">
+                    <h3>PE Network Intelligence Graph</h3>
+                    <p>Multi-dimensional relationship mapping for strategic deal access and co-investment discovery</p>
+                </div>
+                
+                <div class="clean-network-graph">
+                    <!-- Main PE Fund - Left -->
+                    <div class="network-node-clean pe-fund-node" style="top: 50%; left: 5%;">
+                        <div class="node-circle-clean blue-circle"></div>
+                        <div class="node-label-clean">Foundation Capital</div>
+                    </div>
+                    
+                    <!-- Target Company - Right -->
+                    <div class="network-node-clean target-node" style="top: 50%; right: 5%;">
+                        <div class="node-circle-clean red-circle"></div>
+                        <div class="node-label-clean">Meridian Tech</div>
+                    </div>
+                    
+                    <!-- Network Intermediaries with PE Labels -->
+                    <!-- Board Members -->
+                    <div class="network-node-clean" style="top: 15%; left: 30%;">
+                        <div class="node-circle-clean purple-circle"></div>
+                        <div class="node-label-clean">Sarah Chen<br><span style="font-size:0.6rem;">Board Member</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 25%; left: 70%;">
+                        <div class="node-circle-clean purple-circle"></div>
+                        <div class="node-label-clean">Michael Torres<br><span style="font-size:0.6rem;">Former CEO</span></div>
+                    </div>
+                    
+                    <!-- Portfolio Companies -->
+                    <div class="network-node-clean" style="top: 30%; left: 25%;">
+                        <div class="node-circle-clean green-circle"></div>
+                        <div class="node-label-clean">VectorCore<br><span style="font-size:0.6rem;">Portfolio Co</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 35%; left: 75%;">
+                        <div class="node-circle-clean green-circle"></div>
+                        <div class="node-label-clean">Synthetic AI<br><span style="font-size:0.6rem;">Portfolio Co</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 70%; left: 35%;">
+                        <div class="node-circle-clean green-circle"></div>
+                        <div class="node-label-clean">DocumentAI<br><span style="font-size:0.6rem;">Portfolio Co</span></div>
+                    </div>
+                    
+                    <!-- Co-Investors / PE Firms -->
+                    <div class="network-node-clean" style="top: 20%; left: 50%;">
+                        <div class="node-circle-clean cyan-circle"></div>
+                        <div class="node-label-clean">Catalyst Ventures<br><span style="font-size:0.6rem;">Co-Investor</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 45%; left: 35%;">
+                        <div class="node-circle-clean cyan-circle"></div>
+                        <div class="node-label-clean">Meridian Ventures<br><span style="font-size:0.6rem;">Co-Investor</span></div>
+                    </div>
+                    
+                    <!-- Limited Partners -->
+                    <div class="network-node-clean" style="top: 65%; left: 15%;">
+                        <div class="node-circle-clean orange-circle"></div>
+                        <div class="node-label-clean">CalPERS<br><span style="font-size:0.6rem;">Limited Partner</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 60%; left: 85%;">
+                        <div class="node-circle-clean orange-circle"></div>
+                        <div class="node-label-clean">Harvard Endowment<br><span style="font-size:0.6rem;">Limited Partner</span></div>
+                    </div>
+                    
+                    <!-- Management Team -->
+                    <div class="network-node-clean" style="top: 50%; left: 45%;">
+                        <div class="node-circle-clean yellow-circle"></div>
+                        <div class="node-label-clean">James Chen<br><span style="font-size:0.6rem;">Former Executive</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 40%; left: 65%;">
+                        <div class="node-circle-clean yellow-circle"></div>
+                        <div class="node-label-clean">Lisa Wang<br><span style="font-size:0.6rem;">CFO</span></div>
+                    </div>
+                    
+                    <!-- Investment Banks -->
+                    <div class="network-node-clean" style="top: 75%; left: 60%;">
+                        <div class="node-circle-clean blue-circle"></div>
+                        <div class="node-label-clean">Goldman Sachs<br><span style="font-size:0.6rem;">Investment Bank</span></div>
+                    </div>
+                    
+                    <!-- Alumni Networks -->
+                    <div class="network-node-clean" style="top: 80%; left: 25%;">
+                        <div class="node-circle-clean yellow-circle"></div>
+                        <div class="node-label-clean">Stanford GSB<br><span style="font-size:0.6rem;">Alumni Network</span></div>
+                    </div>
+                    
+                    <!-- Additional strategic nodes -->
+                    <div class="network-node-clean" style="top: 55%; left: 20%;">
+                        <div class="node-circle-clean yellow-circle"></div>
+                        <div class="node-label-clean">David Kim<br><span style="font-size:0.6rem;">Partner</span></div>
+                    </div>
+                    <div class="network-node-clean" style="top: 85%; left: 70%;">
+                        <div class="node-circle-clean cyan-circle"></div>
+                        <div class="node-label-clean">Sequoia Capital<br><span style="font-size:0.6rem;">VC Firm</span></div>
+                    </div>
+                    
+                    <!-- Connection Lines SVG -->
+                    <svg class="network-connections" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <!-- Main connections from Foundation Capital -->
+                        <line x1="5" y1="50" x2="25" y2="8" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="5" y1="50" x2="15" y2="25" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="5" y1="50" x2="12" y2="40" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="5" y1="50" x2="18" y2="58" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="5" y1="50" x2="25" y2="78" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        
+                        <!-- Network interconnections -->
+                        <line x1="25" y1="8" x2="40" y2="5" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="40" y1="5" x2="55" y2="12" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="55" y1="12" x2="70" y2="8" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        
+                        <line x1="15" y1="25" x2="30" y2="22" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="30" y1="22" x2="45" y2="18" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="45" y1="18" x2="60" y2="28" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="60" y1="28" x2="75" y2="20" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="75" y1="20" x2="85" y2="25" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        
+                        <line x1="12" y1="40" x2="25" y2="38" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="25" y1="38" x2="35" y2="45" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="35" y1="45" x2="50" y2="35" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="50" y1="35" x2="65" y2="42" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="65" y1="42" x2="78" y2="38" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        
+                        <line x1="18" y1="58" x2="32" y2="62" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="32" y1="62" x2="48" y2="55" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="48" y1="55" x2="62" y2="65" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="62" y1="65" x2="75" y2="58" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="75" y1="58" x2="88" y2="60" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        
+                        <line x1="25" y1="78" x2="38" y2="82" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="38" y1="82" x2="52" y2="75" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="52" y1="75" x2="65" y2="88" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        <line x1="65" y1="88" x2="78" y2="80" stroke="rgba(200,200,200,0.3)" stroke-width="0.1"/>
+                        
+                        <!-- Connections to target company -->
+                        <line x1="70" y1="8" x2="95" y2="50" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="85" y1="25" x2="95" y2="50" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="78" y1="38" x2="95" y2="50" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="88" y1="60" x2="95" y2="50" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        <line x1="78" y1="80" x2="95" y2="50" stroke="rgba(200,200,200,0.4)" stroke-width="0.15"/>
+                        
+                        <!-- Cross connections for network density -->
+                        <line x1="25" y1="8" x2="35" y2="45" stroke="rgba(200,200,200,0.2)" stroke-width="0.08"/>
+                        <line x1="30" y1="22" x2="48" y2="55" stroke="rgba(200,200,200,0.2)" stroke-width="0.08"/>
+                        <line x1="45" y1="18" x2="62" y2="65" stroke="rgba(200,200,200,0.2)" stroke-width="0.08"/>
+                        <line x1="60" y1="28" x2="38" y2="82" stroke="rgba(200,200,200,0.2)" stroke-width="0.08"/>
+                        <line x1="50" y1="35" x2="78" y2="80" stroke="rgba(200,200,200,0.2)" stroke-width="0.08"/>
+                    </svg>
+                </div>
+                
+                <!-- Network Legend -->
+                <div class="network-legend">
+                    <h4>Network Legend</h4>
+                    <div class="legend-grid">
+                        <div class="legend-item">
+                            <div class="legend-circle blue-circle"></div>
+                            <span>PE Fund / Investment Bank</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle red-circle"></div>
+                            <span>Target Company</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle green-circle"></div>
+                            <span>Portfolio Companies</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle purple-circle"></div>
+                            <span>Board Members</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle cyan-circle"></div>
+                            <span>Co-Investors / VC Firms</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle orange-circle"></div>
+                            <span>Limited Partners</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-circle yellow-circle"></div>
+                            <span>Management / Alumni</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PE Use Case Metrics -->
+                <div class="pe-use-case-metrics">
+                    <div class="metric-item-clean">
+                        <div class="metric-value-clean">2,847</div>
+                        <div class="metric-label-clean">Network Connections</div>
+                    </div>
+                    <div class="metric-item-clean">
+                        <div class="metric-value-clean">156</div>
+                        <div class="metric-label-clean">Warm Intro Paths</div>
+                    </div>
+                    <div class="metric-item-clean">
+                        <div class="metric-value-clean">23</div>
+                        <div class="metric-label-clean">Co-Investment Partners</div>
+                    </div>
+                    <div class="metric-item-clean">
+                        <div class="metric-value-clean">89%</div>
+                        <div class="metric-label-clean">Success Rate</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <h3 class="capability-title">Network Mapping</h3>
+                    <p class="capability-description">
+                        Comprehensive relationship mapping across board connections, shared investors, management networks, and strategic partnerships.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Path Optimization</h3>
+                    <p class="capability-description">
+                        Identify shortest and strongest introduction paths with relationship strength scoring and introduction success probability.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Co-Investment Discovery</h3>
+                    <p class="capability-description">
+                        Find co-investment opportunities through portfolio overlap analysis and shared LP relationship mapping.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. Peer Set Section -->
+        <section class="pe-section" id="peer-set">
+            <div class="section-header">
+                <h2 class="section-title">Peer Set</h2>
+                <p class="section-subtitle">
+                    Discover true business model peers through 18-dimensional similarity analysis, moving beyond industry codes to identify authentic comparable companies.
+                </p>
+            </div>
+
+            <div class="use-case">
+                <div class="use-case-content">
+                    <h3>True Peer Discovery</h3>
+                    <p>Identify authentic business model peers using multi-dimensional similarity scoring across revenue patterns, customer segments, technology architecture, and operational characteristics.</p>
+                    
+                    <div class="scenario">
+                        <div class="scenario-title">Nexus Analytics Peer Analysis</div>
+                        <p>Found 23 true peers for B2B data intelligence platform based on 87.3% multi-dimensional similarity - beyond simple "data analytics" classification.</p>
+                    </div>
+
+                    <div class="outcome">
+                        <div class="outcome-title">Peer Insights</div>
+                        <p>Business model (94%), Customer segments (89%), Revenue patterns (85%), Technology stack (82%) similarity scores enable precise benchmarking.</p>
+                    </div>
+                </div>
+                <div class="use-case-visual">
+                    Peer Set Analysis<br><br>
+                    ✓ Multi-Dimensional Matching<br>
+                    ✓ Business Model Similarity<br>
+                    ✓ True Comparables<br>
+                    ✓ Confidence Scoring
+                </div>
+            </div>
+
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <h3 class="capability-title">Similarity Scoring</h3>
+                    <p class="capability-description">
+                        Advanced algorithms calculate multi-dimensional similarity scores across all 18 classification dimensions with confidence intervals.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">True Comparables</h3>
+                    <p class="capability-description">
+                        Move beyond SIC codes to identify companies with authentic business model similarity for accurate valuation benchmarking.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Dynamic Updates</h3>
+                    <p class="capability-description">
+                        Peer sets evolve as companies change business models, ensuring current and relevant comparable analysis.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. Benchmarking Section -->
+        <section class="pe-section" id="benchmarking">
+            <div class="section-header">
+                <h2 class="section-title">Benchmarking</h2>
+                <p class="section-subtitle">
+                    Multi-dimensional performance benchmarking across operational metrics, financial patterns, and strategic positioning using true peer sets.
+                </p>
+            </div>
+
+            <!-- Clean Benchmarking Visualization -->
+            <div class="simple-benchmarking">
+                <div class="benchmark-case">
+                    <h3>Nexus Analytics</h3>
+                    <p>18-Dimensional benchmarking reveals 45% valuation gap vs. true business model peers</p>
+                </div>
+                
+                <div class="benchmark-comparison">
+                    <div class="target-metrics">
+                        <h4>Target Company</h4>
+                        <div class="metric-row">
+                            <span>Financing Stage</span>
+                            <span class="target-val">Series B</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Product Type</span>
+                            <span class="target-val">B2B SaaS</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>End Customer</span>
+                            <span class="target-val">Mid-Market</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Tech Stack</span>
+                            <span class="target-val">Cloud-Native</span>
+                        </div>
+                    </div>
+                    
+                    <div class="vs-indicator">VS</div>
+                    
+                    <div class="peer-metrics">
+                        <h4>18D Peer Similarity</h4>
+                        <div class="metric-row">
+                            <span>Financing Stage</span>
+                            <span class="peer-val">94%</span>
+                            <span class="upside">Match</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Product Type</span>
+                            <span class="peer-val">91%</span>
+                            <span class="upside">Match</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>End Customer</span>
+                            <span class="peer-val">89%</span>
+                            <span class="upside">Match</span>
+                        </div>
+                        <div class="metric-row">
+                            <span>Tech Stack</span>
+                            <span class="peer-val">85%</span>
+                            <span class="upside">Match</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="benchmark-insight">
+                    <div class="insight-box">
+                        <strong>Key Insight:</strong> Traditional "data analytics" comps miss true business model peers (ServiceCore, MedFlow, LogiTech Pro) showing 45% valuation upside opportunity.
+                    </div>
+                </div>
+            </div>
+
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <h3 class="capability-title">Operational Metrics</h3>
+                    <p class="capability-description">
+                        Compare growth rates, efficiency ratios, customer metrics, and operational performance against true peer sets.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Financial Analysis</h3>
+                    <p class="capability-description">
+                        Revenue patterns, margin structures, capital efficiency, and unit economics benchmarking with confidence intervals.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Strategic Position</h3>
+                    <p class="capability-description">
+                        Market position, competitive advantages, differentiation analysis, and strategic moats assessment.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 6. Market Mapping Section -->
+        <section class="pe-section" id="market-mapping">
+            <div class="section-header">
+                <h2 class="section-title">Market Mapping</h2>
+                <p class="section-subtitle">
+                    Comprehensive market landscape analysis and competitive positioning through 18-dimensional classification and trend analysis.
+                </p>
+            </div>
+
+
+            <div class="ai-market-landscape">
+                <h3>AI Market Opportunity Landscape</h3>
+                <p>Infrastructure and application layer opportunities across AI vertical markets</p>
+                
+                <div class="clean-bubble-map">
+                    <!-- Large Markets ($10B+) -->
+                    <div class="market-bubble mega-market" style="background: linear-gradient(135deg, #FF6B4A, #e55a42);">
+                        <span>LLM Infrastructure</span>
+                    </div>
+                    
+                    <div class="market-bubble mega-market" style="background: linear-gradient(135deg, #10b981, #047857);">
+                        <span>Computer Vision Infra</span>
+                    </div>
+                    
+                    <!-- Large Markets ($5-10B) -->
+                    <div class="market-bubble large-market" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+                        <span>Voice Infrastructure</span>
+                    </div>
+                    
+                    <div class="market-bubble large-market" style="background: linear-gradient(135deg, #8b5cf6, #5b21b6);">
+                        <span>NLP Infrastructure</span>
+                    </div>
+                    
+                    <div class="market-bubble large-market" style="background: linear-gradient(135deg, #06b6d4, #0e7490);">
+                        <span>ML Ops Platforms</span>
+                    </div>
+                    
+                    <!-- Medium Markets ($1-5B) -->
+                    <div class="market-bubble medium-market" style="background: linear-gradient(135deg, #f59e0b, #d97706);">
+                        <span>Edge AI Chips</span>
+                    </div>
+                    
+                    <div class="market-bubble medium-market" style="background: linear-gradient(135deg, #ef4444, #dc2626);">
+                        <span>AI Security Tools</span>
+                    </div>
+                    
+                    <div class="market-bubble medium-market" style="background: linear-gradient(135deg, #84cc16, #65a30d);">
+                        <span>Synthetic Data</span>
+                    </div>
+                    
+                    <div class="market-bubble medium-market" style="background: linear-gradient(135deg, #a855f7, #7c3aed);">
+                        <span>AI Model Monitoring</span>
+                    </div>
+                    
+                    <!-- Small Markets ($500M-1B) -->
+                    <div class="market-bubble small-market" style="background: linear-gradient(135deg, #ec4899, #be185d);">
+                        <span>Prompt Engineering</span>
+                    </div>
+                    
+                    <div class="market-bubble small-market" style="background: linear-gradient(135deg, #14b8a6, #0f766e);">
+                        <span>AI Governance</span>
+                    </div>
+                    
+                    <div class="market-bubble small-market" style="background: linear-gradient(135deg, #f97316, #ea580c);">
+                        <span>Vector Databases</span>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+
+            <div class="capabilities-grid">
+                <div class="capability-card">
+                    <h3 class="capability-title">Market Analysis</h3>
+                    <p class="capability-description">
+                        Map comprehensive market landscapes and identify white space opportunities through systematic classification and competitive positioning analysis.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Competitive Intelligence</h3>
+                    <p class="capability-description">
+                        Track competitive dynamics, market maturity, and strategic positioning across AI infrastructure and application verticals.
+                    </p>
+                </div>
+
+                <div class="capability-card">
+                    <h3 class="capability-title">Opportunity Discovery</h3>
+                    <p class="capability-description">
+                        Identify underinvested segments, emerging technologies, and market gaps for strategic investment timing and portfolio construction.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="main-content">
+            <h2 class="cta-title">Transform Your <span style="color: #FF6B4A;">PE Intelligence</span></h2>
+            <p class="cta-subtitle">
+                Join leading private equity firms using scientific intelligence to accelerate deal decisions, optimize portfolio performance, and maximize value creation.
+            </p>
+            <a href="./contact.html" class="hero-cta">Get PE Intelligence Demo</a>
+        </div>
+    </section>
+
+    <script>
+        // Smooth scrolling for navigation
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe elements for fade-in animations
+        document.querySelectorAll('.capability-card, .use-case, .process-step, .hero-carousel-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Smooth scroll to section function
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

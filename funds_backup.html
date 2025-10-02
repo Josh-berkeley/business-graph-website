@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Institutional Fund Intelligence | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 0.5rem 1.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0B1A2A 0%, #1a2537 50%, #2a3441 100%);
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 2rem;
+            font-weight: 300;
+            line-height: 1.4;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 74, 0.3);
+        }
+
+        /* Solutions Section */
+        .solutions-section {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 4rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .solution-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .solution-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .solution-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 74, 0.3);
+        }
+
+        .solution-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .benchmarking-card { --gradient: linear-gradient(90deg, #2d5aa0, #1e3c72); }
+        .predictions-card { --gradient: linear-gradient(90deg, #e74c3c, #c0392b); }
+        .relationships-card { --gradient: linear-gradient(90deg, #6c5ce7, #a29bfe); }
+
+        .solution-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            background: var(--gradient);
+        }
+
+        .solution-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #FF6B4A;
+        }
+
+        .solution-card .funds-title {
+            font-size: 1.3rem;
+            color: #ffffff;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .solution-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Use Cases Section */
+        .use-cases-section {
+            padding: 6rem 0;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            gap: 4rem;
+        }
+
+        .use-case {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            padding: 3rem 0;
+        }
+
+        .use-case:nth-child(even) .use-case-content {
+            order: 2;
+        }
+
+        .use-case:nth-child(even) .use-case-visual {
+            order: 1;
+        }
+
+        .use-case-content h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-content .scenario {
+            background: rgba(255, 107, 74, 0.1);
+            border-left: 3px solid #FF6B4A;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .scenario-title {
+            font-weight: 600;
+            color: #FF6B4A;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-content p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .outcome {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .outcome-title {
+            font-weight: 600;
+            color: #10b981;
+            margin-bottom: 0.5rem;
+        }
+
+        .use-case-visual {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .visual-placeholder {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 1.1rem;
+        }
+
+        /* LP Network Section */
+        .lp-network-section {
+            padding: 6rem 0;
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(255, 107, 74, 0.05));
+        }
+
+        .network-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .network-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .network-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem auto;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .network-card h4 {
+            color: #FF6B4A;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .network-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.5;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 107, 74, 0.1), rgba(102, 126, 234, 0.05));
+        }
+
+        .cta-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #ffffff;
+        }
+
+        .cta-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .hero-stats {
+                gap: 1.5rem;
+            }
+
+            .solutions-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .use-case {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .use-case:nth-child(even) .use-case-content,
+            .use-case:nth-child(even) .use-case-visual {
+                order: initial;
+            }
+
+            .container {
+                padding: 0 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero-stats {
+                flex-direction: column;
+                gap: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Business Graph</div>
+            <ul class="nav-links">
+                <li><a href="./index.html">Home</a></li>
+                <li><a href="./Classification/index.html">Classification</a></li>
+                <li class="dropdown">
+                    <a href="#solutions">Solutions</a>
+                    <div class="dropdown-content">
+                        <a href="./Indices/index.html">Indices</a>
+                        <a href="./Benchmarking/index.html">Benchmarking</a>
+                        <a href="./Relationships/index.html">Relationships</a>
+                        <a href="./Predictions/index.html">Predictions</a>
+                        <a href="./Classification/index.html">Classification</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#workflows">Workflows</a>
+                    <div class="dropdown-content">
+                        <a href="./private-equity.html">Private Equity</a>
+                        <a href="./funds.html">Funds</a>
+                    </div>
+                </li>
+                <li><a href="./contact.html">Book Demo</a></li>
+            </ul>
+            <a href="./contact.html" class="contact-btn">Book Demo</a>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Manager Selection & <span class="accent">Portfolio Construction</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Transform institutional allocation with systematic manager due diligence, performance forecasting, and LP network intelligence. Our 18-dimensional analysis reveals operational insights beyond track records to optimize allocation decisions.
+            </p>
+            
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="stat-number">85%</span>
+                    <span class="stat-label">Manager Selection Precision</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-number">3-6mo</span>
+                    <span class="stat-label">Performance Inflection Lead</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-number">2.3x</span>
+                    <span class="stat-label">Co-Investment Discovery</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="stat-number">40+</span>
+                    <span class="stat-label">LP Network Analysis</span>
+                </div>
+            </div>
+
+            <a href="./contact.html" class="hero-cta">Get Institutional Intelligence Demo</a>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section class="solutions-section">
+        <div class="container">
+            <h2 class="section-title">Complete <span style="color: #FF6B4A;">Institutional</span> Intelligence Toolkit</h2>
+            <p class="section-subtitle">
+                Three core capabilities that transform how institutional investors evaluate managers, construct portfolios, and optimize allocation decisions.
+            </p>
+
+            <div class="solutions-grid">
+                <div class="solution-card benchmarking-card">
+                    <div class="solution-icon">🎯</div>
+                    <h3>Peer Benchmarking</h3>
+                    <div class="funds-title">Manager Due Diligence Intelligence</div>
+                    <p>Move beyond track records to understand true operational similarities. 18-dimensional analysis reveals manager capabilities, team dynamics, and operational patterns that predict performance persistence.</p>
+                    <div class="solution-stats">
+                        <span>True Operational Peers</span>
+                        <span>Team Analysis</span>
+                        <span>Capability Scoring</span>
+                    </div>
+                </div>
+
+                <div class="solution-card predictions-card">
+                    <div class="solution-icon">🔮</div>
+                    <h3>Predictions</h3>
+                    <div class="funds-title">Performance Inflection Forecasting</div>
+                    <p>Identify manager performance cycles 3-6 months early with systematic signal processing. Early warning system for strategy drift, team changes, and market positioning shifts that impact returns.</p>
+                    <div class="solution-stats">
+                        <span>Early Warning System</span>
+                        <span>Strategy Drift Detection</span>
+                        <span>Team Change Impact</span>
+                    </div>
+                </div>
+
+                <div class="solution-card relationships-card">
+                    <div class="solution-icon">🕸️</div>
+                    <h3>Relationships</h3>
+                    <div class="funds-title">LP Network & Co-Investment Intelligence</div>
+                    <p>Discover co-investment opportunities and consortium partners through LP network analysis. Graph-powered intelligence reveals allocation patterns, co-investment history, and strategic partnership potential.</p>
+                    <div class="solution-stats">
+                        <span>LP Network Mapping</span>
+                        <span>Co-Investment Discovery</span>
+                        <span>Consortium Analysis</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases-section">
+        <div class="container">
+            <h2 class="section-title">Core <span style="color: #FF6B4A;">Institutional Use Cases</span></h2>
+            
+            <div class="use-cases-grid">
+                <!-- Use Case 1 -->
+                <div class="use-case">
+                    <div class="use-case-content">
+                        <h3>Manager Analysis Beyond Track Records</h3>
+                        <p>Systematic operational peer discovery that reveals true manager capabilities and performance persistence factors.</p>
+                        
+                        <div class="scenario">
+                            <div class="scenario-title">Scenario: CalPERS Evaluating Growth Equity Managers</div>
+                            <p>Need to allocate $500M across 3-4 growth equity managers. Traditional metrics show similar IRRs but want operational insight into team stability, sourcing capabilities, and value creation expertise.</p>
+                        </div>
+
+                        <p><strong>Traditional Approach:</strong> Track record analysis, reference calls, limited operational visibility into team dynamics and sourcing patterns.</p>
+                        
+                        <p><strong>Our Intelligence:</strong> 18-dimensional operational analysis reveals manager A has 34% partner turnover vs 12% for peers, manager B sources 67% deals through network vs 23% average, manager C shows declining value creation capability scores.</p>
+
+                        <div class="outcome">
+                            <div class="outcome-title">Outcome</div>
+                            <p>Selected manager B for network strength, avoided manager A for instability, concentrated 60% allocation based on operational scoring vs equal weighting.</p>
+                        </div>
+                    </div>
+                    <div class="use-case-visual">
+                        <div class="visual-placeholder">
+                            📊 Manager Operational Analysis<br>
+                            18-Dimensional Scoring<br>
+                            Team Stability Metrics
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case 2 -->
+                <div class="use-case">
+                    <div class="use-case-content">
+                        <h3>Performance Inflection Early Warning</h3>
+                        <p>Identify manager performance cycles and strategy shifts before they impact returns with predictive signal analysis.</p>
+                        
+                        <div class="scenario">
+                            <div class="scenario-title">Scenario: Ontario Teachers' Monitoring $2B Manager Portfolio</div>
+                            <p>20 manager relationships across strategies, need early visibility into performance inflection points and strategy drift to optimize allocation and redemption timing.</p>
+                        </div>
+
+                        <p><strong>Traditional Monitoring:</strong> Quarterly performance reports, annual reviews, reactive adjustment to performance changes after they occur.</p>
+                        
+                        <p><strong>Our Intelligence:</strong> Signal processing detects manager X hiring 8 junior professionals (team expansion phase), manager Y reducing check sizes by 32% (strategy drift), manager Z increasing deal velocity by 180% (risk of quality decline).</p>
+
+                        <div class="outcome">
+                            <div class="outcome-title">Outcome</div>
+                            <p>Reduced allocation to manager Z before performance decline, increased commitment to manager X during expansion, saved 12% in underperformance through early action.</p>
+                        </div>
+                    </div>
+                    <div class="use-case-visual">
+                        <div class="visual-placeholder">
+                            📈 Performance Inflection<br>
+                            Predictive Analytics<br>
+                            Strategy Drift Detection
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Use Case 3 -->
+                <div class="use-case">
+                    <div class="use-case-content">
+                        <h3>LP Network & Co-Investment Discovery</h3>
+                        <p>Unlock co-investment opportunities and consortium partnerships through systematic LP network analysis and allocation pattern discovery.</p>
+                        
+                        <div class="scenario">
+                            <div class="scenario-title">Scenario: CPPIB Seeking Co-Investment Partners</div>
+                            <p>$80M co-investment opportunity in infrastructure, need to identify compatible LPs for consortium participation and risk sharing.</p>
+                        </div>
+
+                        <p><strong>Traditional Process:</strong> Limited visibility into LP networks, reactive outreach to known relationships, uncertain consortium compatibility.</p>
+                        
+                        <p><strong>Our Intelligence:</strong> Network analysis reveals 6 LPs with similar infrastructure allocation patterns, 3 with previous co-investment history, and optimal consortium structure based on allocation preferences and risk profiles.</p>
+
+                        <div class="outcome">
+                            <div class="outcome-title">Outcome</div>
+                            <p>Assembled 4-LP consortium within 6 weeks vs 4-6 month typical timeline, reduced individual exposure by 60%, strengthened LP relationships for future opportunities.</p>
+                        </div>
+                    </div>
+                    <div class="use-case-visual">
+                        <div class="visual-placeholder">
+                            🕸️ LP Network Intelligence<br>
+                            Co-Investment Discovery<br>
+                            Consortium Optimization
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- LP Network Section -->
+    <section class="lp-network-section">
+        <div class="container">
+            <h2 class="section-title">LP <span style="color: #FF6B4A;">Network Intelligence</span></h2>
+            <p class="section-subtitle">
+                Systematic analysis of institutional allocation patterns, co-investment networks, and strategic partnership opportunities across the global LP ecosystem.
+            </p>
+
+            <div class="network-grid">
+                <div class="network-card">
+                    <div class="network-icon">🏛️</div>
+                    <h4>Pension Funds</h4>
+                    <p>CalPERS, Ontario Teachers', CPPIB allocation patterns and co-investment preferences analysis</p>
+                </div>
+
+                <div class="network-card">
+                    <div class="network-icon">🏫</div>
+                    <h4>Endowments</h4>
+                    <p>Yale, Harvard, Stanford investment committee decision patterns and manager selection criteria</p>
+                </div>
+
+                <div class="network-card">
+                    <div class="network-icon">🏦</div>
+                    <h4>Sovereign Wealth</h4>
+                    <p>GIC, Temasek, ADIA strategic allocation shifts and partnership formation analysis</p>
+                </div>
+
+                <div class="network-card">
+                    <div class="network-icon">🌐</div>
+                    <h4>Insurance Companies</h4>
+                    <p>MetLife, Prudential, AXA alternative allocation strategies and risk management approaches</p>
+                </div>
+
+                <div class="network-card">
+                    <div class="network-icon">📊</div>
+                    <h4>Fund of Funds</h4>
+                    <p>HarbourVest, Adams Street, Pantheon manager selection patterns and portfolio construction</p>
+                </div>
+
+                <div class="network-card">
+                    <div class="network-icon">🏭</div>
+                    <h4>Corporate Pension</h4>
+                    <p>Boeing, GM, IBM retirement fund allocation strategies and fiduciary decision frameworks</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="cta-title">Transform <span style="color: #FF6B4A;">Institutional Allocation</span></h2>
+            <p class="cta-subtitle">
+                Join leading institutional investors using systematic intelligence to optimize manager selection, portfolio construction, and co-investment opportunities.
+            </p>
+            <a href="./contact.html" class="hero-cta">Get Institutional Intelligence Demo</a>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards and use cases for fade-in animations
+        document.querySelectorAll('.solution-card, .use-case, .network-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add hover effects for solution cards
+        document.querySelectorAll('.solution-card, .network-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+            
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+    </script>
+</body>
+</html>

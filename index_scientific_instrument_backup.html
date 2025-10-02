@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Private Markets Graph | Scientific Intelligence Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0B1A2A;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links > li {
+            position: relative;
+        }
+
+        .nav-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+            display: block;
+        }
+
+        .nav-links a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8);
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #0B1A2A 0%, #1a2537 50%, #2a3441 100%);
+            padding-top: 80px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            max-width: 1000px;
+            padding: 0 2rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 3rem;
+            font-weight: 300;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Graph Visualization */
+        .graph-container {
+            position: relative;
+            width: 600px;
+            height: 600px;
+            margin: 0 auto 4rem auto;
+            perspective: 1000px;
+        }
+
+        .graph-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 0 50px rgba(255, 107, 74, 0.3));
+        }
+
+        .graph-sphere {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 1;
+            opacity: 0.6;
+        }
+
+        .graph-center {
+            fill: url(#centerGrad);
+            stroke: rgba(255, 255, 255, 0.4);
+            stroke-width: 2;
+            filter: drop-shadow(0 0 20px rgba(255, 107, 74, 0.6));
+        }
+
+        .graph-node {
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 1.5;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .graph-node:hover {
+            stroke-width: 2;
+            filter: drop-shadow(0 0 15px currentColor);
+        }
+
+        .graph-edge {
+            stroke: rgba(255, 255, 255, 0.08);
+            stroke-width: 0.8;
+            opacity: 0.6;
+        }
+
+        .graph-edge.primary {
+            stroke: rgba(255, 107, 74, 0.3);
+            stroke-width: 1.5;
+            opacity: 0.8;
+        }
+
+        .graph-edge.connecting {
+            stroke: rgba(108, 92, 231, 0.2);
+            stroke-width: 1;
+            opacity: 0.5;
+        }
+
+        .graph-label {
+            fill: rgba(255, 255, 255, 0.9);
+            font-size: 10px;
+            text-anchor: middle;
+            font-weight: 500;
+            text-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+        }
+
+        .graph-label.center {
+            font-size: 14px;
+            font-weight: 700;
+            fill: #ffffff;
+        }
+
+        .graph-label.use-case {
+            font-size: 11px;
+            font-weight: 600;
+            fill: rgba(255, 255, 255, 0.95);
+        }
+
+        .graph-label.dimension {
+            font-size: 8px;
+            fill: rgba(255, 255, 255, 0.6);
+        }
+
+        .floating-element {
+            opacity: 0.4;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); opacity: 0.4; }
+            50% { transform: translateY(-10px); opacity: 0.7; }
+        }
+
+        /* Science Section */
+        .science-section {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.7);
+            text-align: center;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .science-pillars {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .pillar {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .pillar:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .pillar-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 1rem auto;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .pillar h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: #FF6B4A;
+        }
+
+        .pillar p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+        }
+
+        /* Use Cases Section */
+        .use-cases-section {
+            padding: 6rem 0;
+        }
+
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .use-case-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 2.5rem;
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .use-case-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B4A, #6c5ce7, #00cec9);
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 107, 74, 0.3);
+        }
+
+        .use-case-card:hover::before {
+            transform: translateX(0);
+        }
+
+        .use-case-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .indices { background: linear-gradient(135deg, #667eea, #764ba2); }
+        .benchmarking { background: linear-gradient(135deg, #2d5aa0, #1e3c72); }
+        .relationships { background: linear-gradient(135deg, #6c5ce7, #a29bfe); }
+        .predictions { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .classification { background: linear-gradient(135deg, #00cec9, #55a3ff); }
+
+        .use-case-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #FF6B4A;
+        }
+
+        .use-case-card p {
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .use-case-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Graph Intelligence Section */
+        .graph-intelligence {
+            padding: 6rem 0;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .intelligence-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .intelligence-stat {
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .intelligence-stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #FF6B4A;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .intelligence-stat-label {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 6rem 0;
+            text-align: center;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #FF6B4A, #ff8f74);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 107, 74, 0.3);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                padding: 0 1rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .dropdown-content {
+                position: static;
+                display: block;
+                box-shadow: none;
+                border: none;
+                background: transparent;
+                padding: 0;
+            }
+
+            .dropdown-content a {
+                padding: 0.5rem 0;
+                border-left: 2px solid #FF6B4A;
+                padding-left: 1rem;
+                margin-left: 1rem;
+            }
+
+            .hero-content {
+                padding: 0 1rem;
+            }
+
+            .stats-bar {
+                gap: 1.5rem;
+            }
+
+            .graph-container {
+                width: 500px;
+                height: 500px;
+            }
+
+            .science-pillars {
+                grid-template-columns: 1fr;
+            }
+
+            .use-cases-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .intelligence-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Animations */
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .graph-center {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .graph-container {
+            /* Removed full rotation for readability */
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">Business Graph</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="./Classification/index.html">Classification</a></li>
+                <li class="dropdown">
+                    <a href="#solutions">Solutions</a>
+                    <div class="dropdown-content">
+                        <a href="./Indices/index.html">Indices</a>
+                        <a href="./Benchmarking/index.html">Benchmarking</a>
+                        <a href="./Relationships/index.html">Relationships</a>
+                        <a href="./Predictions/index.html">Predictions</a>
+                        <a href="./Classification/index.html">Classification</a>
+                    </div>
+                </li>
+                <li class="dropdown">
+                    <a href="#workflows">Workflows</a>
+                    <div class="dropdown-content">
+                        <a href="./private-equity.html">Private Equity</a>
+                        <a href="./funds.html">Funds</a>
+                    </div>
+                </li>
+                <li><a href="./contact.html">Book Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Foundational Intelligence for <span class="accent">Private Markets</span></h1>
+
+            <!-- Graph Visualization -->
+            <div class="graph-container">
+                <svg class="graph-svg" viewBox="0 0 600 600">
+                    <defs>
+                        <!-- Gradients for different node types -->
+                        <radialGradient id="centerCore" cx="50%" cy="50%" r="50%">
+                            <stop offset="0%" style="stop-color:#FF6B4A;stop-opacity:1" />
+                            <stop offset="70%" style="stop-color:#ff8f74;stop-opacity:0.8" />
+                            <stop offset="100%" style="stop-color:#0B1A2A;stop-opacity:0.3" />
+                        </radialGradient>
+                        
+                        <!-- Domain band gradients -->
+                        <linearGradient id="customersband" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#4A90E2;stop-opacity:0.15" />
+                            <stop offset="100%" style="stop-color:#4A90E2;stop-opacity:0.05" />
+                        </linearGradient>
+                        
+                        <linearGradient id="partnersband" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#9B59B6;stop-opacity:0.15" />
+                            <stop offset="100%" style="stop-color:#9B59B6;stop-opacity:0.05" />
+                        </linearGradient>
+                        
+                        <linearGradient id="techband" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#1ABC9C;stop-opacity:0.15" />
+                            <stop offset="100%" style="stop-color:#1ABC9C;stop-opacity:0.05" />
+                        </linearGradient>
+                        
+                        <linearGradient id="financeband" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" style="stop-color:#F39C12;stop-opacity:0.15" />
+                            <stop offset="100%" style="stop-color:#F39C12;stop-opacity:0.05" />
+                        </linearGradient>
+                        
+                        <!-- Glow effects -->
+                        <filter id="softGlow">
+                            <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                            <feMerge> 
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        
+                        <filter id="nodeGlow">
+                            <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                            <feMerge> 
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+
+                    <!-- Concentric Science Rings -->
+                    <g class="science-rings" opacity="0.3">
+                        <!-- Outer ring: Outcomes -->
+                        <circle cx="300" cy="300" r="220" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1" stroke-dasharray="3,6"/>
+                        <text x="520" y="305" class="ring-label" style="font-size: 11px; fill: rgba(255,255,255,0.6);">Outcomes</text>
+                        
+                        <!-- Third ring: Factors -->
+                        <circle cx="300" cy="300" r="180" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1" stroke-dasharray="2,4"/>
+                        <text x="480" y="305" class="ring-label" style="font-size: 11px; fill: rgba(255,255,255,0.6);">Factors</text>
+                        
+                        <!-- Second ring: Signals -->
+                        <circle cx="300" cy="300" r="140" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-dasharray="4,8"/>
+                        <text x="440" y="305" class="ring-label" style="font-size: 11px; fill: rgba(255,255,255,0.7);">Signals</text>
+                        
+                        <!-- Inner ring: Taxonomy -->
+                        <circle cx="300" cy="300" r="100" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" stroke-dasharray="6,3"/>
+                        <text x="400" y="305" class="ring-label" style="font-size: 12px; fill: rgba(255,255,255,0.8);">Taxonomy</text>
+                    </g>
+                    
+                    <!-- Grid + Origin -->
+                    <g class="lab-grid" opacity="0.15">
+                        <!-- Central crosshair -->
+                        <line x1="150" y1="300" x2="450" y2="300" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                        <line x1="300" y1="150" x2="300" y2="450" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+                        
+                        <!-- Tick marks at cardinal directions -->
+                        <line x1="295" y1="80" x2="305" y2="80" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                        <line x1="520" y1="295" x2="520" y2="305" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                        <line x1="295" y1="520" x2="305" y2="520" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                        <line x1="80" y1="295" x2="80" y2="305" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                        
+                        <!-- Coordinate labels -->
+                        <text x="310" y="85" style="font-size: 9px; fill: rgba(255,255,255,0.5);">0°</text>
+                        <text x="525" y="304" style="font-size: 9px; fill: rgba(255,255,255,0.5);">90°</text>
+                        <text x="290" y="535" style="font-size: 9px; fill: rgba(255,255,255,0.5);">180°</text>
+                        <text x="65" y="304" style="font-size: 9px; fill: rgba(255,255,255,0.5);">270°</text>
+                    </g>
+
+                    <!-- Domain bands with bundled edges -->
+                    <g class="domain-bands">
+                        <!-- Customers domain (top) -->
+                        <path d="M200,120 Q300,100 400,120 Q350,150 300,140 Q250,150 200,120" fill="url(#customersband)" opacity="0.6"/>
+                        
+                        <!-- Partners domain (right) -->
+                        <path d="M480,200 Q500,300 480,400 Q450,350 460,300 Q450,250 480,200" fill="url(#partnersband)" opacity="0.6"/>
+                        
+                        <!-- Tech domain (bottom) -->
+                        <path d="M400,480 Q300,500 200,480 Q250,450 300,460 Q350,450 400,480" fill="url(#techband)" opacity="0.6"/>
+                        
+                        <!-- Finance domain (left) -->
+                        <path d="M120,400 Q100,300 120,200 Q150,250 140,300 Q150,350 120,400" fill="url(#financeband)" opacity="0.6"/>
+                    </g>
+
+                    <!-- Bundled edge flows -->
+                    <g class="edge-bundles">
+                        <!-- Indices to center (blue bundle) -->
+                        <path d="M380,140 Q340,180 320,220 Q310,260 300,280" stroke="#4A90E2" stroke-width="3" fill="none" opacity="0.6"/>
+                        <path d="M380,140 Q360,160 340,200 Q320,240 305,275" stroke="#4A90E2" stroke-width="2" fill="none" opacity="0.4"/>
+                        
+                        <!-- Benchmarking to center (purple bundle) -->
+                        <path d="M450,260 Q420,270 380,280 Q340,290 320,295" stroke="#9B59B6" stroke-width="3" fill="none" opacity="0.6"/>
+                        <path d="M450,260 Q410,275 370,285 Q330,295 315,298" stroke="#9B59B6" stroke-width="2" fill="none" opacity="0.4"/>
+                        
+                        <!-- Relationships to center (teal bundle) -->
+                        <path d="M400,430 Q380,400 360,370 Q340,340 320,320" stroke="#1ABC9C" stroke-width="3" fill="none" opacity="0.6"/>
+                        <path d="M400,430 Q370,390 345,355 Q325,330 315,318" stroke="#1ABC9C" stroke-width="2" fill="none" opacity="0.4"/>
+                        
+                        <!-- Predictions to center (orange bundle) -->
+                        <path d="M240,440 Q260,420 280,390 Q290,350 295,320" stroke="#F39C12" stroke-width="3" fill="none" opacity="0.6"/>
+                        <path d="M240,440 Q265,415 285,385 Q295,345 298,318" stroke="#F39C12" stroke-width="2" fill="none" opacity="0.4"/>
+                        
+                        <!-- Classification to center (red bundle) -->
+                        <path d="M200,390 Q220,370 240,350 Q260,330 280,315" stroke="#E74C3C" stroke-width="3" fill="none" opacity="0.6"/>
+                        <path d="M200,390 Q225,365 245,345 Q265,325 285,312" stroke="#E74C3C" stroke-width="2" fill="none" opacity="0.4"/>
+                    </g>
+
+                    <!-- Node glyphs with semantic shapes -->
+                    <!-- Company nodes (circles) -->
+                    <circle cx="350" cy="180" r="3" fill="#4A90E2" opacity="0.7"/>
+                    <circle cx="420" cy="320" r="3" fill="#9B59B6" opacity="0.7"/>
+                    <circle cx="280" cy="380" r="3" fill="#1ABC9C" opacity="0.7"/>
+                    <circle cx="220" cy="280" r="3" fill="#F39C12" opacity="0.7"/>
+                    
+                    <!-- Investor nodes (diamonds) -->
+                    <polygon points="480,180 485,175 480,170 475,175" fill="#4A90E2" opacity="0.7"/>
+                    <polygon points="520,300 525,295 520,290 515,295" fill="#9B59B6" opacity="0.7"/>
+                    <polygon points="380,480 385,475 380,470 375,475" fill="#1ABC9C" opacity="0.7"/>
+                    <polygon points="180,420 185,415 180,410 175,415" fill="#F39C12" opacity="0.7"/>
+                    
+                    <!-- Fund nodes (hexagons) -->
+                    <polygon points="450,160 455,158 458,163 455,168 450,170 447,165" fill="#4A90E2" opacity="0.7"/>
+                    <polygon points="500,380 505,378 508,383 505,388 500,390 497,385" fill="#9B59B6" opacity="0.7"/>
+                    <polygon points="250,460 255,458 258,463 255,468 250,470 247,465" fill="#1ABC9C" opacity="0.7"/>
+                    <polygon points="160,320 165,318 168,323 165,328 160,330 157,325" fill="#F39C12" opacity="0.7"/>
+
+                    <!-- Main intelligence modules -->
+                    <circle class="graph-node indices" cx="380" cy="140" r="14" fill="#4A90E2" filter="url(#nodeGlow)" opacity="0.9">
+                        <animate attributeName="r" values="14;16;14" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle class="graph-node benchmarking" cx="450" cy="260" r="14" fill="#9B59B6" filter="url(#nodeGlow)" opacity="0.9">
+                        <animate attributeName="r" values="14;16;14" dur="3.5s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle class="graph-node relationships" cx="400" cy="430" r="14" fill="#1ABC9C" filter="url(#nodeGlow)" opacity="0.9">
+                        <animate attributeName="r" values="14;16;14" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle class="graph-node predictions" cx="240" cy="440" r="14" fill="#F39C12" filter="url(#nodeGlow)" opacity="0.9">
+                        <animate attributeName="r" values="14;16;14" dur="3.2s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle class="graph-node classification" cx="200" cy="390" r="14" fill="#E74C3C" filter="url(#nodeGlow)" opacity="0.9">
+                        <animate attributeName="r" values="14;16;14" dur="3.8s" repeatCount="indefinite"/>
+                    </circle>
+
+                    <!-- Central core with halo -->
+                    <circle cx="300" cy="300" r="45" fill="url(#centerCore)" filter="url(#softGlow)"/>
+                    <circle cx="300" cy="300" r="50" fill="none" stroke="rgba(255,107,74,0.3)" stroke-width="2" opacity="0.6">
+                        <animate attributeName="r" values="50;55;50" dur="4s" repeatCount="indefinite"/>
+                    </circle>
+                    
+                    <!-- Central labels -->
+                    <text class="graph-label center" x="300" y="295" style="font-size: 13px; font-weight: 600; fill: white; text-anchor: middle;">Private Markets</text>
+                    <text class="graph-label center" x="300" y="310" style="font-size: 11px; fill: rgba(255,255,255,0.8); text-anchor: middle;">Knowledge Graph</text>
+
+                    <!-- Module labels on curved paths -->
+                    <text x="380" y="120" class="module-label" style="font-size: 12px; font-weight: 500; fill: #4A90E2; text-anchor: middle;">Indices</text>
+                    <text x="470" y="250" class="module-label" style="font-size: 12px; font-weight: 500; fill: #9B59B6; text-anchor: middle;">Benchmarking</text>
+                    <text x="420" y="450" class="module-label" style="font-size: 12px; font-weight: 500; fill: #1ABC9C; text-anchor: middle;">Relationships</text>
+                    <text x="220" y="460" class="module-label" style="font-size: 12px; font-weight: 500; fill: #F39C12; text-anchor: middle;">Predictions</text>
+                    <text x="180" y="370" class="module-label" style="font-size: 12px; font-weight: 500; fill: #E74C3C; text-anchor: middle;">Classification</text>
+
+                    <!-- Domain labels on ring arcs -->
+                    <text x="300" y="95" class="domain-label" style="font-size: 11px; fill: rgba(255,255,255,0.7); text-anchor: middle;">Customers</text>
+                    <text x="505" y="305" class="domain-label" style="font-size: 11px; fill: rgba(255,255,255,0.7); text-anchor: middle;">Partners</text>
+                    <text x="300" y="515" class="domain-label" style="font-size: 11px; fill: rgba(255,255,255,0.7); text-anchor: middle;">Technology</text>
+                    <text x="95" y="305" class="domain-label" style="font-size: 11px; fill: rgba(255,255,255,0.7); text-anchor: middle;">Finance</text>
+
+                    <!-- Particle noise for data movement -->
+                    <g class="data-particles" opacity="0.4">
+                        <circle r="1" fill="#FF6B4A">
+                            <animateMotion dur="8s" repeatCount="indefinite">
+                                <path d="M350,300 Q400,250 450,300 Q400,350 350,300"/>
+                            </animateMotion>
+                        </circle>
+                        <circle r="1" fill="#4A90E2">
+                            <animateMotion dur="6s" repeatCount="indefinite">
+                                <path d="M300,200 Q350,150 400,200 Q350,250 300,200"/>
+                            </animateMotion>
+                        </circle>
+                        <circle r="1" fill="#1ABC9C">
+                            <animateMotion dur="10s" repeatCount="indefinite">
+                                <path d="M250,300 Q200,350 150,300 Q200,250 250,300"/>
+                            </animateMotion>
+                        </circle>
+                    </g>
+                </svg>
+            </div>
+            
+            <!-- Platform Description and Stats -->
+            <div style="text-align: center; margin-top: 1.5rem;">
+                <p style="font-size: 1.4rem; color: rgba(255, 255, 255, 0.95); margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5; font-weight: 400; letter-spacing: 0.5px; text-shadow: 0 2px 8px rgba(0,0,0,0.3);">
+                    The <span style="color: #FF6B4A; font-weight: 600;">foundational intelligence layer</span> that powers systematic analysis<br>across the entire <span style="color: #FF6B4A; font-weight: 600;">private markets ecosystem</span>.
+                </p>
+                
+                <div class="stats-bar">
+                    <div class="stat">
+                        <span class="stat-number">800K+</span>
+                        <span class="stat-label">Private Companies</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">2.5M+</span>
+                        <span class="stat-label">Executives Mapped</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">18</span>
+                        <span class="stat-label">Taxonomy Dimensions</span>
+                    </div>
+                    <div class="stat">
+                        <span class="stat-number">Neo4j</span>
+                        <span class="stat-label">Graph Database</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Science Section -->
+    <section class="science-section" id="science">
+        <div class="container">
+            <h2 class="section-title">How We Practice Private Markets <span style="color: #FF6B4A;">Science</span></h2>
+            <p class="section-subtitle">Our 18-dimensional ontology transforms opaque deals into measurable, falsifiable hypotheses backed by systematic evidence collection and peer review.</p>
+            
+            <div class="science-pillars">
+                <div class="pillar">
+                    <div class="pillar-icon">🧬</div>
+                    <h3>Ontology</h3>
+                    <p>18-dimensional taxonomy that captures the true complexity of private markets beyond traditional industry codes.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">📡</div>
+                    <h3>Instrumentation</h3>
+                    <p>Multi-source signal measurement from verifiable public sources with confidence scoring and decay models.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">🧪</div>
+                    <h3>Experimentation</h3>
+                    <p>Falsifiable hypotheses tested through backtests, quasi-experiments, and systematic validation protocols.</p>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-icon">✅</div>
+                    <h3>Validation</h3>
+                    <p>Peer review, inter-rater reliability, and adversarial testing ensure scientific rigor in our methodologies.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="use-cases-section" id="solutions">
+        <div class="container">
+            <h2 class="section-title">Intelligence <span style="color: #FF6B4A;">Powered</span> by Graph</h2>
+            <p class="section-subtitle">Five core use cases that demonstrate the power of systematic, taxonomy-based analysis for private markets.</p>
+            
+            <div class="use-cases-grid">
+                <a href="./Indices/index.html" class="use-case-card">
+                    <div class="use-case-icon indices">📊</div>
+                    <h3>Indices</h3>
+                    <p>Proprietary measurement frameworks that quantify AI-readiness, management quality, momentum, and product roadmap predictions.</p>
+                    <div class="use-case-stats">
+                        <span>4 Indices</span>
+                        <span>Multi-dimensional</span>
+                        <span>Real-time</span>
+                    </div>
+                </a>
+
+                <a href="./Benchmarking/index.html" class="use-case-card">
+                    <div class="use-case-icon benchmarking">🎯</div>
+                    <h3>Benchmarking</h3>
+                    <p>State-of-the-art peer discovery based on 18-dimensional taxonomy, finding true competitive sets beyond industry codes.</p>
+                    <div class="use-case-stats">
+                        <span>True Peers</span>
+                        <span>Multi-dimensional</span>
+                        <span>Real-time</span>
+                    </div>
+                </a>
+
+                <a href="./Relationships/index.html" class="use-case-card">
+                    <div class="use-case-icon relationships">🕸️</div>
+                    <h3>Relationships</h3>
+                    <p>Graph-powered network analysis revealing LP-GP connections, warm intro paths, and relationship-based risk patterns.</p>
+                    <div class="use-case-stats">
+                        <span>2.5M+ Execs</span>
+                        <span>Multi-hop Paths</span>
+                        <span>Risk Scoring</span>
+                    </div>
+                </a>
+
+                <a href="./Predictions/index.html" class="use-case-card">
+                    <div class="use-case-icon predictions">🔮</div>
+                    <h3>Predictions</h3>
+                    <p>Evidence-based forecasting of technical expansion, market moves, and financing events with 3-6 month advance intelligence.</p>
+                    <div class="use-case-stats">
+                        <span>3-6 Month Lead</span>
+                        <span>Multi-signal</span>
+                        <span>Evidence-based</span>
+                    </div>
+                </a>
+
+                <a href="./Classification/index.html" class="use-case-card">
+                    <div class="use-case-icon classification">🏷️</div>
+                    <h3>Classification</h3>
+                    <p>Dynamic business model classification that evolves with companies, enabling precise universe creation and API integration.</p>
+                    <div class="use-case-stats">
+                        <span>18 Dimensions</span>
+                        <span>API-First</span>
+                        <span>Real-time Updates</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 class="section-title">Ready to Practice <span style="color: #FF6B4A;">Science</span>?</h2>
+            <p class="section-subtitle">Join the next generation of private markets intelligence powered by systematic taxonomy and graph reasoning.</p>
+            <a href="./contact.html" class="cta-button">Book Demo</a>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add intersection observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all sections for fade-in animations
+        document.querySelectorAll('.pillar, .use-case-card, .intelligence-stat').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+        // Add click handlers for graph nodes
+        document.querySelectorAll('.graph-node').forEach(node => {
+            node.addEventListener('click', function() {
+                const classes = this.getAttribute('class').split(' ');
+                const useCase = classes.find(c => ['indices', 'benchmarking', 'relationships', 'predictions', 'classification'].includes(c));
+                if (useCase) {
+                    // Navigate to the corresponding page
+                    window.location.href = `./${useCase.charAt(0).toUpperCase() + useCase.slice(1)}/index.html`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>

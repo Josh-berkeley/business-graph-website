@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indices for Private Markets</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            color: white;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A !important;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0;
+        }
+
+        .tab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 24px;
+        }
+
+        .tab-link {
+            padding: 16px 24px;
+            text-decoration: none;
+            color: #6c757d;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-link.active {
+            color: #0B1A2A;
+            border-bottom-color: #FF6B4A;
+            background: white;
+        }
+
+        .tab-link:hover {
+            background: #e9ecef;
+        }
+
+        .tab-link.active:hover {
+            background: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0B1A2A 0%, #1e3a5f 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255,107,74,0.1) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(255,107,74,0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Intro Section */
+        .intro-section {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+
+        .intro-text {
+            font-size: 1.2rem;
+            color: #6c757d;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* Indices Grid */
+        .indices-grid {
+            display: grid;
+            gap: 60px;
+        }
+
+        .index-item {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            padding: 40px 0;
+            border-bottom: 1px solid #e9ecef;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .index-item:last-child {
+            border-bottom: none;
+        }
+
+        .index-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            background: #f8f9fa;
+            margin: 0 -20px;
+            padding: 40px 20px;
+            border-radius: 12px;
+        }
+
+        .index-visual {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .index-content h3 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 16px;
+        }
+
+        .index-content p {
+            font-size: 1.1rem;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Specific Index Visuals */
+        .ai-readiness-visual {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .ai-readiness-visual::before {
+            content: '';
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 3s linear infinite;
+        }
+
+        .management-visual {
+            background: linear-gradient(135deg, #2d5aa0 0%, #4a6741 100%);
+        }
+
+        .management-visual::before {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 100px;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(255,255,255,0.1),
+                rgba(255,255,255,0.1) 10px,
+                transparent 10px,
+                transparent 20px
+            );
+        }
+
+        .momentum-visual {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+        }
+
+        .momentum-visual::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 40px solid transparent;
+            border-right: 40px solid transparent;
+            border-bottom: 60px solid rgba(255,255,255,0.4);
+            transform: rotate(45deg);
+        }
+
+        .roadmap-visual {
+            background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%);
+        }
+
+        .roadmap-visual::before {
+            content: '';
+            position: absolute;
+            width: 80%;
+            height: 4px;
+            background: rgba(255,255,255,0.4);
+            top: 40%;
+        }
+
+        .roadmap-visual::after {
+            content: '';
+            position: absolute;
+            width: 60%;
+            height: 4px;
+            background: rgba(255,255,255,0.6);
+            top: 50%;
+        }
+
+        /* Animations */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .index-item {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                text-align: center;
+            }
+
+            .main-content {
+                padding: 40px 16px;
+            }
+
+            .hero-content {
+                padding: 0 16px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tab-container {
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .tab-link {
+                white-space: nowrap;
+                padding: 16px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Private Markets Graph</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">← Home</a></li>
+                    <li class="dropdown">
+                        <a href="#solutions">Solutions</a>
+                        <div class="dropdown-content">
+                            <a href="../Indices/index.html">Indices</a>
+                            <a href="../Benchmarking/index.html">Benchmarking</a>
+                            <a href="../Relationships/index.html">Relationships</a>
+                            <a href="../Predictions/index.html">Predictions</a>
+                            <a href="../Classification/index.html">Classification</a>
+                        </div>
+                    </li>
+                    <li><a href="../Classification/index.html">Classification</a></li>
+                    <li><a href="../contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <a href="../contact.html" class="contact-btn">Book Demo</a>
+        </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <div class="tab-container">
+            <a href="#overview" class="tab-link">Overview</a>
+            <a href="#documentation" class="tab-link">Documentation</a>
+            <a href="#use-cases" class="tab-link active">Use Cases</a>
+            <a href="#get-started" class="tab-link">Get Started</a>
+            <a href="#related" class="tab-link">Related Solutions</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="accent">Indices</span> for Private Markets</h1>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Intro Section -->
+        <section class="intro-section">
+            <p class="intro-text">
+                Our 18-dimensional taxonomy creates the foundation. Augmented with signals from public, verifiable sources—company websites, SEC Form-D filings, hiring patterns—you can create custom indices or use ours.
+            </p>
+        </section>
+
+        <!-- Indices Grid -->
+        <section class="indices-grid">
+            <!-- AI-Readiness Index -->
+            <div class="index-item" onclick="location.href='../ai-readiness-case-study.html'">
+                <div class="index-visual ai-readiness-visual"></div>
+                <div class="index-content">
+                    <h3>AI-Readiness Index</h3>
+                    <p>Measure capacity to design, ship, and run AI in production. 5 components across talent, tech stack, and product integration.</p>
+                    <div style="margin-top: 1rem; padding: 0.5rem 1rem; background: rgba(255, 107, 74, 0.1); border-radius: 6px; border: 1px solid rgba(255, 107, 74, 0.3);">
+                        <small style="color: #FF6B4A; font-weight: 600;">📊 View DataFlow Systems Case Study</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Management Quality Index -->
+            <div class="index-item" onclick="location.href='#management-quality'">
+                <div class="index-content">
+                    <h3>Management Quality Index</h3>
+                    <p>Assess leadership capability for next 12-18 months of scaling. Stage fit, execution track record, and team completeness.</p>
+                </div>
+                <div class="index-visual management-visual"></div>
+            </div>
+
+            <!-- Momentum Index -->
+            <div class="index-item" onclick="location.href='#momentum'">
+                <div class="index-visual momentum-visual"></div>
+                <div class="index-content">
+                    <h3>Momentum Index</h3>
+                    <p>Track growth trajectory and market velocity. Hiring acceleration, market buzz, product development speed.</p>
+                </div>
+            </div>
+
+            <!-- Product Roadmap Prediction -->
+            <div class="index-item" onclick="location.href='#roadmap-prediction'">
+                <div class="index-content">
+                    <h3>Product Roadmap Prediction</h3>
+                    <p>Evidence-based feature forecasting with timing windows. 3-month, 6-month, and 12-month development predictions.</p>
+                </div>
+                <div class="index-visual roadmap-visual"></div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

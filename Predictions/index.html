@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predictive Intelligence | Private Markets Graph</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f8f9fa;
+        }
+
+        /* Header */
+        .header {
+            background: #0B1A2A;
+            color: white;
+            padding: 16px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 24px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 600;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 32px;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu a:hover {
+            color: #FF6B4A;
+        }
+
+        /* Dropdown Styles */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #0B1A2A;
+            min-width: 200px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+            padding: 0.5rem 0;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: rgba(255, 255, 255, 0.8) !important;
+            padding: 0.75rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 0;
+        }
+
+        .dropdown-content a:hover {
+            background: rgba(255, 107, 74, 0.1);
+            color: #FF6B4A !important;
+        }
+
+        .dropdown > a::after {
+            content: " ⌄";
+            font-size: 0.8rem;
+            margin-left: 0.5rem;
+        }
+
+        .contact-btn {
+            background: #FF6B4A;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s ease;
+        }
+
+        .contact-btn:hover {
+            background: #E55A42;
+        }
+
+        /* Tab Navigation */
+        .tab-nav {
+            background: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+            padding: 0;
+        }
+
+        .tab-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            padding: 0 24px;
+        }
+
+        .tab-link {
+            padding: 16px 24px;
+            text-decoration: none;
+            color: #6c757d;
+            font-weight: 500;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .tab-link.active {
+            color: #0B1A2A;
+            border-bottom-color: #FF6B4A;
+            background: white;
+        }
+
+        .tab-link:hover {
+            background: #e9ecef;
+        }
+
+        .tab-link.active:hover {
+            background: white;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0B1A2A 0%, #1e3a5f 100%);
+            color: white;
+            padding: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(45deg, rgba(255,107,74,0.1) 1px, transparent 1px),
+                linear-gradient(-45deg, rgba(255,107,74,0.1) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .hero h1 .accent {
+            color: #FF6B4A;
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+        }
+
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 60px 24px;
+        }
+
+        /* Secret Sauce Section */
+        .secret-sauce {
+            background: white;
+            border-radius: 16px;
+            padding: 60px;
+            margin-bottom: 80px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .secret-sauce::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #FF6B4A, #667eea, #764ba2);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: #6c757d;
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .methodology-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-bottom: 50px;
+        }
+
+        .method-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #dee2e6;
+        }
+
+        .method-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+        }
+
+        .method-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: white;
+            font-weight: bold;
+        }
+
+        .signal-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .semantic-icon {
+            background: linear-gradient(135deg, #FF6B4A 0%, #ee5a24 100%);
+        }
+
+        .evidence-icon {
+            background: linear-gradient(135deg, #2d5aa0 0%, #4a6741 100%);
+        }
+
+        .method-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .method-description {
+            color: #6c757d;
+            line-height: 1.6;
+        }
+
+        /* Prediction Sections */
+        .prediction-section {
+            margin-bottom: 80px;
+        }
+
+        .prediction-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .prediction-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 15px;
+        }
+
+        .prediction-subtitle {
+            font-size: 1.1rem;
+            color: #6c757d;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Prediction Cards */
+        .prediction-container {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .prediction-visual {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            padding: 40px;
+            margin-bottom: 30px;
+        }
+
+        .prediction-timeline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .prediction-timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 60px;
+            right: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #667eea, #FF6B4A);
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .timeline-point {
+            background: white;
+            border: 3px solid;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .timeline-point.current {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .timeline-point.predicted {
+            border-color: #FF6B4A;
+            color: #FF6B4A;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-label {
+            text-align: center;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0B1A2A;
+        }
+
+        .timeline-date {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        /* Signal Analysis */
+        .signal-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .signal-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .hiring-signal {
+            border-left-color: #667eea;
+        }
+
+        .content-signal {
+            border-left-color: #FF6B4A;
+        }
+
+        .funding-signal {
+            border-left-color: #10b981;
+        }
+
+        .product-signal {
+            border-left-color: #f59e0b;
+        }
+
+        .signal-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .signal-icon {
+            width: 35px;
+            height: 35px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            margin-right: 12px;
+            color: white;
+        }
+
+        .hiring-icon {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .content-icon {
+            background: linear-gradient(135deg, #FF6B4A, #ee5a24);
+        }
+
+        .funding-icon {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .product-icon {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+        }
+
+        .signal-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #0B1A2A;
+        }
+
+        .signal-content {
+            margin-bottom: 15px;
+        }
+
+        .signal-text {
+            font-size: 0.9rem;
+            color: #6c757d;
+            line-height: 1.5;
+            margin-bottom: 10px;
+        }
+
+        .signal-highlight {
+            background: linear-gradient(135deg, rgba(255,107,74,0.1), rgba(102,126,234,0.1));
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            margin: 5px 0;
+        }
+
+        .confidence-score {
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .confidence-label {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+        }
+
+        .confidence-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #667eea;
+        }
+
+        /* Company Examples */
+        .company-example {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
+        }
+
+        .company-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .company-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            font-weight: bold;
+            margin-right: 20px;
+        }
+
+        .nexus-logo {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .atlas-logo {
+            background: linear-gradient(135deg, #FF6B4A, #ee5a24);
+        }
+
+        .summit-logo {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .company-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 5px;
+        }
+
+        .company-info p {
+            color: #6c757d;
+            font-size: 1rem;
+        }
+
+        /* Prediction Results */
+        .prediction-results {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .technical-card {
+            border-top-color: #667eea;
+        }
+
+        .market-card {
+            border-top-color: #FF6B4A;
+        }
+
+        .financing-card {
+            border-top-color: #10b981;
+        }
+
+        .result-header {
+            margin-bottom: 20px;
+        }
+
+        .result-type {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .result-timeline {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .result-confidence {
+            background: #f8f9fa;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            display: inline-block;
+        }
+
+        .result-description {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .result-evidence {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+        }
+
+        .evidence-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0B1A2A;
+            margin-bottom: 10px;
+        }
+
+        .evidence-list {
+            list-style: none;
+        }
+
+        .evidence-list li {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 5px;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .evidence-list li::before {
+            content: '▸';
+            color: #FF6B4A;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .methodology-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .secret-sauce {
+                padding: 40px 30px;
+            }
+
+            .main-content {
+                padding: 40px 16px;
+            }
+
+            .hero-content {
+                padding: 0 16px;
+            }
+
+            .prediction-timeline {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .prediction-timeline::before {
+                display: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .tab-container {
+                overflow-x: auto;
+                padding: 0 16px;
+            }
+
+            .tab-link {
+                white-space: nowrap;
+                padding: 16px 20px;
+            }
+
+            .secret-sauce {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="nav-container">
+            <div class="logo">Private Markets Graph</div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="../Classification/index.html">Classification</a></li>
+                    <li><a href="../private-equity.html">Private Equity</a></li>
+                    <li><a href="../funds.html">Funds</a></li>
+                    <li><a href="../solutions.html">Solutions</a></li>
+                </ul>
+            </nav>
+            <a href="../contact.html" class="contact-btn">Book Demo</a>
+        </div>
+    </header>
+
+    <!-- Tab Navigation -->
+    <div class="tab-nav">
+        <div class="tab-container">
+            <a href="#overview" class="tab-link">Overview</a>
+            <a href="#use-cases" class="tab-link active">Use Cases</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1><span class="accent">Predictive</span> Intelligence</h1>
+            <p class="hero-subtitle">
+                Anticipate strategic moves 3-6 months before they happen through multi-signal analysis and semantic pattern recognition
+            </p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Secret Sauce Section -->
+        <section class="secret-sauce">
+            <h2 class="section-title">Prediction Methodology</h2>
+            <p class="section-subtitle">
+                Traditional market intelligence is reactive. Our multi-signal approach analyzes hiring patterns, content semantics, and relationship context to predict strategic moves before they're announced.
+            </p>
+
+            <div class="methodology-grid">
+                <div class="method-card">
+                    <div class="method-icon signal-icon">∞</div>
+                    <h3 class="method-title">Multi-Signal Aggregation</h3>
+                    <p class="method-description">
+                        Job descriptions, content analysis, hiring velocity, product mentions, partnership signals aggregated with weighted confidence scoring.
+                    </p>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-icon semantic-icon">🧠</div>
+                    <h3 class="method-title">Semantic Pattern Recognition</h3>
+                    <p class="method-description">
+                        AI identifies technical keywords, timeline hints, strategic language patterns that indicate future direction with timing windows.
+                    </p>
+                </div>
+
+                <div class="method-card">
+                    <div class="method-icon evidence-icon">📊</div>
+                    <h3 class="method-title">Evidence-Based Confidence</h3>
+                    <p class="method-description">
+                        Every prediction backed by specific evidence sources with transparency into signal strength and reasoning chains.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Technical Expansion Prediction Section -->
+        <section class="prediction-section">
+            <div class="prediction-header">
+                <h2 class="prediction-title">Technical Expansion Predictions</h2>
+                <p class="prediction-subtitle">
+                    Anticipate technology adoption, infrastructure scaling, and capability development before official announcements
+                </p>
+            </div>
+
+            <div class="company-example">
+                <div class="company-header">
+                    <div class="company-logo nexus-logo">NX</div>
+                    <div class="company-info">
+                        <h3>Nexus Analytics</h3>
+                        <p>B2B Data Intelligence Platform</p>
+                    </div>
+                </div>
+
+                <div class="prediction-visual">
+                    <div class="prediction-timeline">
+                        <div class="timeline-point current">Q3</div>
+                        <div class="timeline-point predicted">Q1</div>
+                        <div class="timeline-point predicted">Q2</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: -10px;">
+                        <div class="timeline-label">
+                            Current State
+                            <div class="timeline-date">Oct 2024</div>
+                        </div>
+                        <div class="timeline-label">
+                            AI Infrastructure
+                            <div class="timeline-date">Q1 2025</div>
+                        </div>
+                        <div class="timeline-label">
+                            ML Platform Launch
+                            <div class="timeline-date">Q2 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signal-analysis">
+                    <div class="signal-card hiring-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon hiring-icon">👥</div>
+                            <div class="signal-title">Hiring Patterns</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">15 AI-focused roles posted in last 60 days</div>
+                            <div class="signal-highlight">"Senior ML Infrastructure Engineer", "LLM Operations Lead"</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">94%</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card content-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon content-icon">📄</div>
+                            <div class="signal-title">Content Analysis</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">CEO blog mentions "AI-powered analytics transformation"</div>
+                            <div class="signal-highlight">"revolutionary AI features coming early 2025"</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">87%</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card funding-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon funding-icon">💰</div>
+                            <div class="signal-title">Investment Context</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">Lead investor has AI specialization portfolio</div>
+                            <div class="signal-highlight">Board includes former OpenAI executive</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">78%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Market Roadmap Prediction Section -->
+        <section class="prediction-section">
+            <div class="prediction-header">
+                <h2 class="prediction-title">Market Roadmap Predictions</h2>
+                <p class="prediction-subtitle">
+                    Forecast geographic expansion, product launches, and partnership strategies through strategic signal analysis
+                </p>
+            </div>
+
+            <div class="company-example">
+                <div class="company-header">
+                    <div class="company-logo atlas-logo">AT</div>
+                    <div class="company-info">
+                        <h3>Atlas Insights</h3>
+                        <p>Business Intelligence Software</p>
+                    </div>
+                </div>
+
+                <div class="prediction-visual">
+                    <div class="prediction-timeline">
+                        <div class="timeline-point current">US</div>
+                        <div class="timeline-point predicted">EU</div>
+                        <div class="timeline-point predicted">APAC</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: -10px;">
+                        <div class="timeline-label">
+                            US Market
+                            <div class="timeline-date">Current</div>
+                        </div>
+                        <div class="timeline-label">
+                            European Expansion
+                            <div class="timeline-date">Q1 2025</div>
+                        </div>
+                        <div class="timeline-label">
+                            APAC Launch
+                            <div class="timeline-date">Q3 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signal-analysis">
+                    <div class="signal-card hiring-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon hiring-icon">🌍</div>
+                            <div class="signal-title">Geographic Hiring</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">8 London-based sales roles posted</div>
+                            <div class="signal-highlight">"European Market Development Manager", "EMEA Sales Director"</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">91%</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card product-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon product-icon">🚀</div>
+                            <div class="signal-title">Product Signals</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">GDPR compliance engineering roles</div>
+                            <div class="signal-highlight">Multi-language UI development, Euro data centers</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">86%</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card content-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon content-icon">📢</div>
+                            <div class="signal-title">Partnership Signals</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">Job descriptions mention "European partner ecosystem"</div>
+                            <div class="signal-highlight">London office lease, EU regulatory specialist hiring</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">79%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Financing Stage Prediction Section -->
+        <section class="prediction-section">
+            <div class="prediction-header">
+                <h2 class="prediction-title">Financing Predictions</h2>
+                <p class="prediction-subtitle">
+                    Predict funding timing, round size, and investor targeting through growth momentum and strategic signal analysis
+                </p>
+            </div>
+
+            <div class="company-example">
+                <div class="company-header">
+                    <div class="company-logo summit-logo">ST</div>
+                    <div class="company-info">
+                        <h3>Summit Technologies</h3>
+                        <p>Enterprise Security Platform</p>
+                    </div>
+                </div>
+
+                <div class="prediction-visual">
+                    <div class="prediction-timeline">
+                        <div class="timeline-point current">A</div>
+                        <div class="timeline-point predicted">B</div>
+                        <div class="timeline-point predicted">C</div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: -10px;">
+                        <div class="timeline-label">
+                            Series A Complete
+                            <div class="timeline-date">Aug 2024</div>
+                        </div>
+                        <div class="timeline-label">
+                            Series B Launch
+                            <div class="timeline-date">Q1 2025</div>
+                        </div>
+                        <div class="timeline-label">
+                            Series C Ready
+                            <div class="timeline-date">Q4 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="signal-analysis">
+                    <div class="signal-card hiring-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon hiring-icon">📈</div>
+                            <div class="signal-title">Growth Velocity</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">Hiring acceleration: 40% team growth in 3 months</div>
+                            <div class="signal-highlight">VP Sales, VP Marketing, expansion roles</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">93%</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card funding-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon funding-icon">🎯</div>
+                            <div class="signal-title">Investor Targeting</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">CEO LinkedIn activity with growth-stage VCs</div>
+                            <div class="signal-highlight">Conferences, board connections, warm introductions</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">84%</div>
+                        </div>
+                    </div>
+
+                    <div class="signal-card content-signal">
+                        <div class="signal-header">
+                            <div class="signal-icon content-icon">💼</div>
+                            <div class="signal-title">Strategic Signals</div>
+                        </div>
+                        <div class="signal-content">
+                            <div class="signal-text">Investment banker relationship building</div>
+                            <div class="signal-highlight">Board deck preparation, financial planning roles</div>
+                        </div>
+                        <div class="confidence-score">
+                            <div class="confidence-label">Signal Strength</div>
+                            <div class="confidence-value">76%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="prediction-results">
+                <div class="result-card financing-card">
+                    <div class="result-header">
+                        <h3 class="result-type">Series B Timing</h3>
+                        <p class="result-timeline">Predicted: Q1 2025</p>
+                        <div class="result-confidence">Confidence: 89%</div>
+                    </div>
+                    <p class="result-description">
+                        Growth acceleration signals indicate Series B launch within 90-120 days based on hiring velocity and investor engagement patterns.
+                    </p>
+                    <div class="result-evidence">
+                        <div class="evidence-title">Key Evidence:</div>
+                        <ul class="evidence-list">
+                            <li>40% headcount growth in Q4 2024</li>
+                            <li>VP-level sales/marketing hires</li>
+                            <li>CEO networking with growth VCs</li>
+                            <li>Financial planning role posted</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="result-card financing-card">
+                    <div class="result-header">
+                        <h3 class="result-type">Round Size</h3>
+                        <p class="result-timeline">Estimated: $35-50M</p>
+                        <div class="result-confidence">Confidence: 81%</div>
+                    </div>
+                    <p class="result-description">
+                        Based on current growth metrics, market positioning, and comparable company analysis for enterprise security platforms.
+                    </p>
+                    <div class="result-evidence">
+                        <div class="evidence-title">Sizing Factors:</div>
+                        <ul class="evidence-list">
+                            <li>$15M ARR run rate</li>
+                            <li>85% net revenue retention</li>
+                            <li>18-month runway requirement</li>
+                            <li>Geographic expansion plans</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="result-card financing-card">
+                    <div class="result-header">
+                        <h3 class="result-type">Target Investors</h3>
+                        <p class="result-timeline">Growth-stage specialists</p>
+                        <div class="result-confidence">Confidence: 74%</div>
+                    </div>
+                    <p class="result-description">
+                        Network analysis suggests targeting growth-stage VCs with enterprise security expertise and portfolio synergies.
+                    </p>
+                    <div class="result-evidence">
+                        <div class="evidence-title">Targeting Logic:</div>
+                        <ul class="evidence-list">
+                            <li>Board connections to growth funds</li>
+                            <li>Security-focused investor warm intros</li>
+                            <li>Series B lead investor patterns</li>
+                            <li>Geographic proximity preferences</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
